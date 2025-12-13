@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Find emergency medical care in Sierra Leone - Offline-first, nationwide coverage">
+    <title>MedFind Salone - Emergency Hospital Finder</title>
+    <link rel="stylesheet" href="spa-styles.css">
+</head>
+
+<body>
+    <!-- OFFLINE BANNER -->
+    <div id="offlineBanner" class="offline-banner">
+        <span>📡 Offline Mode - Last synced: <span id="lastSyncTime">Never</span></span>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app" class="app-container">
+
+        <!-- SECTION 1: HOME (DEFAULT VIEW) -->
+        <section id="homeSection" class="section active">
+            <!-- Header -->
+            <header class="app-header">
+                <h1>🏥 MedFind Salone</h1>
+                <p class="subtitle">Find Emergency Medical Services Offline</p>
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="kr">KR</button>
+                </div>
+            </header>
+
+            <!-- Emergency SOS Button -->
+            <button class="emergency-btn" id="sosBtn">
+                🚨 SOS - FIND HELP NOW
+            </button>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input"
+                    placeholder="Search hospitals by name, district, or service...">
+                <button class="search-btn" id="searchBtn">🔍</button>
+            </div>
+
+            <!-- Service Cards -->
+            <div class="services-grid">
+                <div class="service-card" data-service="maternity">
+                    <div class="service-icon">👶</div>
+                    <h3>Maternity</h3>
+                    <p>Delivery & Obstetric Care</p>
+                </div>
+                <div class="service-card" data-service="surgery">
+                    <div class="service-icon">🔪</div>
+                    <h3>Surgery</h3>
+                    <p>Operating Theatre Services</p>
+                </div>
+                <div class="service-card" data-service="emergency">
+                    <div class="service-icon">🚨</div>
+                    <h3>Emergency</h3>
+                    <p>24/7 Emergency Care</p>
+                </div>
+                <div class="service-card" data-service="pediatrics">
+                    <div class="service-icon">🧒</div>
+                    <h3>Pediatrics</h3>
+                    <p>Children's Healthcare</p>
+                </div>
+                <div class="service-card" data-service="icu">
+                    <div class="service-icon">🏥</div>
+                    <h3>ICU</h3>
+                    <p>Intensive Care Unit</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-container">
+                <div class="stat">
+                    <span class="stat-number" id="totalHospitals">0</span>
+                    <span class="stat-label">Hospitals</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="districtsCount">16</span>
+                    <span class="stat-label">Districts Covered</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2SERVICE RESULTS -->
+        <section id="resultsSection" class="section">
+            <!-- Header with Back Button -->
+            <header class="section-header">
+                <button class="back-btn" id="resultsBackBtn">← Back</button>
+                <div>
+                    <h2 id="resultsTitle">Hospitals</h2>
+                    <p id="resultsCount">0 hospitals found</p>
+                </div>
+            </header>
+
+            <!-- Filter Toggle -->
+            <button class="filter-toggle-btn" id="filterToggleBtn">
+                🔧 Filters <span id="filterCount"></span>
+            </button>
+
+            <!-- Filters Panel -->
+            <div id="filtersPanel" class="filters-panel" style="display: none;">
+                <div class="filter-group">
+                    <label><input type="checkbox" id="filterBeds"> Beds Available</label>
+                    <label><input type="checkbox" id="filterOxygen"> Oxygen Available</label>
+                    <label><input type="checkbox" id="filterSurgeons"> Surgeons on Duty</label>
+                    <label><input type="checkbox" id="filterAmbulance"> Ambulance Available</label>
+                </div>
+                <div class="filter-group">
+                    <select id="filterDistrict" class="filter-select">
+                        <option value="">All Districts</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="clearFiltersBtn">Clear</button>
+                    <button class="btn btn-primary" id="applyFiltersBtn">Apply</button>
+                </div>
+            </div>
+
+            <!-- Hospital List -->
+            <div id="hospitalList" class="hospital-list"></div>
+
+            <!-- No Results Message -->
+            <div id="noResultsMsg" class="no-results" style="display: none;">
+                <p class="no-results-icon">🏥</p>
+                <p class="no-results-text">No facilities currently available in this district for this service.</p>
+                <p class="no-results-sub">Try adjusting your filters or search another service.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: HOSPITAL DETAIL -->
+        <section id="detailSection" class="section">
+            <!-- Header with Back Button -->
+            <header class="section-header">
+                <button class="back-btn" id="detailBackBtn">← Back</button>
+                <button class="favorite-btn" id="favoriteBtn">☆</button>
+            </header>
+
+            <!-- Detail Content -->
+            <div id="detailContent" class="detail-content"></div>
+        </section>
+
+        <!-- SECTION 4: EMERGENCY SOS -->
+        <section id="emergencySection" class="section emergency-section">
+            <header class="section-header">
+                <button class="back-btn" id="emergencyBackBtn">← Back</button>
+            </header>
+
+            <div class="emergency-content">
+                <h1 class="emergency-title">🚨 EMERGENCY MODE</h1>
+                <p class="emergency-subtitle">Nearest Hospital</p>
+
+                <div class="emergency-hospital">
+                    <h2 id="emergencyHospitalName">Finding nearest hospital...</h2>
+                    <p class="emergency-distance" id="emergencyDistance">Calculating distance...</p>
+                    <p class="emergency-address" id="emergencyAddress"></p>
+                </div>
+
+                <div class="emergency-actions">
+                    <button class="action-btn btn-call-large" id="emergencyCallBtn">
+                        📞 CALL HOSPITAL
+                    </button>
+                    <button class="action-btn btn-directions-large" id="emergencyDirectionsBtn">
+                        🗺️ GET DIRECTIONS
+                    </button>
+                </div>
+
+                <p class="emergency-note">
+                    If no answer, call <strong>117</strong> (Ambulance) or <strong>999</strong> (Emergency)
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loader"></div>
+            <h2>Loading MedFind Salone...</h2>
+            <p>Preparing offline data...</p>
+        </div>
+    </div>
+
+    <script src="spa-script.js"></script>
+</body>
+
+</html>
