@@ -625,3 +625,5 @@ MIT License - See LICENSE file for details
 **Built with ❤️ for Sierra Leone**
 
 *Making healthcare accessible, one tap at a time.*
+#   M e d F i n d - S a l o n e  
+ 
