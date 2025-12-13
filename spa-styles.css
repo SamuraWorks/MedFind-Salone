@@ -97,6 +97,13 @@ body {
     padding: 2rem 1rem 1rem;
 }
 
+.app-logo {
+    width: 120px;
+    height: auto;
+    margin: 0 auto 1rem;
+    display: block;
+}
+
 .app-header h1 {
     font-size: 2rem;
     color: var(--primary-color);

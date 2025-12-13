@@ -53,7 +53,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
@@ -164,7 +166,8 @@ body {
     font-size: 16px;
 }
 
-.emergency-call-btn, .emergency-directions-btn {
+.emergency-call-btn,
+.emergency-directions-btn {
     width: 100%;
     padding: 20px;
     border: none;
@@ -204,6 +207,13 @@ body {
 .app-header {
     text-align: center;
     margin-bottom: 25px;
+}
+
+.app-logo {
+    width: 120px;
+    height: auto;
+    margin: 0 auto 1rem;
+    display: block;
 }
 
 .app-title {
@@ -255,10 +265,13 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translate(-50%, -50%) scale(1);
         opacity: 1;
     }
+
     50% {
         transform: translate(-50%, -50%) scale(1.1);
         opacity: 0.7;
@@ -749,11 +762,11 @@ body {
     .service-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .app-title {
         font-size: 28px;
     }
-    
+
     .emergency-title {
         font-size: 28px;
     }
@@ -765,6 +778,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
