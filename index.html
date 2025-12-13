@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find emergency medical services in Sierra Leone - Works offline">
+    <meta name="theme-color" content="#16a34a">
+    <title>MedFind Salone - Emergency Health Services</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <header class="app-header">
+                <div class="header-content">
+                    <h1>🏥 MedFind Salone</h1>
+                    <p class="tagline">Find emergency help near you</p>
+                </div>
+                <div id="offline-status" class="offline-indicator hidden">
+                    <span>📡</span>
+                    <span id="offline-text">Offline Mode</span>
+                </div>
+            </header>
+
+            <main class="home-content">
+                <div class="search-section">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="search-input" placeholder="Search hospitals or services..."
+                            autocomplete="off">
+                        <button id="clear-search" class="clear-btn hidden">✕</button>
+                    </div>
+
+                    <button id="sos-btn" class="sos-button pulse">
+                        <span>🚨</span>
+                        FIND NEAREST HELP
+                    </button>
+                </div>
+
+                <div class="services-section">
+                    <h2>Quick Services</h2>
+                    <div class="service-grid">
+                        <button class="service-card" data-service="Emergency">
+                            <div class="service-icon">🚑</div>
+                            <h3>Emergency</h3>
+                        </button>
+                        <button class="service-card" data-service="Maternity">
+                            <div class="service-icon">👶</div>
+                            <h3>Maternity</h3>
+                        </button>
+                        <button class="service-card" data-service="Surgery">
+                            <div class="service-icon">🔬</div>
+                            <h3>Surgery</h3>
+                        </button>
+                        <button class="service-card" data-service="Pediatrics">
+                            <div class="service-icon">👨‍⚕️</div>
+                            <h3>Pediatrics</h3>
+                        </button>
+                        <button class="service-card" data-service="ICU">
+                            <div class="service-icon">🏥</div>
+                            <h3>ICU</h3>
+                        </button>
+                        <button class="service-card" data-service="Radiology">
+                            <div class="service-icon">📡</div>
+                            <h3>Radiology</h3>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-section">
+                    <h2>All Hospitals</h2>
+                    <div id="hospitals-list" class="hospitals-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Map Screen -->
+        <div id="map-screen" class="screen">
+            <header class="screen-header">
+                <button class="back-btn" data-screen="home">
+                    <span>←</span> Back
+                </button>
+                <h2>Nearby Hospitals</h2>
+                <button id="locate-btn" class="icon-btn">📍</button>
+            </header>
+
+            <div id="map" class="map-container"></div>
+
+            <div class="map-list-container">
+                <div id="map-hospitals-list" class="hospitals-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Screen -->
+        <div id="detail-screen" class="screen">
+            <header class="detail-header" id="detail-header">
+                <button class="back-btn light" data-screen="map">
+                    <span>←</span> Back
+                </button>
+                <div class="detail-header-content">
+                    <h2 id="detail-name">Hospital Name</h2>
+                    <p id="detail-type" class="detail-type">Type</p>
+                </div>
+            </header>
+
+            <main class="detail-content">
+                <div class="info-section">
+                    <div class="info-row">
+                        <div class="info-icon">📍</div>
+                        <div class="info-text">
+                            <h4>Address</h4>
+                            <p id="detail-address">Address</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">📞</div>
+                        <div class="info-text">
+                            <h4>Contact</h4>
+                            <p id="detail-contact">Contact</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">🏥</div>
+                        <div class="info-text">
+                            <h4>Available Services</h4>
+                            <div id="detail-services" class="services-list">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-row" id="distance-row">
+                        <div class="info-icon">🚗</div>
+                        <div class="info-text">
+                            <h4>Distance</h4>
+                            <p id="detail-distance">Calculating...</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">🕐</div>
+                        <div class="info-text">
+                            <h4>Hours</h4>
+                            <p id="detail-hours">Hours</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="directions-btn" class="btn btn-primary">
+                        <span>🧭</span>
+                        Get Directions
+                    </button>
+                    <button id="call-btn" class="btn btn-secondary">
+                        <span>📞</span>
+                        Call Now
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

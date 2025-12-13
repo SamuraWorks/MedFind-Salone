@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedFind Salone - Find Emergency Medical Services</title>
+    <meta name="description" content="Offline-first emergency hospital finder for Sierra Leone">
+    <link rel="stylesheet" href="app-styles.css">
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <p class="loading-text">Loading MedFind Salone...</p>
+    </div>
+
+    <!-- Main App -->
+    <div class="app" id="app" style="display: none;">
+        <!-- Offline Banner -->
+        <div class="offline-banner" id="offlineBanner">
+            ⚠️ Offline Mode - Last updated: <span id="lastSyncTime">Never</span>
+        </div>
+
+        <!-- Language Selector (Top Right) -->
+        <div class="language-selector">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="kr">KR</button>
+        </div>
+
+        <!-- Emergency SOS Screen -->
+        <div class="screen emergency-screen" id="emergencyScreen" style="display: none;">
+            <div class="emergency-content">
+                <h1 class="emergency-title" data-translate="emergency_mode">🚨 EMERGENCY MODE</h1>
+                <div class="hospital-emergency-card">
+                    <h2 id="emergencyHospitalName">Finding nearest hospital...</h2>
+                    <p class="distance" id="emergencyDistance"></p>
+                    <p class="address" id="emergencyAddress"></p>
+                </div>
+                <button class="emergency-call-btn" id="emergencyCallBtn">
+                    📞 CALL NOW
+                </button>
+                <button class="emergency-directions-btn" id="emergencyDirectionsBtn">
+                    🗺️ GET DIRECTIONS
+                </button>
+                <button class="back-btn" onclick="showScreen('homeScreen')">← Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div class="screen home-screen" id="homeScreen">
+            <header class="app-header">
+                <h1 class="app-title">🏥 MedFind Salone</h1>
+                <p class="app-subtitle" data-translate="subtitle">Find Emergency Medical Services Offline</p>
+            </header>
+
+            <!-- SOS Button -->
+            <button class="sos-button" onclick="activateEmergency()">
+                <div class="sos-pulse"></div>
+                <span data-translate="sos">SOS - FIND HELP NOW</span>
+            </button>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput"
+                    placeholder="Search hospitals by name, district, or services..."
+                    data-translate-placeholder="search_placeholder">
+                <button class="search-btn" onclick="performSearch()">🔍</button>
+            </div>
+
+            <!-- Quick Service Filters -->
+            <div class="quick-services">
+                <h3 class="section-title" data-translate="quick_services">Quick Services</h3>
+                <div class="service-grid">
+                    <button class="service-card" onclick="filterByService('emergency')">
+                        <div class="service-icon">🚑</div>
+                        <div class="service-name" data-translate="emergency">Emergency</div>
+                    </button>
+                    <button class="service-card" onclick="filterByService('maternity')">
+                        <div class="service-icon">👶</div>
+                        <div class="service-name" data-translate="maternity">Maternity</div>
+                    </button>
+                    <button class="service-card" onclick="filterByService('surgery')">
+                        <div class="service-icon">🏥</div>
+                        <div class="service-name" data-translate="surgery">Surgery</div>
+                    </button>
+                    <button class="service-card" onclick="filterByService('pediatrics')">
+                        <div class="service-icon">🧸</div>
+                        <div class="service-name" data-translate="pediatrics">Pediatrics</div>
+                    </button>
+                    <button class="service-card" onclick="filterByService('icu')">
+                        <div class="service-icon">💊</div>
+                        <div class="service-name">ICU</div>
+                    </button>
+                    <button class="service-card" onclick="showAllHospitals()">
+                        <div class="service-icon">🏢</div>
+                        <div class="service-name" data-translate="all_hospitals">All Hospitals</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="toggle-btn active" id="listViewBtn" onclick="switchView('list')">
+                    📋 List
+                </button>
+                <button class="toggle-btn" id="mapViewBtn" onclick="switchView('map')">
+                    🗺️ Map
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <button class="filter-toggle" onclick="toggleFilters()">
+                    ⚙️ Advanced Filters <span id="filterCount"></span>
+                </button>
+                <div class="filters-panel" id="filtersPanel" style="display: none;">
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <input type="checkbox" id="filterBeds" onchange="applyFilters()">
+                            <span data-translate="beds_available">Beds Available</span>
+                        </label>
+                        <label class="filter-label">
+                            <input type="checkbox" id="filterOxygen" onchange="applyFilters()">
+                            <span data-translate="oxygen_available">Oxygen Available</span>
+                        </label>
+                        <label class="filter-label">
+                            <input type="checkbox" id="filterSurgeons" onchange="applyFilters()">
+                            <span data-translate="surgeons_on_duty">Surgeons on Duty</span>
+                        </label>
+                        <label class="filter-label">
+                            <input type="checkbox" id="filterAmbulance" onchange="applyFilters()">
+                            <span data-translate="ambulance">Ambulance Available</span>
+                        </label>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label-text">District:</label>
+                        <select id="filterDistrict" onchange="applyFilters()" class="filter-select">
+                            <option value="">All Districts</option>
+                        </select>
+                    </div>
+                    <button class="clear-filters-btn" onclick="clearFilters()">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Hospital List -->
+            <div class="hospitals-container" id="hospitalsContainer">
+                <div class="results-header">
+                    <h3 class="section-title">
+                        <span data-translate="nearby_hospitals">Nearby Hospitals</span>
+                        (<span id="resultCount">0</span>)
+                    </h3>
+                </div>
+                <div class="hospital-list" id="hospitalList">
+                    <!-- Hospital cards will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Map View (Placeholder) -->
+            <div class="map-container" id="mapContainer" style="display: none;">
+                <div class="map-placeholder">
+                    <p>🗺️ Map View</p>
+                    <p style="font-size: 14px; opacity: 0.7;">Interactive map would be integrated here with Mapbox GL
+                    </p>
+                    <p style="font-size: 12px; opacity: 0.5;">Showing <span id="mapHospitalCount">0</span> hospitals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hospital Detail Screen -->
+        <div class="screen detail-screen" id="detailScreen" style="display: none;">
+            <div class="detail-header">
+                <button class="back-btn" onclick="showScreen('homeScreen')">← Back</button>
+                <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()">⭐</button>
+            </div>
+
+            <div class="detail-content" id="detailContent">
+                <!-- Detail content will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="showScreen('homeScreen')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label" data-translate="home">Home</div>
+            </button>
+            <button class="nav-item" onclick="showFavorites()">
+                <div class="nav-icon">⭐</div>
+                <div class="nav-label" data-translate="favorites">Favorites</div>
+            </button>
+            <button class="nav-item" onclick="activateEmergency()">
+                <div class="nav-icon">🚨</div>
+                <div class="nav-label" data-translate="emergency">Emergency</div>
+            </button>
+        </nav>
+    </div>
+
+    <script src="app-script.js"></script>
+</body>
+
+</html>

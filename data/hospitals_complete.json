@@ -1,0 +1,674 @@
+[
+  {
+    "id": "hosp_001",
+    "hospital_name": "Connaught Hospital",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4844,
+    "longitude": -13.2344,
+    "phone": "+232 76 123 456",
+    "email": "info@connaughthospital.sl",
+    "website": "http://www.connaughthospital.gov.sl",
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 350,
+      "adult": 200,
+      "maternity": 80,
+      "pediatric": 50,
+      "icu": 20
+    },
+    "average_occupancy_rates": {
+      "overall": 0.85,
+      "adult": 0.88,
+      "maternity": 0.90,
+      "pediatric": 0.75,
+      "icu": 0.95
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": true,
+      "other": ["Internal Medicine", "Outpatient Services", "Pharmacy"]
+    },
+    "specialists_available": {
+      "general_surgeon": 4,
+      "obstetrician": 6,
+      "pediatrician": 5,
+      "anesthetist": 3,
+      "radiologist": 2,
+      "others": ["Cardiologist", "Neurologist", "Orthopedic Surgeon"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 52,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T16:30:00Z"
+    },
+    "emergency_numbers": ["+232 76 123 456", "+232 76 123 457"],
+    "notes": "National referral hospital. Main trauma center for Freetown. 24/7 emergency services."
+  },
+  {
+    "id": "hosp_002",
+    "hospital_name": "Princess Christian Maternity Hospital (PCMH)",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4885,
+    "longitude": -13.2205,
+    "phone": "+232 76 000 002",
+    "email": "pcmh@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 150,
+      "adult": 0,
+      "maternity": 130,
+      "pediatric": 20,
+      "icu": 0
+    },
+    "average_occupancy_rates": {
+      "overall": 0.92,
+      "adult": 0,
+      "maternity": 0.95,
+      "pediatric": 0.80,
+      "icu": 0
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": false,
+      "icu": false,
+      "mental_health": false,
+      "other": ["Obstetrics", "Gynecology", "Family Planning", "Neonatal Care"]
+    },
+    "specialists_available": {
+      "general_surgeon": 0,
+      "obstetrician": 8,
+      "pediatrician": 3,
+      "anesthetist": 2,
+      "radiologist": 1,
+      "others": ["Midwives (25)", "Gynecologist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 12,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "No",
+      "last_updated_timestamp": "2025-12-13T15:45:00Z"
+    },
+    "emergency_numbers": ["+232 76 000 002", "+232 30 555 001"],
+    "notes": "Specialized maternity hospital. Handles high-risk pregnancies and C-sections."
+  },
+  {
+    "id": "hosp_003",
+    "hospital_name": "Ola During Children's Hospital",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4890,
+    "longitude": -13.2200,
+    "phone": "+232 76 000 001",
+    "email": "oladuring@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 120,
+      "adult": 0,
+      "maternity": 0,
+      "pediatric": 110,
+      "icu": 10
+    },
+    "average_occupancy_rates": {
+      "overall": 0.88,
+      "adult": 0,
+      "maternity": 0,
+      "pediatric": 0.90,
+      "icu": 0.85
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": false,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": false,
+      "icu": true,
+      "mental_health": false,
+      "other": ["Neonatal Care", "Nutrition", "Immunization"]
+    },
+    "specialists_available": {
+      "general_surgeon": 1,
+      "obstetrician": 0,
+      "pediatrician": 7,
+      "anesthetist": 2,
+      "radiologist": 1,
+      "others": ["Pediatric Surgeon", "Neonatologist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 14,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T16:00:00Z"
+    },
+    "emergency_numbers": ["+232 76 000 001"],
+    "notes": "National pediatric referral hospital. Specialized in child healthcare."
+  },
+  {
+    "id": "hosp_004",
+    "hospital_name": "Bo Government Hospital",
+    "district": "Bo",
+    "region": "Southern Province",
+    "latitude": 7.9600,
+    "longitude": -11.7400,
+    "phone": "+232 75 333 444",
+    "email": "bogovhospital@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 200,
+      "adult": 120,
+      "maternity": 50,
+      "pediatric": 25,
+      "icu": 5
+    },
+    "average_occupancy_rates": {
+      "overall": 0.80,
+      "adult": 0.82,
+      "maternity": 0.85,
+      "pediatric": 0.70,
+      "icu": 0.90
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": false,
+      "other": ["General Practice", "Outpatient", "Dental"]
+    },
+    "specialists_available": {
+      "general_surgeon": 2,
+      "obstetrician": 3,
+      "pediatrician": 2,
+      "anesthetist": 1,
+      "radiologist": 1,
+      "others": ["Dentist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 40,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T14:20:00Z"
+    },
+    "emergency_numbers": ["+232 75 333 444", "+232 75 333 445"],
+    "notes": "Regional referral hospital for Southern Province."
+  },
+  {
+    "id": "hosp_005",
+    "hospital_name": "Kenema Government Hospital",
+    "district": "Kenema",
+    "region": "Eastern Province",
+    "latitude": 7.8750,
+    "longitude": -11.1850,
+    "phone": "+232 76 777 666",
+    "email": "kenemahosp@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 180,
+      "adult": 110,
+      "maternity": 40,
+      "pediatric": 25,
+      "icu": 5
+    },
+    "average_occupancy_rates": {
+      "overall": 0.78,
+      "adult": 0.80,
+      "maternity": 0.82,
+      "pediatric": 0.68,
+      "icu": 0.85
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": false,
+      "other": ["Lassa Fever Unit", "Infectious Diseases"]
+    },
+    "specialists_available": {
+      "general_surgeon": 2,
+      "obstetrician": 2,
+      "pediatrician": 2,
+      "anesthetist": 1,
+      "radiologist": 1,
+      "others": ["Infectious Disease Specialist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 39,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "No",
+      "last_updated_timestamp": "2025-12-13T13:50:00Z"
+    },
+    "emergency_numbers": ["+232 76 777 666"],
+    "notes": "Regional hospital with specialized Lassa Fever treatment unit."
+  },
+  {
+    "id": "hosp_006",
+    "hospital_name": "Makeni Government Hospital",
+    "district": "Bombali",
+    "region": "Northern Province",
+    "latitude": 8.8850,
+    "longitude": -12.0450,
+    "phone": "+232 79 111 222",
+    "email": "makenihospital@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 160,
+      "adult": 100,
+      "maternity": 35,
+      "pediatric": 20,
+      "icu": 5
+    },
+    "average_occupancy_rates": {
+      "overall": 0.75,
+      "adult": 0.78,
+      "maternity": 0.80,
+      "pediatric": 0.65,
+      "icu": 0.80
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": false,
+      "other": ["Eye Clinic", "Dental", "General Practice"]
+    },
+    "specialists_available": {
+      "general_surgeon": 2,
+      "obstetrician": 2,
+      "pediatrician": 2,
+      "anesthetist": 1,
+      "radiologist": 1,
+      "others": ["Ophthalmologist", "Dentist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 40,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T15:10:00Z"
+    },
+    "emergency_numbers": ["+232 79 111 222", "+232 79 111 223"],
+    "notes": "Regional referral hospital for Northern Province. Eye clinic available."
+  },
+  {
+    "id": "hosp_007",
+    "hospital_name": "Koidu Government Hospital",
+    "district": "Kono",
+    "region": "Eastern Province",
+    "latitude": 8.6440,
+    "longitude": -10.9710,
+    "phone": "+232 77 888 999",
+    "email": "koiduhospital@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 100,
+      "adult": 60,
+      "maternity": 25,
+      "pediatric": 12,
+      "icu": 3
+    },
+    "average_occupancy_rates": {
+      "overall": 0.70,
+      "adult": 0.72,
+      "maternity": 0.75,
+      "pediatric": 0.60,
+      "icu": 0.80
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": false,
+      "lab": true,
+      "blood_bank": false,
+      "icu": true,
+      "mental_health": false,
+      "other": ["General Practice", "Outpatient"]
+    },
+    "specialists_available": {
+      "general_surgeon": 1,
+      "obstetrician": 1,
+      "pediatrician": 1,
+      "anesthetist": 1,
+      "radiologist": 0,
+      "others": []
+    },
+    "dynamic_availability": {
+      "beds_available_now": 30,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "No",
+      "last_updated_timestamp": "2025-12-13T12:30:00Z"
+    },
+    "emergency_numbers": ["+232 77 888 999"],
+    "notes": "District hospital serving Kono region."
+  },
+  {
+    "id": "hosp_008",
+    "hospital_name": "Port Loko Government Hospital",
+    "district": "Port Loko",
+    "region": "Northern Province",
+    "latitude": 8.7680,
+    "longitude": -12.7870,
+    "phone": "+232 78 222 333",
+    "email": "portlokohospital@health.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 90,
+      "adult": 55,
+      "maternity": 20,
+      "pediatric": 12,
+      "icu": 3
+    },
+    "average_occupancy_rates": {
+      "overall": 0.72,
+      "adult": 0.75,
+      "maternity": 0.78,
+      "pediatric": 0.62,
+      "icu": 0.75
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": false,
+      "lab": true,
+      "blood_bank": false,
+      "icu": true,
+      "mental_health": false,
+      "other": ["General Practice"]
+    },
+    "specialists_available": {
+      "general_surgeon": 1,
+      "obstetrician": 1,
+      "pediatrician": 1,
+      "anesthetist": 1,
+      "radiologist": 0,
+      "others": []
+    },
+    "dynamic_availability": {
+      "beds_available_now": 25,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T14:00:00Z"
+    },
+    "emergency_numbers": ["+232 78 222 333"],
+    "notes": "District hospital for Port Loko area."
+  },
+  {
+    "id": "hosp_009",
+    "hospital_name": "China-Sierra Leone Friendship Hospital",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4200,
+    "longitude": -13.2100,
+    "phone": "+232 76 555 777",
+    "email": "cslf.hospital@health.gov.sl",
+    "website": "http://www.cslhospital.sl",
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 100,
+      "adult": 60,
+      "maternity": 20,
+      "pediatric": 15,
+      "icu": 5
+    },
+    "average_occupancy_rates": {
+      "overall": 0.68,
+      "adult": 0.70,
+      "maternity": 0.72,
+      "pediatric": 0.60,
+      "icu": 0.75
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": false,
+      "other": ["Orthopedics", "ENT", "Ophthalmology"]
+    },
+    "specialists_available": {
+      "general_surgeon": 3,
+      "obstetrician": 2,
+      "pediatrician": 2,
+      "anesthetist": 2,
+      "radiologist": 1,
+      "others": ["Orthopedic Surgeon", "ENT Specialist", "Ophthalmologist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 32,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T16:15:00Z"
+    },
+    "emergency_numbers": ["+232 76 555 777", "+232 76 555 778"],
+    "notes": "Modern facility with Chinese medical cooperation. Well-equipped."
+  },
+  {
+    "id": "hosp_010",
+    "hospital_name": "Waterloo Hospital (Adventist)",
+    "district": "Western Area Rural",
+    "region": "Western Area",
+    "latitude": 8.3380,
+    "longitude": -13.0700,
+    "phone": "+232 76 444 555",
+    "email": "waterloo.hospital@adventist.sl",
+    "website": "http://www.adventisthealthsl.org",
+    "facility_type": "Mission",
+    "static_bed_capacity": {
+      "total": 80,
+      "adult": 45,
+      "maternity": 20,
+      "pediatric": 12,
+      "icu": 3
+    },
+    "average_occupancy_rates": {
+      "overall": 0.65,
+      "adult": 0.68,
+      "maternity": 0.70,
+      "pediatric": 0.55,
+      "icu": 0.70
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": false,
+      "icu": true,
+      "mental_health": false,
+      "other": ["General Practice", "Dental"]
+    },
+    "specialists_available": {
+      "general_surgeon": 2,
+      "obstetrician": 2,
+      "pediatrician": 1,
+      "anesthetist": 1,
+      "radiologist": 1,
+      "others": ["Dentist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 28,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "On Call",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T15:30:00Z"
+    },
+    "emergency_numbers": ["+232 76 444 555"],
+    "notes": "Mission hospital run by Seventh-day Adventist Church. Quality care."
+  },
+  {
+    "id": "hosp_011",
+    "hospital_name": "34 Military Hospital",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4680,
+    "longitude": -13.2670,
+    "phone": "+232 78 555 123",
+    "email": "34military@mod.gov.sl",
+    "website": null,
+    "facility_type": "Government",
+    "static_bed_capacity": {
+      "total": 120,
+      "adult": 80,
+      "maternity": 20,
+      "pediatric": 15,
+      "icu": 5
+    },
+    "average_occupancy_rates": {
+      "overall": 0.70,
+      "adult": 0.72,
+      "maternity": 0.75,
+      "pediatric": 0.62,
+      "icu": 0.80
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": true,
+      "icu": true,
+      "mental_health": false,
+      "other": ["General Practice", "Infectious Diseases", "Trauma"]
+    },
+    "specialists_available": {
+      "general_surgeon": 3,
+      "obstetrician": 2,
+      "pediatrician": 2,
+      "anesthetist": 2,
+      "radiologist": 1,
+      "others": ["Trauma Surgeon"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 36,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T16:20:00Z"
+    },
+    "emergency_numbers": ["+232 78 555 123", "+232 78 555 124"],
+    "notes": "Military hospital that also serves civilians. Well-equipped emergency department."
+  },
+  {
+    "id": "hosp_012",
+    "hospital_name": "Choithram Memorial Hospital",
+    "district": "Western Area Urban",
+    "region": "Western Area",
+    "latitude": 8.4550,
+    "longitude": -13.2550,
+    "phone": "+232 88 999 888",
+    "email": "info@choithram.sl",
+    "website": "http://www.choithramhospital.sl",
+    "facility_type": "Private",
+    "static_bed_capacity": {
+      "total": 60,
+      "adult": 40,
+      "maternity": 10,
+      "pediatric": 8,
+      "icu": 2
+    },
+    "average_occupancy_rates": {
+      "overall": 0.60,
+      "adult": 0.62,
+      "maternity": 0.65,
+      "pediatric": 0.55,
+      "icu": 0.70
+    },
+    "key_services": {
+      "emergency": true,
+      "surgery": true,
+      "maternity": true,
+      "pediatrics": true,
+      "radiology": true,
+      "lab": true,
+      "blood_bank": false,
+      "icu": true,
+      "mental_health": false,
+      "other": ["Cardiology", "MRI/CT Scan", "Dialysis", "Pharmacy"]
+    },
+    "specialists_available": {
+      "general_surgeon": 2,
+      "obstetrician": 1,
+      "pediatrician": 2,
+      "anesthetist": 2,
+      "radiologist": 2,
+      "others": ["Cardiologist", "Nephrologist"]
+    },
+    "dynamic_availability": {
+      "beds_available_now": 24,
+      "oxygen_available": "Yes",
+      "surgeons_on_duty": "Yes",
+      "operating_theatre_status": "Functional",
+      "ambulance_available": "Yes",
+      "last_updated_timestamp": "2025-12-13T16:25:00Z"
+    },
+    "emergency_numbers": ["+232 88 999 888", "+232 88 999 889"],
+    "notes": "Premium private hospital with advanced diagnostic equipment including MRI and CT scan."
+  }
+]
