@@ -726,3 +726,40 @@ body {
         grid-template-columns: repeat(5, 1fr);
     }
 }
+
+/* ====== FOOTER ====== */
+.app-footer {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-top: 3px solid var(--primary-color);
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-content p {
+    color: var(--gray-600);
+    margin: 10px 0;
+    font-size: 0.875rem;
+}
+
+.footer-links {
+    margin-top: 15px;
+}
+
+.footer-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 10px;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
