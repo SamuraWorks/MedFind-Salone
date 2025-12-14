@@ -33,7 +33,28 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLandingStats();
 
     console.log('✅ Unified App Initialized');
+
+    // Check connectivity status
+    updateConnectivityStatus();
+
+    // Add connectivity listeners
+    window.addEventListener('online', updateConnectivityStatus);
+    window.addEventListener('offline', updateConnectivityStatus);
 });
+
+function updateConnectivityStatus() {
+    const banner = document.getElementById('offlineBanner');
+    const syncTime = document.getElementById('lastSyncTime');
+
+    if (banner && syncTime) {
+        if (!navigator.onLine) {
+            banner.style.display = 'block';
+            syncTime.textContent = new Date().toLocaleTimeString();
+        } else {
+            banner.style.display = 'none';
+        }
+    }
+}
 
 // ============================================
 // HASH-BASED ROUTING
@@ -116,11 +137,6 @@ async function loadPatientApp() {
 
     // Create patient app structure
     container.innerHTML = `
-        <!-- Offline Banner -->
-        <div id="offlineBanner" class="offline-banner">
-            <span>📡 Offline Mode - Last synced: <span id="lastSyncTime">Never</span></span>
-        </div>
-
         <!-- Patient App Content -->
         <div id="app" class="app-container">
             <!-- HOME SECTION -->
@@ -337,9 +353,9 @@ window.hideQuickMenu = hideQuickMenu;
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        // navigator.serviceWorker.register('./sw.js')
-        //     .then(reg => console.log('✅ Service Worker registered'))
-        //     .catch(err => console.log('❌ SW registration failed:', err));
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('✅ Service Worker registered'))
+            .catch(err => console.log('❌ SW registration failed:', err));
     });
 }
 

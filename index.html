@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <link rel="stylesheet" href="unified-styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -174,6 +175,11 @@
 
     <!-- Leaflet JS for Map -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Global Offline Banner -->
+    <div id="offlineBanner" class="offline-banner">
+        <span>📡 You are offline - Using cached data. Last synced: <span id="lastSyncTime">Never</span></span>
+    </div>
 
     <!-- Unified App Script -->
     <script src="unified-script.js"></script>

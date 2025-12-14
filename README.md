@@ -133,6 +133,12 @@ A **progressive web application** (PWA) that:
 ### Admin Panel
 **Open:** `design/admin_interface.html`
 
+---
+
+> ⚠️ **Final Maintainer Note:** The `admin.html` and `app.html` (the patient-facing pages) are critical to the project's offline-first guarantees.
+> Do **not** change their structure, IDs, classes, asset links, or offline hooks without explicit coordination. All designs and page contents must be preserved exactly to ensure full offline functionality.
+> If changes are necessary, update the service worker, run visual regression tests, and confirm end-to-end offline behavior before merging.
+
 **Demo Features:**
 - Quick update buttons
 - Full availability form
@@ -625,5 +631,6 @@ MIT License - See LICENSE file for details
 **Built with ❤️ for Sierra Leone**
 
 *Making healthcare accessible, one tap at a time.*
-#   M e d F i n d - S a l o n e  
+#   M e d F i n d - S a l o n e 
+ 
  

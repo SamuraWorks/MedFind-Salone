@@ -135,6 +135,8 @@ You now have a **fully functional Hospital Admin Portal** integrated with your M
 
 ---
 
+> ⚠️ **Final Maintainer Note:** The `admin.html` and `app.html` must be kept as-is. Preserve all designs, structure, IDs, classes, asset links, and offline hooks to maintain full offline behavior and consistent UX. Coordinate any changes with the project owner and verify service-worker, cache, and visual regression tests before merging.
+
 ## 🎨 Design Highlights
 
 ### **Modern, Premium UI:**

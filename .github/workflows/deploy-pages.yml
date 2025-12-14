@@ -1,0 +1,64 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  check-admin-files:
+    name: Prevent accidental changes to admin/app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for changes to admin.html or app.html
+        id: check_files
+        run: |
+          modified=$(git diff --name-only ${{ github.sha }} ${{ github.sha }}~1 || true)
+          echo "Modified files: $modified"
+          echo "::set-output name=modified::$modified"
+
+      - name: Fail if admin/app changed (unless DEPLOY_ALLOW_ADMIN_CHANGE=true)
+        if: steps.check_files.outputs.modified != ''
+        run: |
+          echo "Checking for admin.html or app.html in modified list..."
+          if echo "${{ steps.check_files.outputs.modified }}" | grep -E "(^|\s)(admin.html|app.html)(\s|$)" >/dev/null; then
+            if [ "${{ env.DEPLOY_ALLOW_ADMIN_CHANGE }}" = "true" ]; then
+              echo "DEPLOY_ALLOW_ADMIN_CHANGE is true — proceeding despite admin/app changes."
+            else
+              echo "ERROR: admin.html or app.html were modified in this push." >&2
+              echo "If this is intentional, set the repository secret DEPLOY_ALLOW_ADMIN_CHANGE=true and re-run the workflow, or coordinate with the project owner." >&2
+              exit 1
+            fi
+          else
+            echo "No protected files changed — OK."
+          fi
+
+  build-and-deploy:
+    needs: check-admin-files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # No build step required for this simple static site, but step is left for extensibility
+      - name: Build (no-op)
+        run: echo "No build step — static site"
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
