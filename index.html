@@ -322,18 +322,18 @@
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
 
             <nav class="header-nav" id="headerNav">
-                <button class="nav-btn active" onclick="showSPASection('homeSection')" id="navHome">
+                <button class="nav-btn active" onclick="window.location.href='index.html'" id="navHome">
                     🏠 Home
                 </button>
-                <button class="nav-btn" onclick="showSPASection('patientSection')" id="navPatient">
+                <button class="nav-btn" onclick="window.location.href='app.html'" id="navPatient">
                     📱 Patient App
                 </button>
-                <button class="nav-btn" onclick="showSPASection('adminSection')" id="navAdmin">
+                <button class="nav-btn" onclick="window.location.href='admin.html'" id="navAdmin">
                     🔐 Admin Portal
                 </button>
                 <div style="display: flex; gap: 5px; margin-left: 10px;">
-                    <button class="nav-btn" onclick="switchGlobalLanguage('en')" id="langEn">EN</button>
-                    <button class="nav-btn" onclick="switchGlobalLanguage('kr')" id="langKr">KR</button>
+                    <button class="nav-btn" data-lang="en">EN</button>
+                    <button class="nav-btn" data-lang="kr">KR</button>
                 </div>
             </nav>
         </div>
@@ -481,159 +481,34 @@
     <!-- Leaflet JS for Map -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Main SPA Navigation & Content Loading Script -->
+    <!-- Main Navigation Script -->
     <script>
         // ============================================
-        // GLOBAL STATE
+        // SIMPLE NAVIGATION LOGIC
         // ============================================
-        let currentSection = 'homeSection';
-        let loadedSections = new Set(['homeSection']);
-        let homeMap = null;
-        let patientStylesLoaded = false;
-        let adminStylesLoaded = false;
 
-        // ============================================
-        // SPA NAVIGATION
-        // ============================================
-        function showSPASection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.spa-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Update nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Show target section
-            document.getElementById(sectionId).classList.add('active');
-
-            // Update active nav button
-            const navBtnMap = {
-                'homeSection': 'navHome',
-                'patientSection': 'navPatient',
-                'adminSection': 'navAdmin'
-            };
-            document.getElementById(navBtnMap[sectionId]).classList.add('active');
-
-            // Load content if needed
-            if (!loadedSections.has(sectionId)) {
-                loadSectionContent(sectionId);
-            }
-
-            // Initialize home map
-            if (sectionId === 'homeSection' && !homeMap) {
-                setTimeout(initializeHomeMap, 100);
-            }
-
-            currentSection = sectionId;
-            document.getElementById('headerNav').classList.remove('show');
-            window.scrollTo(0, 0);
+        // Mobile Menu
+        function toggleMobileMenu() {
+            document.getElementById('headerNav').classList.toggle('show');
         }
 
-        // ============================================
-        // DYNAMIC CONTENT LOADING
-        // ============================================
-        async function loadSectionContent(sectionId) {
-            if (sectionId === 'patientSection') {
-                await loadPatientApp();
-            } else if (sectionId === 'adminSection') {
-                await loadAdminApp();
-            }
-            loadedSections.add(sectionId);
-        }
+        // Initialize Map Preview
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 MedFind Salone Landing Page Loaded');
+            setTimeout(initializeHomeMap, 500);
 
-        async function loadPatientApp() {
-            const container = document.getElementById('patientAppContent');
+            // Check language preference
+            const savedLang = localStorage.getItem('medfind_lang_pref') || 'en';
+            // Simple visual toggle for homepage content if we had implementations
+        });
 
-            try {
-                // Load CSS first (only once)
-                if (!patientStylesLoaded) {
-                    const link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = 'app-styles.css';
-                    document.head.appendChild(link);
-                    patientStylesLoaded = true;
-                }
-
-                // Load HTML content
-                const response = await fetch('app.html');
-                const html = await response.text();
-
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                container.innerHTML = doc.body.innerHTML;
-
-                // Load JavaScript
-                const script = document.createElement('script');
-                script.src = 'app-script.js';
-                document.body.appendChild(script);
-
-                console.log('✅ Patient App loaded with original design');
-            } catch (error) {
-                console.error('❌ Failed to load patient app:', error);
-                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Patient App. Please refresh.</p>';
-            }
-        }
-
-        async function loadAdminApp() {
-            const container = document.getElementById('adminAppContent');
-
-            try {
-                // Load CSS first (only once)
-                if (!adminStylesLoaded) {
-                    const link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = 'admin-styles.css';
-                    document.head.appendChild(link);
-                    adminStylesLoaded = true;
-                }
-
-                // Load HTML content
-                const response = await fetch('admin.html');
-                const html = await response.text();
-
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                container.innerHTML = doc.body.innerHTML;
-
-                // Load JavaScript
-                const script = document.createElement('script');
-                script.src = 'admin-script.js';
-                document.body.appendChild(script);
-
-                console.log('✅ Admin Portal loaded with original design');
-            } catch (error) {
-                console.error('❌ Failed to load admin portal:', error);
-                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Admin Portal. Please refresh.</p>';
-            }
-        }
-
-        // ============================================
-        // SERVICE WORKER (OFFLINE SUPPORT)
-        // ============================================
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(registration => {
-                        console.log('✅ ServiceWorker registration successful');
-                    })
-                    .catch(err => {
-                        console.log('❌ ServiceWorker registration failed: ', err);
-                    });
-            });
-        }
-
-        // ============================================
-        // HOME MAP INITIALIZATION
-        // ============================================
         async function initializeHomeMap() {
             try {
                 const mapContainer = document.getElementById('homeMapContainer');
-                mapContainer.innerHTML = '';
+                if (!mapContainer) return;
 
-                homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
+                mapContainer.innerHTML = '';
+                const homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors',
@@ -653,84 +528,19 @@
                             </div>
                         `);
                 });
-
-                const group = new L.featureGroup(hospitals.map(h =>
-                    L.marker([h.latitude, h.longitude])
-                ));
-                homeMap.fitBounds(group.getBounds().pad(0.1));
             } catch (error) {
                 console.error('Failed to load map:', error);
-                document.getElementById('homeMapContainer').innerHTML =
-                    '<p style="color: white;">Map unavailable. Please check your connection.</p>';
             }
         }
 
-        // ============================================
-        // MOBILE MENU
-        // ============================================
-        function toggleMobileMenu() {
-            document.getElementById('headerNav').classList.toggle('show');
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('✅ SW Registered'))
+                    .catch(err => console.log('❌ SW Failed', err));
+            });
         }
-
-        // ============================================
-        // GLOBAL LANGUAGE
-        // ============================================
-        // ============================================
-        // GLOBAL LANGUAGE
-        // ============================================
-        function switchGlobalLanguage(lang) {
-            console.log('Switching language to:', lang);
-
-            // Update global buttons
-            const enBtn = document.getElementById('langEn');
-            const krBtn = document.getElementById('langKr');
-            if (enBtn) enBtn.classList.toggle('active', lang === 'en');
-            if (krBtn) krBtn.classList.toggle('active', lang === 'kr');
-
-            // Save preference
-            localStorage.setItem('medfind_lang_pref', lang);
-
-            // 1. Try to switch Patient App Language
-            // The Patient App (app-script.js) uses internal buttons with class 'lang-btn' and data-lang attribute.
-            // We can simulate a click on the correct button within the patient section.
-            const patientAppContainer = document.getElementById('patientAppContent');
-            if (patientAppContainer) {
-                const targetBtn = patientAppContainer.querySelector(`.lang-btn[data-lang="${lang}"]`);
-                if (targetBtn) {
-                    targetBtn.click();
-                    console.log(`Triggered Patient App switch to ${lang}`);
-                }
-            }
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 MedFind Salone SPA Initialized');
-            setTimeout(initializeHomeMap, 500);
-
-            // Hash routing
-            const hash = window.location.hash.substring(1);
-            if (hash && document.getElementById(hash)) {
-                showSPASection(hash);
-            }
-
-            // Check language preference
-            const savedLang = localStorage.getItem('medfind_lang_pref') || 'en';
-            switchGlobalLanguage(savedLang);
-        });
-
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.substring(1);
-            if (hash && document.getElementById(hash)) {
-                showSPASection(hash);
-            }
-        });
-
-        // Make functions global
-        window.showSPASection = showSPASection;
-        window.switchGlobalLanguage = switchGlobalLanguage;
     </script>
 </body>
 
