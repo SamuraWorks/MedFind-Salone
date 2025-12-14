@@ -25,11 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Setup login form
     setupLoginForm();
 
-    // Check online status
-    checkOnlineStatus();
-    window.addEventListener('online', checkOnlineStatus);
-    window.addEventListener('offline', checkOnlineStatus);
-
     // Load update history
     loadUpdateHistory();
 
@@ -536,33 +531,6 @@ async function resetToDefault() {
         showToast('Data reset to default successfully', 'success');
     } catch (error) {
         showToast('Failed to reset data', 'error');
-    }
-}
-
-// ============================================
-// ONLINE/OFFLINE STATUS
-// ============================================
-
-function checkOnlineStatus() {
-    isOnline = navigator.onLine;
-    updateOnlineUI();
-}
-
-function updateOnlineUI() {
-    const banner = document.getElementById('offlineBanner');
-    const dot = document.getElementById('syncDot');
-    const status = document.getElementById('syncStatus');
-
-    if (!dot || !status) return;
-
-    if (isOnline) {
-        banner.classList.remove('show');
-        dot.classList.remove('offline');
-        status.textContent = 'Online - Synced';
-    } else {
-        banner.classList.add('show');
-        dot.classList.add('offline');
-        status.textContent = 'Offline';
     }
 }
 

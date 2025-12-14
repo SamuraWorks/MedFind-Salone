@@ -15,6 +15,7 @@ A complete single-page application that combines:
 - ✅ **Patient App** - Hospital finder (from spa.html)
 - ✅ **Admin Portal** - Hospital data management (from admin.html)
 - ✅ **Live Map** - Interactive hospital map (from map.html)
+- ✅ **Offline Support** - Service Worker & Manifest (Installable PWA)
 
 **All in one file with hash-based routing!**
 
@@ -300,10 +301,9 @@ https://medfind-salone.vercel.app/
 ## 💡 Future Enhancements
 
 ### **Possible Additions:**
-1. **Service Worker** - Better offline support
-2. **State Management** - Share data between sections
-3. **Breadcrumbs** - Show navigation path
-4. **Favorites** - Save hospitals across sections
+1. **State Management** - Share data between sections
+2. **Breadcrumbs** - Show navigation path
+3. **Favorites** - Save hospitals across sections
 5. **User Profiles** - Remember preferences
 6. **Push Notifications** - Emergency alerts
 7. **Dark Mode** - Theme toggle
