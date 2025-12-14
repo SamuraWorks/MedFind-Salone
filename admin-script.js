@@ -573,3 +573,15 @@ window.addEventListener('load', () => {
 });
 
 console.log('✅ Admin Script Loaded');
+
+// ============================================
+// GLOBAL SCOPE EXPORTS
+// ============================================
+window.handleLogin = handleLogin;
+window.logout = logout;
+window.goToApp = goToApp;
+window.quickUpdate = quickUpdate;
+window.toggleUpdateForm = toggleUpdateForm;
+window.saveFullUpdate = saveFullUpdate;
+window.downloadData = downloadData;
+window.resetToDefault = resetToDefault;
