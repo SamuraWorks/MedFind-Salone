@@ -911,4 +911,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize on load
+// Initialize on load
 window.addEventListener('load', initApp);
+
+// Expose functions globally for HTML event handlers
+window.activateEmergency = activateEmergency;
+window.performSearch = performSearch;
+window.filterByService = filterByService;
+window.showAllHospitals = showAllHospitals;
+window.switchView = switchView;
+window.showSPASection = showSPASection;
+window.toggleFilters = toggleFilters;
+window.applyFilters = applyFilters;
+window.clearFilters = clearFilters;
+window.showHospitalDetail = showHospitalDetail;
+window.showScreen = showScreen;
+window.toggleFavorite = toggleFavorite;
+window.showFavorites = showFavorites;
+window.callHospital = callHospital;
+window.getDirections = getDirections;
