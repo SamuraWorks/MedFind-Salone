@@ -180,26 +180,20 @@ main.html#adminSection      → Admin Portal
 ```
 main.html (Shell)
     │
-    ├── Unified Header (NEW)
-    │   ├── Logo
-    │   ├── Navigation Buttons
-    │   └── Mobile Menu Toggle
+    ├── Unified Header (Always Visible)
     │
-    ├── Home Section (NEW)
-    │   ├── Welcome Content
-    │   ├── Quick Access Cards
-    │   ├── Live Map (Leaflet.js)
-    │   └── Statistics
+    ├── Home Section (Isolated Container)
+    │   └── Ends internal scoped styles
     │
-    ├── Patient Section
-    │   └── Complete content from app.html
-    │       ├── app-styles.css
-    │       └── app-script.js
+    ├── Patient Section (Isolated Container)
+    │   └── Dynamically loads app.html body
+    │   └── Dynamically loads app-styles.css on demand
+    │   └── Dynamically executes app-script.js
     │
-    └── Admin Section
-        └── Complete content from admin.html
-            ├── admin-styles.css
-            └── admin-script.js
+    └── Admin Section (Isolated Container)
+        └── Dynamically loads admin.html body
+        └── Dynamically loads admin-styles.css on demand
+        └── Dynamically executes admin-script.js
 ```
 
 ### **Loading Strategy:**
