@@ -25,15 +25,21 @@
     <nav class="app-nav">
         <div class="nav-title">🏥 MedFind Salone</div>
         <div class="nav-links">
-            <button class="nav-menu-btn" onclick="navigateTo('landing-view')">Home</button>
-            <button class="nav-menu-btn" onclick="navigateTo('patient-app-view')">Patient App</button>
-            <button class="nav-menu-btn" onclick="navigateTo('admin-panel-view')">Admin Portal</button>
+            <button class="nav-menu-btn" onclick="navigateTo('landing-view')" data-translate="nav_home">Home</button>
+            <button class="nav-menu-btn" onclick="navigateTo('patient-app-view')" data-translate="nav_patient">Patient
+                App</button>
+            <button class="nav-menu-btn" onclick="navigateTo('admin-panel-view')" data-translate="nav_admin">Admin
+                Portal</button>
+            <div class="global-lang-selector">
+                <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="setLanguage('kr')">KR</button>
+            </div>
         </div>
     </nav>
 
     <!-- Global Offline Banner -->
     <div class="offline-banner" id="globalOfflineBanner">
-        ⚠️ You are currently offline. Some features may be limited.
+        ⚠️ <span data-translate="offline_banner">You are currently offline. Some features may be limited.</span>
     </div>
 
     <!-- MAIN CONTAINER -->
@@ -47,16 +53,19 @@
                 <header class="hero-header">
                     <div class="hero-logo">🏥</div>
                     <h1 class="hero-title">MedFind Salone</h1>
-                    <h2 class="hero-subtitle">Universal Healthcare Access for Sierra Leone</h2>
-                    <p class="hero-tagline">Find care, manage hospitals, and save lives - all in one place.</p>
+                    <h2 class="hero-subtitle" data-translate="hero_subtitle">Universal Healthcare Access for Sierra
+                        Leone</h2>
+                    <p class="hero-tagline" data-translate="hero_tagline">Find care, manage hospitals, and save lives -
+                        all in one place.</p>
                 </header>
 
                 <!-- Navigation Cards -->
                 <div class="nav-cards">
                     <div class="nav-card patient-card" onclick="navigateTo('patient-app-view')">
                         <div class="card-icon">🚑</div>
-                        <h2>Find Care</h2>
-                        <p>Locate nearest hospitals and emergency services instantly. Works offline.</p>
+                        <h2 data-translate="card_patient_title">Find Care</h2>
+                        <p data-translate="card_patient_desc">Locate nearest hospitals and emergency services instantly.
+                            Works offline.</p>
                         <ul class="card-features">
                             <li>📍 GPS Hospital Locator</li>
                             <li>📶 100% Offline Capable</li>

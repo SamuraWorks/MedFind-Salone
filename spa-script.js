@@ -113,8 +113,76 @@ const SPA = {
     saveData: function () {
         localStorage.setItem('spa_hospitals_data', JSON.stringify(this.state.hospitals));
         // Also update Admin backup if needed, but SPA source of truth is enough
+    },
+
+    translations: {
+        en: {
+            nav_home: "Home",
+            nav_patient: "Patient App",
+            nav_admin: "Admin Portal",
+            offline_banner: "You are currently offline. Some features may be limited.",
+            hero_subtitle: "Universal Healthcare Access for Sierra Leone",
+            hero_tagline: "Find care, manage hospitals, and save lives - all in one place.",
+            card_patient_title: "Find Care",
+            card_patient_desc: "Locate nearest hospitals and emergency services instantly. Works offline.",
+            launch_patient_app: "Launch Patient App",
+            card_admin_title: "Hospital Admin",
+            card_admin_desc: "Manage hospital resources, beds, and staff availability in real-time.",
+            admin_login: "Admin Login",
+            landing_map_title: "Live Map",
+            map_search_placeholder: "Search map..."
+        },
+        kr: {
+            nav_home: "Om",
+            nav_patient: "Peshɛnt App",
+            nav_admin: "Admin Pɔtal",
+            offline_banner: "Yu nɔ gɛt intanɛt. Sɔm tin dɛn nɔ go wok.",
+            hero_subtitle: "Mɛdikal Hɛlp fɔ Ɔlman na Salone",
+            hero_tagline: "Fɛn tritmɛnt, manɛj hospital, ɛn sev layf - ɔl na wan ples.",
+            card_patient_title: "Fɛn Tritmɛnt",
+            card_patient_desc: "Fɛn di hospital dɛn we de klos yu ɛn ɛmajɛnsi savis sharp sharp. I de wok witawt intanɛt.",
+            launch_patient_app: "Opun Peshɛnt App",
+            card_admin_title: "Hospital Admin",
+            card_admin_desc: "Manɛj hospital tin dɛn, bɛd dɛn, ɛn wokman dɛn we de, wantɛm wantɛm.",
+            admin_login: "Admin Login",
+            landing_map_title: "Layv Map",
+            map_search_placeholder: "Fɛn na map..."
+        }
+    },
+
+    setLanguage: function (lang) {
+        console.log('Setting language to:', lang);
+        const trans = this.translations[lang];
+        if (!trans) return;
+
+        // Update active class on buttons (Global & Internal)
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.toLowerCase().includes(lang === 'kr' ? 'kr' : 'en'));
+            // Or simpler check if we pass the lang code directly to onclick
+            if (btn.getAttribute('onclick')?.includes(lang)) {
+                btn.classList.add('active');
+            } else if (btn.getAttribute('onclick')) { // only toggle sibling lang buttons
+                btn.classList.remove('active');
+            }
+        });
+
+        // Translate Global Elements
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const key = el.dataset.translate;
+            if (trans[key]) el.textContent = trans[key];
+        });
+
+        // Also trigger Patient App translation if it has similar logic, or just let PatientApp handle its own
+        // We need to bridge them or duplicate data. 
+        // Best approach: SPA handles global, PatientApp handles internal view.
+        if (PatientApp && PatientApp.setLanguage) {
+            PatientApp.setLanguage(lang);
+        }
     }
 };
+
+// Global Helper exposed
+window.setLanguage = (lang) => SPA.setLanguage(lang);
 
 // ============================================
 // MODULE: PATIENT APP
@@ -124,6 +192,61 @@ const PatientApp = {
     initialized: false,
     state: {
         favorites: [],
+    },
+
+    // Translations
+    translations: {
+        en: {
+            emergency_mode: '🚨 EMERGENCY MODE',
+            subtitle: 'Find Emergency Medical Services Offline',
+            sos: 'SOS - FIND HELP NOW',
+            search_placeholder: 'Search hospitals by name, district, or services...',
+            quick_services: 'Quick Services',
+            emergency: 'Emergency',
+            maternity: 'Maternity',
+            surgery: 'Surgery',
+            pediatrics: 'Pediatrics',
+            all_hospitals: 'All Hospitals',
+            nearby_hospitals: 'Nearby Hospitals',
+            beds_available: 'Beds Available',
+            oxygen_available: 'Oxygen Available',
+            surgeons_on_duty: 'Surgeons on Duty',
+            ambulance: 'Ambulance Available',
+            home: 'Home',
+            favorites: 'Favorites',
+        },
+        kr: {
+            emergency_mode: '🚨 EMERGENCY MODE',
+            subtitle: 'Fɛn Hospital Dɛn We Yu Nɔ Nid Intanɛt',
+            sos: 'SOS - FƐNƐ HɛLP NƆNƆW',
+            search_placeholder: 'Fɛn hospital bay nem, distrikt, ɔ savis...',
+            quick_services: 'Kwik Savis Dɛn',
+            emergency: 'Emergency',
+            maternity: 'Pikin Bon',
+            surgery: 'Wok',
+            pediatrics: 'Pikin Dɔkta',
+            all_hospitals: 'Ɔl Hospital Dɛn',
+            nearby_hospitals: 'Hospital Dɛn We De Ya So',
+            beds_available: 'Bed Dɛn We De',
+            oxygen_available: 'Oxygen De',
+            surgeons_on_duty: 'Dɔkta Dɛn De',
+            ambulance: 'Ambulans De',
+            home: 'Om',
+            favorites: 'Favorites',
+        }
+    },
+
+    setLanguage: function (lang) {
+        const trans = this.translations[lang];
+        if (!trans) return;
+
+        document.querySelectorAll('#patient-app-view [data-translate]').forEach(el => {
+            const key = el.dataset.translate;
+            if (trans[key]) el.textContent = trans[key];
+        });
+
+        const search = document.getElementById('searchInput');
+        if (search && trans.search_placeholder) search.placeholder = trans.search_placeholder;
     },
 
     init: function () {
