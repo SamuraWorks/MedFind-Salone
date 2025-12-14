@@ -1,680 +1,830 @@
+/**
+ * MedFind Salone - Consolidated SPA Script
+ * Combines Patient App, Admin Portal, and Landing Map Logic
+ * Namespaced to prevent conflicts
+ */
+
 // ============================================
-// MedFind Salone - Single Page Application
-// Pure Vanilla JavaScript - No Page Reloads
+// SHARED UTILITIES & STATE
 // ============================================
 
-// Global State
-let hospitals = [];
-let currentFilter = null;
-let currentHospital = null;
-let userLocation = null;
-let favorites = [];
-let currentLanguage = 'en';
+const SPA = {
+    state: {
+        currentView: 'landing-view',
+        hospitals: [],
+        lastSync: null,
+        userLocation: null
+    },
 
-// Initialize App
-window.addEventListener('load', initApp);
+    init: async function () {
+        console.log('🚀 Initializing SPA...');
 
-async function initApp() {
-    console.log('🚀 Initializing MedFind Salone SPA...');
+        // Load Global Data
+        await this.loadData();
 
-    // Show loading screen
-    showLoading();
+        // Setup Navigation
+        this.setupNavigation();
 
-    // Load hospital data
-    await loadHospitalData();
-
-    // Load favorites
-    loadFavorites();
-
-    // Get user location
-    getUserLocation();
-
-    // Setup event listeners
-    setupEventListeners();
-
-    // Populate district filter
-    populateDistrictFilter();
-
-    // Populate district filter
-    populateDistrictFilter();
-
-    // Update stats
-    updateStats();
-
-    // Hide loading and show home
-    hideLoading();
-    showSection('homeSection');
-
-    console.log('✅ App initialized with', hospitals.length, 'hospitals');
-}
-
-// ====== DATA LOADING ======
-async function loadHospitalData() {
-    try {
-        const response = await fetch('./data/hospitals_complete.json');
-        const data = await response.json();
-        hospitals = data;
-
-        // Calculate distances if we have user location
-        if (userLocation) {
-            calculateDistances();
+        // Initialize Modules
+        if (document.getElementById('landingMap')) {
+            LandingMap.init();
         }
 
-        // Store in localStorage
-        localStorage.setItem('hospitals_data', JSON.stringify(hospitals));
-        localStorage.setItem('last_sync', new Date().toISOString());
-
-    } catch (error) {
-        console.warn('⚠️ Network load failed, using offline data');
-        const offlineData = localStorage.getItem('hospitals_data');
-        if (offlineData) {
-            hospitals = JSON.parse(offlineData);
-        } else {
-            // Fallback to minimal dataset if nothing cached
-            hospitals = getMinimalDataset();
-        }
-    }
-}
-
-// ====== SECTION NAVIGATION (SPA Core) ======
-function showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // Show target section
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.classList.add('active');
-        window.scrollTo(0, 0);
-    }
-}
-
-// ====== EVENT LISTENERS ======
-function setupEventListeners() {
-    // Service Cards - Click to filter
-    document.querySelectorAll('.service-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const service = card.dataset.service;
-            filterByService(service);
-        });
-    });
-
-    // Emergency SOS Button
-    document.getElementById('sosBtn').addEventListener('click', activateEmergency);
-
-    // Search
-    document.getElementById('searchBtn').addEventListener('click', performSearch);
-    document.getElementById('searchInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') performSearch();
-    });
-
-    // Back Buttons
-    document.getElementById('resultsBackBtn').addEventListener('click', () => {
-        showSection('homeSection');
-    });
-
-    document.getElementById('detailBackBtn').addEventListener('click', () => {
-        showSection('resultsSection');
-    });
-
-    document.getElementById('emergencyBackBtn').addEventListener('click', () => {
-        showSection('homeSection');
-    });
-
-    // Favorite Button
-    document.getElementById('favoriteBtn').addEventListener('click', toggleFavorite);
-
-    // Filter Toggle
-    document.getElementById('filterToggleBtn').addEventListener('click', () => {
-        const panel = document.getElementById('filtersPanel');
-        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-    });
-
-    // Filter Actions
-    document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
-    document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
-
-    // Language Toggle
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentLanguage = btn.dataset.lang;
-        });
-    });
-}
-
-// ====== SERVICE FILTERING ======
-function filterByService(service) {
-    currentFilter = service;
-
-    // Filter hospitals by service
-    let filtered = hospitals.filter(h => h.key_services[service] === true);
-
-    // Update results title
-    const serviceNames = {
-        'maternity': 'Maternity Services',
-        'surgery': 'Surgery Services',
-        'emergency': 'Emergency Services',
-        'pediatrics': 'Pediatric Services',
-        'icu': 'ICU Services'
-    };
-
-    document.getElementById('resultsTitle').textContent = serviceNames[service] || 'Hospitals';
-
-    // Display results
-    displayHospitals(filtered);
-
-    // Show results section
-    showSection('resultsSection');
-}
-
-// ====== DISPLAY HOSPITALS ======
-function displayHospitals(hospitalsToDisplay) {
-    const container = document.getElementById('hospitalList');
-    const noResultsMsg = document.getElementById('noResultsMsg');
-
-    container.innerHTML = '';
-
-    if (hospitalsToDisplay.length === 0) {
-        container.style.display = 'none';
-        noResultsMsg.style.display = 'block';
-        document.getElementById('resultsCount').textContent = '0 hospitals found';
-        return;
-    }
-
-    container.style.display = 'grid';
-    noResultsMsg.style.display = 'none';
-
-    // Sort by distance if available
-    if (userLocation) {
-        hospitalsToDisplay.sort((a, b) => (a.distance || 999) - (b.distance || 999));
-    }
-
-    hospitalsToDisplay.forEach(hospital => {
-        const card = createHospitalCard(hospital);
-        container.appendChild(card);
-    });
-
-    document.getElementById('resultsCount').textContent =
-        `${hospitalsToDisplay.length} hospital${hospitalsToDisplay.length !== 1 ? 's' : ''} found`;
-}
-
-// ====== CREATE HOSPITAL CARD ======
-function createHospitalCard(hospital) {
-    const card = document.createElement('div');
-    card.className = 'hospital-card';
-
-    const avail = hospital.dynamic_availability;
-    const bedsStatus = avail.beds_available_now > 0 ? 'available' : 'unavailable';
-    const oxygenStatus = avail.oxygen_available === 'Yes' ? 'available' : 'unavailable';
-    const surgeonsStatus = avail.surgeons_on_duty !== 'No' ? 'available' : 'unavailable';
-    const ambulanceStatus = avail.ambulance_available === 'Yes' ? 'available' : 'unavailable';
-
-    card.innerHTML = `
-        <div class="hospital-card-header">
-            <div>
-                <div class="hospital-name">${hospital.hospital_name}</div>
-                <span class="hospital-type">${hospital.facility_type}</span>
-                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">
-                    📍 ${hospital.district}
-                </div>
-            </div>
-            <div class="hospital-distance">
-                ${hospital.distance ? hospital.distance + ' km' : ''}
-            </div>
-        </div>
-        
-        <div class="hospital-info">
-            <div class="info-row">📞 ${hospital.phone}</div>
-        </div>
-        
-        <div class="availability-grid">
-            <div class="availability-badge badge-${bedsStatus}">
-                🛏️ ${avail.beds_available_now} Beds
-            </div>
-            <div class="availability-badge badge-${oxygenStatus}">
-                💨 Oxygen ${avail.oxygen_available === 'Yes' ? '✓' : '✗'}
-            </div>
-            <div class="availability-badge badge-${surgeonsStatus}">
-                👨‍⚕️ ${avail.surgeons_on_duty}
-            </div>
-            <div class="availability-badge badge-${ambulanceStatus}">
-                🚑 ${avail.ambulance_available === 'Yes' ? '✓' : '✗'}
-            </div>
-        </div>
-        
-        <div class="hospital-actions" onclick="event.stopPropagation()">
-            <button class="action-btn btn-call" onclick="callHospital('${hospital.phone}')">
-                📞 Call
-            </button>
-            <button class="action-btn btn-directions" onclick="getDirections(${hospital.latitude}, ${hospital.longitude})">
-                🗺️ Directions
-            </button>
-        </div>
-    `;
-
-    // Click to view details
-    card.addEventListener('click', () => showHospitalDetail(hospital));
-
-    return card;
-}
-
-// ====== SHOW HOSPITAL DETAIL ======
-function showHospitalDetail(hospital) {
-    currentHospital = hospital;
-    const content = document.getElementById('detailContent');
-    const avail = hospital.dynamic_availability;
-
-    // Update favorite button
-    const favoriteBtn = document.getElementById('favoriteBtn');
-    favoriteBtn.textContent = favorites.includes(hospital.id) ? '⭐' : '☆';
-
-    content.innerHTML = `
-        <div class="detail-hero">
-            <h2>${hospital.hospital_name}</h2>
-            <p style="color: #6b7280; margin-bottom: 10px;">${hospital.facility_type}</p>
-            <p style="font-size: 24px; font-weight: bold; color: #2563eb;">
-                ${hospital.distance ? hospital.distance + ' km away' : '📍 ' + hospital.district}
-            </p>
-        </div>
-        
-        <div class="detail-section">
-            <h3>📍 Location & Contact</h3>
-            <div class="detail-info-grid">
-                <div class="detail-info-row">
-                    <span>District</span>
-                    <strong>${hospital.district}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Region</span>
-                    <strong>${hospital.region}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Phone</span>
-                    <strong>${hospital.phone}</strong>
-                </div>
-                ${hospital.email ? `
-                <div class="detail-info-row">
-                    <span>Email</span>
-                    <strong>${hospital.email}</strong>
-                </div>
-                ` : ''}
-            </div>
-        </div>
-        
-        <div class="detail-section">
-            <h3>🏥 Current Availability</h3>
-            <div class="detail-info-grid">
-                <div class="detail-info-row">
-                    <span>Beds Available</span>
-                    <strong style="color: ${avail.beds_available_now > 0 ? '#10b981' : '#ef4444'}">
-                        ${avail.beds_available_now} / ${hospital.static_bed_capacity.total}
-                    </strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Oxygen</span>
-                    <strong style="color: ${avail.oxygen_available === 'Yes' ? '#10b981' : '#ef4444'}">
-                        ${avail.oxygen_available}
-                    </strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Surgeons on Duty</span>
-                    <strong style="color: ${avail.surgeons_on_duty !== 'No' ? '#10b981' : '#ef4444'}">
-                        ${avail.surgeons_on_duty}
-                    </strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Ambulance</span>
-                    <strong style="color: ${avail.ambulance_available === 'Yes' ? '#10b981' : '#ef4444'}">
-                        ${avail.ambulance_available}
-                    </strong>
-                </div>
-            </div>
-        </div>
-        
-        <div class="detail-section">
-            <h3>⚕️ Services Available</h3>
-            <div class="availability-grid">
-                ${Object.entries(hospital.key_services)
-            .filter(([key]) => typeof hospital.key_services[key] === 'boolean')
-            .map(([service, available]) => `
-                        <div class="availability-badge badge-${available ? 'available' : 'unavailable'}">
-                            ${service.replace(/_/g, ' ').toUpperCase()} ${available ? '✓' : '✗'}
-                        </div>
-                    `).join('')}
-            </div>
-        </div>
-        
-        <div class="detail-section">
-            <h3>🛏️ Bed Capacity</h3>
-            <div class="detail-info-grid">
-                <div class="detail-info-row">
-                    <span>Total Beds</span>
-                    <strong>${hospital.static_bed_capacity.total}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Adult Beds</span>
-                    <strong>${hospital.static_bed_capacity.adult}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Maternity Beds</span>
-                    <strong>${hospital.static_bed_capacity.maternity}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>Pediatric Beds</span>
-                    <strong>${hospital.static_bed_capacity.pediatric}</strong>
-                </div>
-                <div class="detail-info-row">
-                    <span>ICU Beds</span>
-                    <strong>${hospital.static_bed_capacity.icu}</strong>
-                </div>
-            </div>
-        </div>
-        
-        ${hospital.emergency_numbers && hospital.emergency_numbers.length > 0 ? `
-        <div class="detail-section">
-            <h3>🚨 Emergency Numbers</h3>
-            ${hospital.emergency_numbers.map(num => `
-                <button class="action-btn btn-call" style="width: 100%; margin-bottom: 10px;" onclick="callHospital('${num}')">
-                    📞 ${num}
-                </button>
-            `).join('')}
-        </div>
-        ` : ''}
-        
-        ${hospital.notes ? `
-        <div class="detail-section">
-            <h3>ℹ️ Additional Information</h3>
-            <p style="color: #6b7280; line-height: 1.6;">${hospital.notes}</p>
-        </div>
-        ` : ''}
-        
-        <div class="detail-section">
-            <button class="action-btn btn-call" style="width: 100%; padding: 15px; margin-bottom: 10px;" onclick="callHospital('${hospital.phone}')">
-                📞 Call Hospital
-            </button>
-            <button class="action-btn btn-directions" style="width: 100%; padding: 15px;" onclick="getDirections(${hospital.latitude}, ${hospital.longitude})">
-                🗺️ Get Directions
-            </button>
-        </div>
-    `;
-
-    showSection('detailSection');
-}
-
-// ====== SEARCH ======
-function performSearch() {
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
-
-    if (!query) {
-        // Show all hospitals
-        document.getElementById('resultsTitle').textContent = 'All Hospitals';
-        displayHospitals(hospitals);
-        showSection('resultsSection');
-        return;
-    }
-
-    const results = hospitals.filter(hospital =>
-        hospital.hospital_name.toLowerCase().includes(query) ||
-        hospital.district.toLowerCase().includes(query) ||
-        hospital.region.toLowerCase().includes(query) ||
-        Object.keys(hospital.key_services).some(service =>
-            service.toLowerCase().includes(query) && hospital.key_services[service]
-        )
-    );
-
-    document.getElementById('resultsTitle').textContent = `Search: "${query}"`;
-    displayHospitals(results);
-    showSection('resultsSection');
-}
-
-// ====== FILTER FUNCTIONS ======
-function applyFilters() {
-    let filtered = [...hospitals];
-
-    // Apply current service filter if any
-    if (currentFilter) {
-        filtered = filtered.filter(h => h.key_services[currentFilter] === true);
-    }
-
-    // Availability filters
-    if (document.getElementById('filterBeds').checked) {
-        filtered = filtered.filter(h => h.dynamic_availability.beds_available_now > 0);
-    }
-
-    if (document.getElementById('filterOxygen').checked) {
-        filtered = filtered.filter(h => h.dynamic_availability.oxygen_available === 'Yes');
-    }
-
-    if (document.getElementById('filterSurgeons').checked) {
-        filtered = filtered.filter(h => h.dynamic_availability.surgeons_on_duty !== 'No');
-    }
-
-    if (document.getElementById('filterAmbulance').checked) {
-        filtered = filtered.filter(h => h.dynamic_availability.ambulance_available === 'Yes');
-    }
-
-    // District filter
-    const districtSelect = document.getElementById('filterDistrict');
-    if (districtSelect.value) {
-        filtered = filtered.filter(h => h.district === districtSelect.value);
-    }
-
-    displayHospitals(filtered);
-
-    // Hide filters panel
-    document.getElementById('filtersPanel').style.display = 'none';
-}
-
-function clearFilters() {
-    document.getElementById('filterBeds').checked = false;
-    document.getElementById('filterOxygen').checked = false;
-    document.getElementById('filterSurgeons').checked = false;
-    document.getElementById('filterAmbulance').checked = false;
-    document.getElementById('filterDistrict').value = '';
-
-    applyFilters();
-}
-
-function populateDistrictFilter() {
-    const select = document.getElementById('filterDistrict');
-    const districts = [...new Set(hospitals.map(h => h.district))].sort();
-
-    districts.forEach(district => {
-        const option = document.createElement('option');
-        option.value = district;
-        option.textContent = district;
-        select.appendChild(option);
-    });
-}
-
-// ====== EMERGENCY SOS ======
-function activateEmergency() {
-    // Find nearest hospital with emergency services
-    const emergencyHospitals = hospitals.filter(h => h.key_services.emergency === true);
-
-    if (!emergencyHospitals.length) {
-        alert('No emergency hospitals found in database');
-        return;
-    }
-
-    // Sort by distance
-    if (userLocation) {
-        emergencyHospitals.sort((a, b) => (a.distance || 999) - (b.distance || 999));
-    }
-
-    const nearest = emergencyHospitals[0];
-
-    document.getElementById('emergencyHospitalName').textContent = nearest.hospital_name;
-    document.getElementById('emergencyDistance').textContent =
-        nearest.distance ? `${nearest.distance} km away` : 'Distance calculating...';
-    document.getElementById('emergencyAddress').textContent =
-        `${nearest.district}, ${nearest.region}`;
-
-    // Setup call button
-    document.getElementById('emergencyCallBtn').onclick = () => {
-        callHospital(nearest.emergency_numbers?.[0] || nearest.phone);
-    };
-
-    // Setup directions button
-    document.getElementById('emergencyDirectionsBtn').onclick = () => {
-        getDirections(nearest.latitude, nearest.longitude);
-    };
-
-    showSection('emergencySection');
-}
-
-// ====== ACTIONS ======
-function callHospital(phoneNumber) {
-    window.location.href = `tel:${phoneNumber}`;
-}
-
-function getDirections(lat, lon) {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
-    window.open(url, '_blank');
-}
-
-// Make functions globally accessible
-window.callHospital = callHospital;
-window.getDirections = getDirections;
-
-// ====== FAVORITES ======
-function loadFavorites() {
-    const stored = localStorage.getItem('favorites');
-    favorites = stored ? JSON.parse(stored) : [];
-}
-
-function toggleFavorite() {
-    if (!currentHospital) return;
-
-    const btn = document.getElementById('favoriteBtn');
-    const hospitalId = currentHospital.id;
-
-    if (favorites.includes(hospitalId)) {
-        favorites = favorites.filter(id => id !== hospitalId);
-        btn.textContent = '☆';
-    } else {
-        favorites.push(hospitalId);
-        btn.textContent = '⭐';
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
-// ====== LOCATION ======
-function getUserLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                userLocation = {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                };
-                console.log('📍 Location obtained:', userLocation);
-                calculateDistances();
-            },
-            error => {
-                console.warn('⚠️ Geolocation error:', error.message);
-                // Use default location (Freetown)
-                userLocation = {
-                    latitude: 8.4844,
-                    longitude: -13.2344
-                };
-                calculateDistances();
+        // Check Routing
+        this.handleRouting();
+
+        // Global Listeners
+        window.addEventListener('popstate', () => this.handleRouting());
+
+        // Hide Loading
+        setTimeout(() => {
+            const loader = document.getElementById('unifiedLoading');
+            if (loader) loader.classList.add('hide');
+        }, 1500);
+    },
+
+    loadData: async function () {
+        try {
+            // Try network first
+            const response = await fetch('./data/hospitals_complete.json');
+            const data = await response.json();
+            this.state.hospitals = data;
+
+            // Sync to local storage for offline use
+            localStorage.setItem('spa_hospitals_data', JSON.stringify(data));
+
+            // Update stats
+            this.updateGlobalStats();
+
+        } catch (error) {
+            console.warn('Network load failed, using offline data', error);
+            const cached = localStorage.getItem('spa_hospitals_data');
+            if (cached) {
+                this.state.hospitals = JSON.parse(cached);
+                this.updateGlobalStats();
             }
-        );
-    } else {
-        // Use default location
-        userLocation = {
-            latitude: 8.4844,
-            longitude: -13.2344
-        };
-        calculateDistances();
-    }
-}
-
-function calculateDistances() {
-    if (!userLocation) return;
-
-    hospitals.forEach(hospital => {
-        hospital.distance = calculateDistance(
-            userLocation.latitude,
-            userLocation.longitude,
-            hospital.latitude,
-            hospital.longitude
-        );
-    });
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Earth's radius in km
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-
-    return Math.round(distance * 10) / 10;
-}
-
-function toRadians(degrees) {
-    return degrees * (Math.PI / 180);
-}
-
-// ====== STATS ======
-function updateStats() {
-    document.getElementById('totalHospitals').textContent = hospitals.length;
-
-    const districts = new Set(hospitals.map(h => h.district));
-    document.getElementById('districtsCount').textContent = districts.size;
-}
-
-// ====== LOADING SCREEN ======
-function showLoading() {
-    document.getElementById('loadingScreen').style.display = 'flex';
-}
-
-function hideLoading() {
-    setTimeout(() => {
-        document.getElementById('loadingScreen').style.display = 'none';
-    }, 1500);
-}
-
-// ====== MINIMAL FALLBACK DATA ======
-function getMinimalDataset() {
-    // Minimal dataset if network fails and no cache
-    return [
-        {
-            "id": "hosp_emergency",
-            "hospital_name": "Emergency: Call 117 or 999",
-            "district": "National",
-            "region": "Sierra Leone",
-            "latitude": 8.4844,
-            "longitude": -13.2344,
-            "phone": "117",
-            "facility_type": "Emergency",
-            "static_bed_capacity": { "total": 0, "adult": 0, "maternity": 0, "pediatric": 0, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": false, "maternity": false, "pediatrics": false, "icu": false },
-            "dynamic_availability": {
-                "beds_available_now": 0,
-                "oxygen_available": "Unknown",
-                "surgeons_on_duty": "Unknown",
-                "operating_theatre_status": "Unknown",
-                "ambulance_available": "Unknown",
-                "last_updated_timestamp": new Date().toISOString()
-            },
-            "emergency_numbers": ["117", "999"],
-            "notes": "National emergency numbers. App data not available offline."
         }
-    ];
-}
+    },
 
-console.log('✅ MedFind Salone SPA Script Loaded');
+    updateGlobalStats: function () {
+        // Landing Page Stats
+        const countEl = document.getElementById('landingTotalHospitals');
+        if (countEl) countEl.textContent = this.state.hospitals.length;
+    },
+
+    setupNavigation: function () {
+        // Expose navigateTo globally
+        window.navigateTo = (viewId) => {
+            this.showSection(viewId);
+            history.pushState({ view: viewId }, '', `#${viewId}`);
+        };
+    },
+
+    handleRouting: function () {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+            this.showSection(hash);
+        } else {
+            this.showSection('landing-view');
+        }
+    },
+
+    showSection: function (viewId) {
+        // Hide all sections
+        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+
+        // Show target
+        const target = document.getElementById(viewId);
+        if (target) {
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Lazy Init Modules
+            if (viewId === 'patient-app-view' && !PatientApp.initialized) {
+                PatientApp.init();
+            }
+            if (viewId === 'admin-panel-view' && !AdminApp.initialized) {
+                AdminApp.init();
+            }
+        }
+    },
+
+    // Global Save Helper
+    saveData: function () {
+        localStorage.setItem('spa_hospitals_data', JSON.stringify(this.state.hospitals));
+        // Also update Admin backup if needed, but SPA source of truth is enough
+    }
+};
+
+// ============================================
+// MODULE: PATIENT APP
+// ============================================
+
+const PatientApp = {
+    initialized: false,
+    state: {
+        favorites: [],
+    },
+
+    init: function () {
+        console.log('Initializing Patient App...');
+        this.initialized = true;
+
+        this.loadFavorites();
+        this.setupEventListeners();
+        this.renderHospitals(SPA.state.hospitals);
+        this.checkGeolocation();
+
+        // Populate filters
+        this.populateDistrictFilter();
+    },
+
+    setupEventListeners: function () {
+        // Search
+        const searchBtn = document.querySelector('#patient-app-view .search-btn');
+        const searchInput = document.getElementById('searchInput');
+        if (searchBtn) searchBtn.onclick = () => this.performSearch();
+        if (searchInput) searchInput.onkeyup = (e) => {
+            if (e.key === 'Enter') this.performSearch();
+        };
+
+        // Filters
+        const filters = ['filterBeds', 'filterOxygen', 'filterSurgeons', 'filterAmbulance'];
+        filters.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.onchange = () => this.applyFilters();
+        });
+
+        const distFilter = document.getElementById('filterDistrict');
+        if (distFilter) distFilter.onchange = () => this.applyFilters();
+    },
+
+    checkGeolocation: function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    SPA.state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    // Recalculate distances
+                    this.calculateDistances();
+                    this.renderHospitals(SPA.state.hospitals);
+                },
+                err => {
+                    console.warn('Geo error', err);
+                    // Default Freetown
+                    SPA.state.userLocation = { lat: 8.4844, lng: -13.2344 };
+                    this.calculateDistances();
+                    this.renderHospitals(SPA.state.hospitals);
+                }
+            );
+        } else {
+            // Default Freetown
+            SPA.state.userLocation = { lat: 8.4844, lng: -13.2344 };
+            this.calculateDistances();
+            this.renderHospitals(SPA.state.hospitals);
+        }
+    },
+
+    calculateDistances: function () {
+        if (!SPA.state.userLocation) return;
+        const { lat, lng } = SPA.state.userLocation;
+
+        SPA.state.hospitals.forEach(h => {
+            h.distance = this.getDistanceFromLatLonInKm(lat, lng, h.latitude, h.longitude);
+        });
+        SPA.state.hospitals.sort((a, b) => a.distance - b.distance);
+    },
+
+    getDistanceFromLatLonInKm: function (lat1, lon1, lat2, lon2) {
+        var R = 6371;
+        var dLat = this.deg2rad(lat2 - lat1);
+        var dLon = this.deg2rad(lon2 - lon1);
+        var a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        return Math.round(d * 10) / 10;
+    },
+
+    deg2rad: function (deg) { return deg * (Math.PI / 180) },
+
+    renderHospitals: function (list) {
+        const container = document.getElementById('hospitalList');
+        const countSpan = document.getElementById('resultCount');
+        if (!container) return;
+
+        container.innerHTML = '';
+        if (countSpan) countSpan.textContent = list.length;
+
+        if (list.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px;">No hospitals found</div>';
+            return;
+        }
+
+        list.forEach(h => {
+            const card = this.createCard(h);
+            container.appendChild(card);
+        });
+    },
+
+    createCard: function (hospital) {
+        const div = document.createElement('div');
+        div.className = 'hospital-card';
+        div.onclick = () => this.showDetail(hospital);
+
+        const avail = hospital.dynamic_availability;
+
+        div.innerHTML = `
+            <div class="hospital-card-header">
+                <div>
+                    <div class="hospital-name">${hospital.hospital_name}</div>
+                    <span class="hospital-type">${hospital.facility_type}</span>
+                </div>
+                <div class="hospital-distance">
+                    ${hospital.distance ? hospital.distance + ' km' : ''}
+                </div>
+            </div>
+            <div class="hospital-info">
+                <div class="info-row">📍 ${hospital.district}, ${hospital.region}</div>
+                <div class="info-row">📞 ${hospital.phone}</div>
+            </div>
+            <div class="availability-grid">
+                <div class="availability-badge ${avail.beds_available_now > 0 ? 'badge-available' : 'badge-unavailable'}">
+                    🛏️ ${avail.beds_available_now} Beds
+                </div>
+                <div class="availability-badge ${avail.oxygen_available === 'Yes' ? 'badge-available' : 'badge-unavailable'}">
+                    💨 Oxygen
+                </div>
+                <div class="availability-badge ${avail.surgeons_on_duty !== 'No' ? 'badge-available' : 'badge-limited'}">
+                    👨‍⚕️ Surgeons
+                </div>
+                <div class="availability-badge ${avail.ambulance_available === 'Yes' ? 'badge-available' : 'badge-unavailable'}">
+                    🚑 Ambulance
+                </div>
+            </div>
+             <div class="hospital-actions" onclick="event.stopPropagation()">
+                <button class="action-btn btn-call" onclick="window.location.href='tel:${hospital.phone}'">📞 Call</button>
+                <button class="action-btn btn-directions" onclick="getDirections(${hospital.latitude}, ${hospital.longitude})">🗺️ Directions</button>
+            </div>
+        `;
+        return div;
+    },
+
+    showDetail: function (hospital) {
+        const detailScreen = document.getElementById('detailScreen');
+        const homeScreen = document.getElementById('homeScreen');
+        const content = document.getElementById('detailContent');
+
+        if (detailScreen && homeScreen && content) {
+            const avail = hospital.dynamic_availability;
+            const isFav = this.state.favorites.includes(hospital.id);
+
+            // Render detail content
+            content.innerHTML = `
+                <div class="detail-hero">
+                    <h2>${hospital.hospital_name}</h2>
+                    <p>${hospital.facility_type}</p>
+                    <p style="font-size: 24px; font-weight: bold; color: #2563eb;">
+                        ${hospital.distance ? hospital.distance + ' km away' : 'Distance unknown'}
+                    </p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>🏥 Current Availability</h3>
+                    <div class="detail-info-grid">
+                        <div class="detail-info-row"><span>Beds</span><strong>${avail.beds_available_now}</strong></div>
+                        <div class="detail-info-row"><span>Oxygen</span><strong>${avail.oxygen_available}</strong></div>
+                        <div class="detail-info-row"><span>Surgeons</span><strong>${avail.surgeons_on_duty}</strong></div>
+                        <div class="detail-info-row"><span>Ambulance</span><strong>${avail.ambulance_available}</strong></div>
+                    </div>
+                </div>
+                 <div class="detail-section">
+                    <h3>📍 Location</h3>
+                    <div class="detail-info-grid">
+                        <div class="detail-info-row"><span>District</span><strong>${hospital.district}</strong></div>
+                        <div class="detail-info-row"><span>Phone</span><strong>${hospital.phone}</strong></div>
+                    </div>
+                </div>
+            `;
+
+            // Setup Favorite Button in header (assuming html exists)
+            const favBtn = document.getElementById('favoriteBtn');
+            if (favBtn) {
+                favBtn.textContent = isFav ? '⭐' : '☆';
+                favBtn.onclick = () => this.toggleFavorite(hospital.id);
+            }
+
+            homeScreen.style.display = 'none';
+            detailScreen.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    },
+
+    toggleFavorite: function (id) {
+        if (this.state.favorites.includes(id)) {
+            this.state.favorites = this.state.favorites.filter(fid => fid !== id);
+        } else {
+            this.state.favorites.push(id);
+        }
+        localStorage.setItem('medfind_favorites', JSON.stringify(this.state.favorites));
+
+        // Update UI if on detail screen
+        const favBtn = document.getElementById('favoriteBtn');
+        if (favBtn && document.getElementById('detailScreen').style.display === 'block') {
+            favBtn.textContent = this.state.favorites.includes(id) ? '⭐' : '☆';
+        }
+    },
+
+    loadFavorites: function () {
+        const saved = localStorage.getItem('medfind_favorites');
+        if (saved) this.state.favorites = JSON.parse(saved);
+    },
+
+    performSearch: function () {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = SPA.state.hospitals.filter(h =>
+            h.hospital_name.toLowerCase().includes(query) ||
+            h.district.toLowerCase().includes(query)
+        );
+        this.renderHospitals(filtered);
+    },
+
+    applyFilters: function () {
+        let result = SPA.state.hospitals;
+
+        const beds = document.getElementById('filterBeds')?.checked;
+        if (beds) result = result.filter(h => h.dynamic_availability.beds_available_now > 0);
+
+        const oxygen = document.getElementById('filterOxygen')?.checked;
+        if (oxygen) result = result.filter(h => h.dynamic_availability.oxygen_available === 'Yes');
+
+        const surgeons = document.getElementById('filterSurgeons')?.checked;
+        if (surgeons) result = result.filter(h => h.dynamic_availability.surgeons_on_duty !== 'No');
+
+        const ambulance = document.getElementById('filterAmbulance')?.checked;
+        if (ambulance) result = result.filter(h => h.dynamic_availability.ambulance_available === 'Yes');
+
+        const dist = document.getElementById('filterDistrict')?.value;
+        if (dist) result = result.filter(h => h.district === dist);
+
+        this.renderHospitals(result);
+    },
+
+    populateDistrictFilter: function () {
+        const select = document.getElementById('filterDistrict');
+        if (!select) return;
+        const districts = [...new Set(SPA.state.hospitals.map(h => h.district))].sort();
+        districts.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = d;
+            select.appendChild(opt);
+        });
+    },
+
+    activateEmergency: function () {
+        // Sort by distance (already done largely) but ensure
+        this.calculateDistances();
+
+        // Filter those with emergency capacity if possible, or just closest
+        const emergencyHospitals = SPA.state.hospitals.slice(0, 3); // 3 Nearest
+
+        const container = document.querySelector('.emergency-screen .emergency-content');
+        if (container) {
+            // Simplify for now, usually we render cards, but we want to preserve the Screen logic
+            // The original app has a dedicated screen structure. We will leave it as is, 
+            // but just ensure the "Emergency" view is triggered. 
+            // The original `activateEmergency` just shows the screen.
+            // We may need to populate `hospital-emergency-card` with nearest.
+
+            const card = container.querySelector('.hospital-emergency-card');
+            if (card && emergencyHospitals[0]) {
+                const h = emergencyHospitals[0];
+                card.querySelector('h2').textContent = h.hospital_name;
+                card.querySelector('.distance').textContent = h.distance + ' km';
+                card.querySelector('.address').textContent = h.district;
+
+                const callBtn = card.querySelector('.emergency-call-btn');
+                callBtn.onclick = () => window.location.href = `tel:${h.phone}`;
+
+                const dirBtn = card.querySelector('.emergency-directions-btn');
+                dirBtn.onclick = () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${h.latitude},${h.longitude}`);
+            }
+        }
+
+        window.showScreen('emergencyScreen');
+    }
+};
+
+// ============================================
+// MODULE: ADMIN APP
+// ============================================
+
+const AdminApp = {
+    initialized: false,
+    currentUser: null,
+    currentHospital: null,
+    updateHistory: [],
+
+    init: function () {
+        console.log('Initializing Admin App...');
+        this.initialized = true;
+        this.populateHospitalSelect();
+        this.loadUpdateHistory();
+
+        const form = document.getElementById('loginForm');
+        if (form) form.onsubmit = (e) => this.handleLogin(e);
+
+        const updateForm = document.getElementById('updateForm');
+        if (updateForm) updateForm.onsubmit = (e) => this.handleUpdateSubmit(e);
+
+        // Auto Login Check
+        const session = sessionStorage.getItem('admin_session');
+        if (session) {
+            this.currentUser = JSON.parse(session);
+            this.currentHospital = SPA.state.hospitals.find(h => h.id === this.currentUser.hospitalId);
+            if (this.currentHospital) this.showDashboard();
+        }
+    },
+
+    populateHospitalSelect: function () {
+        const select = document.getElementById('hospitalSelect');
+        if (!select) return;
+        select.innerHTML = '<option value="">Select your hospital...</option>';
+
+        SPA.state.hospitals.sort((a, b) => a.hospital_name.localeCompare(b.hospital_name))
+            .forEach(h => {
+                const opt = document.createElement('option');
+                opt.value = h.id;
+                opt.textContent = h.hospital_name;
+                select.appendChild(opt);
+            });
+    },
+
+    handleLogin: function (e) {
+        e.preventDefault();
+        const hospId = document.getElementById('hospitalSelect').value;
+        const username = document.getElementById('username')?.value || 'Admin';
+
+        if (!hospId) {
+            alert('Please select a hospital');
+            return;
+        }
+
+        this.currentHospital = SPA.state.hospitals.find(h => h.id === hospId);
+        this.currentUser = { username: username, hospitalId: hospId };
+        sessionStorage.setItem('admin_session', JSON.stringify(this.currentUser));
+
+        this.showDashboard();
+    },
+
+    showDashboard: function () {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+        this.updateStats();
+        this.updateFormValues();
+        this.renderHistory();
+    },
+
+    updateStats: function () {
+        if (!this.currentHospital) return;
+        const h = this.currentHospital;
+        const avail = h.dynamic_availability;
+        const cap = h.static_bed_capacity;
+
+        document.getElementById('hospitalName').textContent = h.hospital_name;
+        document.getElementById('hospitalType').textContent = h.facility_type;
+
+        document.getElementById('statBeds').textContent = avail.beds_available_now;
+        document.getElementById('statBedsTotal').textContent = `of ${cap.total} total`;
+        document.getElementById('statOxygen').textContent = avail.oxygen_available;
+        document.getElementById('statSurgeons').textContent = avail.surgeons_on_duty;
+        document.getElementById('statAmbulance').textContent = avail.ambulance_available === 'Yes' ? 'Available' : 'Unavailable';
+    },
+
+    updateFormValues: function () {
+        if (!this.currentHospital) return;
+        const avail = this.currentHospital.dynamic_availability;
+
+        document.getElementById('bedsInput').value = avail.beds_available_now;
+        document.getElementById('oxygenInput').value = avail.oxygen_available;
+        document.getElementById('surgeonsInput').value = avail.surgeons_on_duty;
+        document.getElementById('theatreInput').value = avail.operating_theatre_status;
+        document.getElementById('ambulanceInput').value = avail.ambulance_available;
+        document.getElementById('notesInput').value = avail.notes || ''; // Assuming notes in avail or root, keeping simple
+    },
+
+    quickUpdate: function (action) {
+        if (!this.currentHospital) return;
+        const avail = this.currentHospital.dynamic_availability;
+        const oldVal = { ...avail };
+
+        let field = '';
+        let oldV = '';
+        let newV = '';
+
+        switch (action) {
+            case 'beds_full':
+                avail.beds_available_now = 0;
+                field = 'Beds'; oldV = oldVal.beds_available_now; newV = 0;
+                break;
+            case 'beds_available':
+                const half = Math.floor(this.currentHospital.static_bed_capacity.total / 2);
+                avail.beds_available_now = half;
+                field = 'Beds'; oldV = oldVal.beds_available_now; newV = half;
+                break;
+            case 'no_oxygen':
+                avail.oxygen_available = 'No';
+                field = 'Oxygen'; oldV = oldVal.oxygen_available; newV = 'No';
+                break;
+            case 'oxygen_ok':
+                avail.oxygen_available = 'Yes';
+                field = 'Oxygen'; oldV = oldVal.oxygen_available; newV = 'Yes';
+                break;
+            case 'surgeon_available':
+                avail.surgeons_on_duty = 'Yes';
+                field = 'Surgeons'; oldV = oldVal.surgeons_on_duty; newV = 'Yes';
+                break;
+            case 'surgeon_oncall':
+                avail.surgeons_on_duty = 'On Call';
+                field = 'Surgeons'; oldV = oldVal.surgeons_on_duty; newV = 'On Call';
+                break;
+            case 'ambulance_out':
+                avail.ambulance_available = 'No';
+                field = 'Ambulance'; oldV = oldVal.ambulance_available; newV = 'No';
+                break;
+            case 'ambulance_ready':
+                avail.ambulance_available = 'Yes';
+                field = 'Ambulance'; oldV = oldVal.ambulance_available; newV = 'Yes';
+                break;
+        }
+
+        avail.last_updated_timestamp = new Date().toISOString();
+        if (field) this.logUpdate(field, oldV, newV);
+        this.saveChanges();
+    },
+
+    handleUpdateSubmit: function (e) {
+        e.preventDefault();
+        if (!this.currentHospital) return;
+
+        const avail = this.currentHospital.dynamic_availability;
+        const oldAvail = { ...avail };
+
+        // Capture new values
+        const newBeds = document.getElementById('bedsInput').value;
+        const newOxy = document.getElementById('oxygenInput').value;
+        const newSurg = document.getElementById('surgeonsInput').value;
+        const newThea = document.getElementById('theatreInput').value;
+        const newAmb = document.getElementById('ambulanceInput').value;
+
+        if (avail.beds_available_now != newBeds) this.logUpdate('Beds', avail.beds_available_now, newBeds);
+        if (avail.oxygen_available != newOxy) this.logUpdate('Oxygen', avail.oxygen_available, newOxy);
+
+        avail.beds_available_now = newBeds;
+        avail.oxygen_available = newOxy;
+        avail.surgeons_on_duty = newSurg;
+        avail.operating_theatre_status = newThea;
+        avail.ambulance_available = newAmb;
+        avail.last_updated_timestamp = new Date().toISOString();
+
+        this.saveChanges();
+    },
+
+    saveChanges: function () {
+        SPA.saveData(); // Persist to local storage via main SPA
+        this.updateStats();
+        this.updateFormValues();
+        this.showToast('Updated Successfully');
+    },
+
+    logUpdate: function (field, oldV, newV) {
+        const entry = {
+            timestamp: new Date().toISOString(),
+            hospital: this.currentHospital.hospital_name,
+            user: this.currentUser.username,
+            field: field,
+            old: oldV,
+            new: newV
+        };
+        this.updateHistory.unshift(entry);
+        localStorage.setItem('admin_update_history', JSON.stringify(this.updateHistory));
+        this.renderHistory();
+    },
+
+    loadUpdateHistory: function () {
+        const h = localStorage.getItem('admin_update_history');
+        if (h) this.updateHistory = JSON.parse(h);
+    },
+
+    renderHistory: function () {
+        const tbody = document.getElementById('historyTableBody');
+        if (!tbody) return;
+
+        const relevant = this.currentHospital
+            ? this.updateHistory.filter(x => x.hospital === this.currentHospital.hospital_name)
+            : [];
+
+        if (relevant.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">No updates yet</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = relevant.slice(0, 10).map(u => `
+            <tr>
+                <td>${new Date(u.timestamp).toLocaleString()}</td>
+                <td>${u.field}</td>
+                <td>${u.old}</td>
+                <td><strong>${u.new}</strong></td>
+                <td>${u.user}</td>
+                <td><span class="status-badge badge-success">Synced</span></td>
+            </tr>
+        `).join('');
+    },
+
+    downloadData: function () {
+        if (!this.currentHospital) return;
+        const str = JSON.stringify(this.currentHospital, null, 2);
+        const blob = new Blob([str], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `hospital_${this.currentHospital.id}.json`;
+        a.click();
+    },
+
+    resetData: function () {
+        if (confirm('Are you sure you want to reset all data to defaults?')) {
+            localStorage.removeItem('spa_hospitals_data');
+            location.reload();
+        }
+    },
+
+    logout: function () {
+        sessionStorage.removeItem('admin_session');
+        this.currentUser = null;
+        this.currentHospital = null;
+        document.getElementById('adminDashboard').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('loginForm').reset();
+    },
+
+    showToast: function (msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        } else {
+            alert(msg);
+        }
+    }
+};
+
+// ============================================
+// MODULE: LANDING MAP
+// ============================================
+
+const LandingMap = {
+    map: null,
+    markers: [],
+
+    init: function () {
+        console.log('Initializing Landing Map...');
+        if (this.map) return; // Already init
+
+        const mapEl = document.getElementById('landingMap');
+        if (!mapEl) return;
+
+        // Init Leaflet
+        this.map = L.map('landingMap').setView([8.4844, -13.2344], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(this.map);
+
+        this.renderMarkers();
+
+        // Search listener for preview logic
+        const input = document.getElementById('mapSearchInput');
+        if (input) input.addEventListener('keyup', (e) => this.filterMap(e.target.value));
+    },
+
+    renderMarkers: function (filterText = '') {
+        // Clear existing
+        this.markers.forEach(m => this.map.removeLayer(m));
+        this.markers = [];
+        const listContainer = document.getElementById('landingMapList');
+        if (listContainer) listContainer.innerHTML = '';
+
+        SPA.state.hospitals.forEach(h => {
+            if (filterText && !h.hospital_name.toLowerCase().includes(filterText.toLowerCase())) return;
+
+            // Marker logic
+            const marker = L.marker([h.latitude, h.longitude])
+                .addTo(this.map)
+                .bindPopup(`<b>${h.hospital_name}</b><br>${h.facility_type}<br><button onclick="navigateTo('patient-app-view')">View Details</button>`);
+            this.markers.push(marker);
+
+            // Sidebar List Item
+            if (listContainer) {
+                const item = document.createElement('div');
+                item.textContent = h.hospital_name;
+                item.style.padding = '4px 0';
+                item.style.cursor = 'pointer';
+                item.onclick = () => {
+                    this.map.setView([h.latitude, h.longitude], 15);
+                    marker.openPopup();
+                };
+                listContainer.appendChild(item);
+            }
+        });
+    },
+
+    filterMap: function (text) {
+        this.renderMarkers(text);
+    }
+};
+
+// ============================================
+// GLOBAL EXPORTS (Preserving HTML Onclick calls)
+// ============================================
+// The original HTML files use onclick="functionName()". 
+// We must expose these functions to the window object.
+
+window.showScreen = (screenId) => {
+    // Patient app screen navigation
+    const screens = document.querySelectorAll('#patient-app-view .screen');
+    screens.forEach(s => s.style.display = 'none');
+    document.getElementById(screenId).style.display = 'block';
+
+    // Bottom nav update
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+    // Simple logic to highlight active nav
+    if (screenId === 'homeScreen') document.querySelector('.bottom-nav .nav-item:nth-child(1)').classList.add('active');
+};
+
+window.switchView = (mode) => {
+    const listBtn = document.getElementById('listViewBtn');
+    const mapBtn = document.getElementById('mapViewBtn');
+    const listContainer = document.getElementById('hospitalsContainer');
+    const mapContainer = document.getElementById('mapContainer');
+
+    if (mode === 'list') {
+        listBtn?.classList.add('active');
+        mapBtn?.classList.remove('active');
+        if (listContainer) listContainer.style.display = 'block';
+        if (mapContainer) mapContainer.style.display = 'none';
+        PatientApp.renderHospitals(SPA.state.hospitals); // re-render ensuring list
+    } else {
+        listBtn?.classList.remove('active');
+        mapBtn?.classList.add('active');
+        if (listContainer) listContainer.style.display = 'none';
+        if (mapContainer) mapContainer.style.display = 'flex';
+        // Map implementation in Patient App is minimal in placeholder code,
+        // Assuming mapContainer has an iframe or needs init.
+        // Original app used a placeholder image or similar.
+    }
+};
+
+window.toggleFilters = () => {
+    const p = document.getElementById('filtersPanel');
+    if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
+};
+
+window.clearFilters = () => {
+    document.querySelectorAll('#filtersPanel input').forEach(i => i.checked = false);
+    const d = document.getElementById('filterDistrict');
+    if (d) d.value = '';
+    PatientApp.applyFilters();
+};
+
+window.filterByService = (service) => {
+    // Basic service filtering
+    const res = SPA.state.hospitals.filter(h => {
+        // Checking key services
+        const key = service.toLowerCase();
+        // naive check against key_services
+        return h.key_services && h.key_services[key];
+    });
+    PatientApp.renderHospitals(res);
+    window.showScreen('homeScreen'); // Ensure on list view
+};
+
+window.showAllHospitals = () => PatientApp.renderHospitals(SPA.state.hospitals);
+
+window.activateEmergency = () => PatientApp.activateEmergency();
+
+window.getDirections = (lat, lng) => {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
+};
+
+// Admin Global Exposures
+window.logout = () => AdminApp.logout();
+window.quickUpdate = (action) => AdminApp.quickUpdate(action);
+window.downloadData = () => AdminApp.downloadData();
+window.resetToDefault = () => AdminApp.resetData();
+window.resetForm = () => AdminApp.updateFormValues();
+
+// Start
+document.addEventListener('DOMContentLoaded', () => SPA.init());
