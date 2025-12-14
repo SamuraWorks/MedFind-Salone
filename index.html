@@ -660,24 +660,32 @@
         // ============================================
         // GLOBAL LANGUAGE
         // ============================================
+        // ============================================
+        // GLOBAL LANGUAGE
+        // ============================================
         function switchGlobalLanguage(lang) {
             console.log('Switching language to:', lang);
 
-            // Update buttons
-            document.getElementById('langEn').classList.toggle('active', lang === 'en');
-            document.getElementById('langKr').classList.toggle('active', lang === 'kr');
+            // Update global buttons
+            const enBtn = document.getElementById('langEn');
+            const krBtn = document.getElementById('langKr');
+            if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+            if (krBtn) krBtn.classList.toggle('active', lang === 'kr');
 
-            // 1. Send event/call to Patient App if loaded
-            if (window.PatientApp && window.PatientApp.setLanguage) {
-                window.PatientApp.setLanguage(lang);
-            } else {
-                // Fallback if PatientApp not yet loaded or doesn't expose it directly:
-                // We simulate a click on the internal buttons once it loads
-                localStorage.setItem('medfind_lang_pref', lang);
+            // Save preference
+            localStorage.setItem('medfind_lang_pref', lang);
+
+            // 1. Try to switch Patient App Language
+            // The Patient App (app-script.js) uses internal buttons with class 'lang-btn' and data-lang attribute.
+            // We can simulate a click on the correct button within the patient section.
+            const patientAppContainer = document.getElementById('patientAppContent');
+            if (patientAppContainer) {
+                const targetBtn = patientAppContainer.querySelector(`.lang-btn[data-lang="${lang}"]`);
+                if (targetBtn) {
+                    targetBtn.click();
+                    console.log(`Triggered Patient App switch to ${lang}`);
+                }
             }
-
-            // 2. Translate Home Page (if we add data-translate tags later)
-            // For now, primary requirement is App consistency.
         }
 
         // ============================================
