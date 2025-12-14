@@ -130,6 +130,12 @@ const PatientApp = {
         console.log('Initializing Patient App...');
         this.initialized = true;
 
+        // Hide internal loading screen and show app
+        const loader = document.getElementById('loadingScreen');
+        const app = document.getElementById('app');
+        if (loader) loader.style.display = 'none';
+        if (app) app.style.display = 'block';
+
         this.loadFavorites();
         this.setupEventListeners();
         this.renderHospitals(SPA.state.hospitals);
