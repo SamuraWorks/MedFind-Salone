@@ -11,13 +11,9 @@
     <!-- Leaflet CSS for Map Section -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Import all existing stylesheets -->
-    <link rel="stylesheet" href="app-styles.css">
-    <link rel="stylesheet" href="admin-styles.css">
-
     <style>
         /* ============================================
-           UNIFIED SPA HEADER & NAVIGATION
+           GLOBAL RESET & BASE STYLES
            ============================================ */
         * {
             margin: 0;
@@ -27,9 +23,12 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Main Header with Logo */
+        /* ============================================
+           UNIFIED HEADER (ONLY) - CONSISTENT ACROSS ALL SECTIONS
+           ============================================ */
         .unified-header {
             position: sticky;
             top: 0;
@@ -73,7 +72,6 @@
             margin-top: 2px;
         }
 
-        /* Navigation Menu */
         .header-nav {
             display: flex;
             gap: 10px;
@@ -102,7 +100,20 @@
             border-color: white;
         }
 
-        /* Section Container */
+        .mobile-menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           SECTION MANAGEMENT
+           ============================================ */
         .spa-section {
             display: none;
             animation: fadeIn 0.3s ease-in-out;
@@ -124,19 +135,131 @@
             }
         }
 
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle {
-            display: none;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 20px;
-            cursor: pointer;
+        /* ============================================
+           HOME SECTION STYLES (NEW DESIGN)
+           ============================================ */
+        #homeSection {
+            min-height: calc(100vh - 80px);
         }
 
-        /* Mobile Responsive */
+        .home-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .home-hero h1 {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-hero .subtitle {
+            font-size: 20px;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-hero .description {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .home-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .home-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-card .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-card h2 {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-card p {
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-card ul {
+            list-style: none;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .home-card .cta-btn {
+            margin-top: 25px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* ============================================
+           PATIENT & ADMIN SECTIONS - ISOLATED
+           ============================================ */
+        #patientSection,
+        #adminSection {
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Load patient and admin styles ONLY when their sections are active */
+        #patientSection.active {
+            /* Patient app will use its own styles from app-styles.css loaded dynamically */
+        }
+
+        #adminSection.active {
+            /* Admin will use its own styles from admin-styles.css loaded dynamically */
+        }
+
+        /* ============================================
+           MOBILE RESPONSIVE
+           ============================================ */
         @media (max-width: 768px) {
             .header-title {
                 font-size: 18px;
@@ -169,25 +292,21 @@
                 width: 100%;
                 text-align: center;
             }
-        }
 
-        /* Override conflicting styles */
-        .app,
-        .admin-dashboard,
-        .login-screen {
-            display: block !important;
-        }
+            .home-hero h1 {
+                font-size: 36px;
+            }
 
-        /* Ensure sections don't overlap with header */
-        .spa-section {
-            min-height: calc(100vh - 80px);
+            .home-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- ============================================
-         UNIFIED HEADER WITH LOGO & NAVIGATION
+         UNIFIED HEADER - CONSISTENT ACROSS ALL SECTIONS
          ============================================ -->
     <header class="unified-header">
         <div class="header-content">
@@ -217,102 +336,55 @@
     </header>
 
     <!-- ============================================
-         SECTION 1: HOME / LANDING PAGE WITH MAP
+         SECTION 1: HOME / LANDING PAGE
          ============================================ -->
     <div id="homeSection" class="spa-section active">
-        <div
-            style="max-width: 1400px; margin: 0 auto; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; margin-top: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-            <div style="text-align: center; margin-bottom: 50px;">
-                <h1
-                    style="font-size: 48px; color: white; margin-bottom: 15px; text-shadow: 2px 2px 8px rgba(0,0,0,0.3);">
-                    Welcome to MedFind Salone
-                </h1>
-                <p
-                    style="font-size: 20px; color: white; margin-bottom: 10px; font-weight: 600; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">
-                    Your Complete Healthcare Access Platform for Sierra Leone
-                </p>
-                <p
-                    style="font-size: 16px; color: rgba(255,255,255,0.95); max-width: 800px; margin: 0 auto; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">
-                    Find emergency medical services instantly, manage hospital availability data in real-time, and
-                    access comprehensive healthcare information across all 16 districts
-                </p>
+        <div class="home-container">
+            <div class="home-hero">
+                <h1>Welcome to MedFind Salone</h1>
+                <p class="subtitle">Your Complete Healthcare Access Platform for Sierra Leone</p>
+                <p class="description">Find emergency medical services instantly, manage hospital availability data in
+                    real-time, and access comprehensive healthcare information across all 16 districts</p>
             </div>
 
-            <!-- Quick Access Cards -->
-            <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px;">
-                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.2);"
-                    onclick="showSPASection('patientSection')"
-                    onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.4)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'">
-                    <div style="font-size: 60px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">📱
-                    </div>
-                    <h2
-                        style="font-size: 24px; color: white; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
-                        For Patients</h2>
-                    <p
-                        style="color: rgba(255,255,255,0.95); margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
-                        Find hospitals, emergency services, and healthcare facilities near you</p>
-                    <ul
-                        style="list-style: none; color: rgba(255,255,255,0.9); line-height: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+            <div class="home-cards">
+                <div class="home-card" onclick="showSPASection('patientSection')">
+                    <div class="icon">📱</div>
+                    <h2>For Patients</h2>
+                    <p>Find hospitals, emergency services, and healthcare facilities near you</p>
+                    <ul>
                         <li>🚨 Emergency SOS &bull; Find help immediately</li>
                         <li>🔍 Search &bull; Browse all hospitals</li>
                         <li>📍 Real-Time Data &bull; Live availability</li>
                         <li>📞 Quick Actions &bull; Call & get directions</li>
                     </ul>
-                    <div
-                        style="margin-top: 25px; padding: 12px 24px; background: rgba(255,255,255,0.25); color: white; border-radius: 8px; text-align: center; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);">
-                        Open Patient App →
-                    </div>
+                    <div class="cta-btn">Open Patient App →</div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.2);"
-                    onclick="showSPASection('adminSection')"
-                    onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.4)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'">
-                    <div style="font-size: 60px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🔐
-                    </div>
-                    <h2
-                        style="font-size: 24px; color: white; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
-                        For Hospital Staff</h2>
-                    <p
-                        style="color: rgba(255,255,255,0.95); margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
-                        Update your hospital's availability status and manage data securely</p>
-                    <ul
-                        style="list-style: none; color: rgba(255,255,255,0.9); line-height: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                <div class="home-card" onclick="showSPASection('adminSection')">
+                    <div class="icon">🔐</div>
+                    <h2>For Hospital Staff</h2>
+                    <p>Update your hospital's availability status and manage data securely</p>
+                    <ul>
                         <li>⚡ Quick Updates &bull; One-click status changes</li>
                         <li>📝 Detailed Forms &bull; Comprehensive data entry</li>
                         <li>📊 History Tracking &bull; Audit all changes</li>
                         <li>💾 Data Tools &bull; Export & manage records</li>
                     </ul>
-                    <div
-                        style="margin-top: 25px; padding: 12px 24px; background: rgba(255,255,255,0.25); color: white; border-radius: 8px; text-align: center; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);">
-                        Open Admin Portal →
-                    </div>
+                    <div class="cta-btn">Open Admin Portal →</div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: all 0.3s; border: 1px solid rgba(255,255,255,0.2);"
-                    onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.4)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'">
-                    <div style="font-size: 60px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🗺️
-                    </div>
-                    <h2
-                        style="font-size: 24px; color: white; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
-                        Interactive Map</h2>
-                    <p
-                        style="color: rgba(255,255,255,0.95); margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
-                        Explore hospitals across Sierra Leone on our interactive map (below)</p>
-                    <ul
-                        style="list-style: none; color: rgba(255,255,255,0.9); line-height: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                <div class="home-card">
+                    <div class="icon">🗺️</div>
+                    <h2>Interactive Map</h2>
+                    <p>Explore hospitals across Sierra Leone on our interactive map (below)</p>
+                    <ul>
                         <li>📍 Coverage &bull; 100+ hospitals nationwide</li>
                         <li>🎨 Visual Status &bull; Color-coded availability</li>
                         <li>🔍 Smart Search &bull; Filter by location & services</li>
                         <li>📱 Mobile Ready &bull; Works on any device</li>
                     </ul>
-                    <div
-                        style="margin-top: 25px; padding: 12px 24px; background: rgba(255,255,255,0.1); color: white; border-radius: 8px; text-align: center; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);">
-                        Scroll Down to View Map ↓
-                    </div>
+                    <div class="cta-btn" style="background: rgba(255,255,255,0.1);">Scroll Down to View Map ↓</div>
                 </div>
             </div>
 
@@ -375,43 +447,48 @@
         </div>
     </div>
 
-
     <!-- ============================================
-         SECTION 2: PATIENT APP (FROM app.html)
+         SECTION 2: PATIENT APP (100% ORIGINAL FROM app.html)
          ============================================ -->
     <div id="patientSection" class="spa-section">
-        <!-- Insert exact content from app.html body -->
-        <div id="patientAppContent"></div>
+        <div id="patientAppContent">
+            <!-- Complete content from app.html loaded dynamically -->
+        </div>
     </div>
 
     <!-- ============================================
-         SECTION 3: ADMIN PORTAL (FROM admin.html)
+         SECTION 3: ADMIN PORTAL (100% ORIGINAL FROM admin.html)
          ============================================ -->
     <div id="adminSection" class="spa-section">
-        <!-- Insert exact content from admin.html body -->
-        <div id="adminAppContent"></div>
+        <div id="adminAppContent">
+            <!-- Complete content from admin.html loaded dynamically -->
+        </div>
     </div>
 
     <!-- Leaflet JS for Map -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Main SPA Navigation Script -->
+    <!-- Main SPA Navigation & Content Loading Script -->
     <script>
         // ============================================
-        // SPA NAVIGATION SYSTEM
+        // GLOBAL STATE
         // ============================================
-
         let currentSection = 'homeSection';
         let loadedSections = new Set(['homeSection']);
         let homeMap = null;
+        let patientStylesLoaded = false;
+        let adminStylesLoaded = false;
 
+        // ============================================
+        // SPA NAVIGATION
+        // ============================================
         function showSPASection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.spa-section').forEach(section => {
                 section.classList.remove('active');
             });
 
-            // Remove active from all nav buttons
+            // Update nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -427,29 +504,24 @@
             };
             document.getElementById(navBtnMap[sectionId]).classList.add('active');
 
-            // Load section content if not loaded
+            // Load content if needed
             if (!loadedSections.has(sectionId)) {
                 loadSectionContent(sectionId);
             }
 
-            // Initialize map on home section
+            // Initialize home map
             if (sectionId === 'homeSection' && !homeMap) {
                 setTimeout(initializeHomeMap, 100);
             }
 
             currentSection = sectionId;
-
-            // Close mobile menu if open
             document.getElementById('headerNav').classList.remove('show');
-
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
         // ============================================
         // DYNAMIC CONTENT LOADING
         // ============================================
-
         async function loadSectionContent(sectionId) {
             if (sectionId === 'patientSection') {
                 await loadPatientApp();
@@ -463,23 +535,32 @@
             const container = document.getElementById('patientAppContent');
 
             try {
+                // Load CSS first (only once)
+                if (!patientStylesLoaded) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'app-styles.css';
+                    document.head.appendChild(link);
+                    patientStylesLoaded = true;
+                }
+
+                // Load HTML content
                 const response = await fetch('app.html');
                 const html = await response.text();
 
-                // Extract body content
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                const bodyContent = doc.body.innerHTML;
+                container.innerHTML = doc.body.innerHTML;
 
-                container.innerHTML = bodyContent;
-
-                // Load patient app script
+                // Load JavaScript
                 const script = document.createElement('script');
                 script.src = 'app-script.js';
                 document.body.appendChild(script);
+
+                console.log('✅ Patient App loaded with original design');
             } catch (error) {
-                console.error('Failed to load patient app:', error);
-                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Patient App. Please refresh the page.</p>';
+                console.error('❌ Failed to load patient app:', error);
+                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Patient App. Please refresh.</p>';
             }
         }
 
@@ -487,50 +568,55 @@
             const container = document.getElementById('adminAppContent');
 
             try {
+                // Load CSS first (only once)
+                if (!adminStylesLoaded) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'admin-styles.css';
+                    document.head.appendChild(link);
+                    adminStylesLoaded = true;
+                }
+
+                // Load HTML content
                 const response = await fetch('admin.html');
                 const html = await response.text();
 
-                // Extract body content
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                const bodyContent = doc.body.innerHTML;
+                container.innerHTML = doc.body.innerHTML;
 
-                container.innerHTML = bodyContent;
-
-                // Load admin app script
+                // Load JavaScript
                 const script = document.createElement('script');
                 script.src = 'admin-script.js';
                 document.body.appendChild(script);
+
+                console.log('✅ Admin Portal loaded with original design');
             } catch (error) {
-                console.error('Failed to load admin app:', error);
-                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Admin Portal. Please refresh the page.</p>';
+                console.error('❌ Failed to load admin portal:', error);
+                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Admin Portal. Please refresh.</p>';
             }
         }
 
         // ============================================
         // HOME MAP INITIALIZATION
         // ============================================
-
         async function initializeHomeMap() {
             try {
                 const mapContainer = document.getElementById('homeMapContainer');
                 mapContainer.innerHTML = '';
 
-                // Create map
                 homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
 
-                // Add tile layer
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors',
                     maxZoom: 18
                 }).addTo(homeMap);
 
-                // Load and display hospitals
                 const response = await fetch('./data/hospitals_complete.json');
                 const hospitals = await response.json();
 
                 hospitals.forEach(hospital => {
-                    const marker = L.marker([hospital.latitude, hospital.longitude])
+                    L.marker([hospital.latitude, hospital.longitude])
                         .addTo(homeMap)
                         .bindPopup(`
                             <div style="padding: 10px;">
@@ -540,7 +626,6 @@
                         `);
                 });
 
-                // Fit bounds
                 const group = new L.featureGroup(hospitals.map(h =>
                     L.marker([h.latitude, h.longitude])
                 ));
@@ -548,14 +633,13 @@
             } catch (error) {
                 console.error('Failed to load map:', error);
                 document.getElementById('homeMapContainer').innerHTML =
-                    '<p style="color: #6b7280;">Map unavailable. Please check your connection.</p>';
+                    '<p style="color: white;">Map unavailable. Please check your connection.</p>';
             }
         }
 
         // ============================================
-        // MOBILE MENU TOGGLE
+        // MOBILE MENU
         // ============================================
-
         function toggleMobileMenu() {
             document.getElementById('headerNav').classList.toggle('show');
         }
@@ -563,21 +647,17 @@
         // ============================================
         // INITIALIZATION
         // ============================================
-
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🚀 MedFind Salone SPA Initialized');
-
-            // Initialize home map after short delay
             setTimeout(initializeHomeMap, 500);
 
-            // Hash-based routing (optional)
+            // Hash routing
             const hash = window.location.hash.substring(1);
             if (hash && document.getElementById(hash)) {
                 showSPASection(hash);
             }
         });
 
-        // Hash change navigation
         window.addEventListener('hashchange', () => {
             const hash = window.location.hash.substring(1);
             if (hash && document.getElementById(hash)) {
@@ -585,7 +665,7 @@
             }
         });
 
-        // Make navigation function global
+        // Make functions global
         window.showSPASection = showSPASection;
     </script>
 </body>
