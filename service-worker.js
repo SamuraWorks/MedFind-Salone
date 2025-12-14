@@ -1,21 +1,13 @@
-const CACHE_NAME = 'medfind-salone-v2';
+const CACHE_NAME = 'medfind-salone-v3';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
-    './unified-styles.css',
-    './unified-script.js',
-    './main.html',
     './app.html',
     './admin.html',
-    './spa.html',
-    './map.html',
     './app-styles.css',
     './admin-styles.css',
-    './spa-styles.css',
     './app-script.js',
     './admin-script.js',
-    './spa-script.js',
-    './map-script.js',
     './data/hospitals_complete.json',
     './assets/logo.png',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
