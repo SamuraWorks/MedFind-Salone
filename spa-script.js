@@ -35,10 +35,8 @@ async function initApp() {
     // Populate district filter
     populateDistrictFilter();
 
-    // Check online status
-    checkOnlineStatus();
-    window.addEventListener('online', checkOnlineStatus);
-    window.addEventListener('offline', checkOnlineStatus);
+    // Populate district filter
+    populateDistrictFilter();
 
     // Update stats
     updateStats();
@@ -629,20 +627,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 function toRadians(degrees) {
     return degrees * (Math.PI / 180);
-}
-
-// ====== ONLINE/OFFLINE STATUS ======
-function checkOnlineStatus() {
-    const banner = document.getElementById('offlineBanner');
-    const lastSync = localStorage.getItem('last_sync');
-
-    if (!navigator.onLine) {
-        banner.classList.add('show');
-        document.getElementById('lastSyncTime').textContent =
-            lastSync ? new Date(lastSync).toLocaleString() : 'Never';
-    } else {
-        banner.classList.remove('show');
-    }
 }
 
 // ====== STATS ======
