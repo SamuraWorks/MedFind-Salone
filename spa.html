@@ -565,9 +565,18 @@
                 const doc = parser.parseFromString(html, 'text/html');
                 container.innerHTML = doc.body.innerHTML;
 
-                // Load JavaScript
+                // Load JavaScript (Data Module FIRST)
+                if (!window.MedFindData) {
+                    const dataScript = document.createElement('script');
+                    dataScript.src = 'data.js';
+                    dataScript.async = false; // Ensure sequential loading
+                    document.body.appendChild(dataScript);
+                }
+
+                // Load App Script
                 const script = document.createElement('script');
                 script.src = 'app-script.js';
+                script.async = false;
                 document.body.appendChild(script);
 
                 console.log('✅ Patient App loaded with original design');
@@ -598,9 +607,17 @@
                 const doc = parser.parseFromString(html, 'text/html');
                 container.innerHTML = doc.body.innerHTML;
 
-                // Load JavaScript
+                // Load JavaScript (Data Module FIRST)
+                if (!window.MedFindData) {
+                    const dataScript = document.createElement('script');
+                    dataScript.src = 'data.js';
+                    dataScript.async = false;
+                    document.body.appendChild(dataScript);
+                }
+
                 const script = document.createElement('script');
                 script.src = 'admin-script.js';
+                script.async = false;
                 document.body.appendChild(script);
 
                 console.log('✅ Admin Portal loaded with original design');
