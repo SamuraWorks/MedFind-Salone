@@ -114,13 +114,33 @@
         /* ============================================
            SECTION MANAGEMENT
            ============================================ */
+        /* SPA Sections */
         .spa-section {
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
+            width: 100%;
+            height: calc(100vh - 60px);
+            /* Fill remaining height */
+            border: none;
+            overflow: hidden;
         }
 
         .spa-section.active {
             display: block;
+        }
+
+        /* Iframe Styling */
+        .app-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Landing Page Specific */
+        #homeSection {
+            height: auto;
+            min-height: calc(100vh - 60px);
+            overflow-y: auto;
         }
 
         @keyframes fadeIn {
@@ -322,18 +342,18 @@
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
 
             <nav class="header-nav" id="headerNav">
-                <button class="nav-btn active" onclick="window.location.href='index.html'" id="navHome">
+                <button class="nav-btn active" onclick="showSPASection('homeSection')" id="navHome">
                     🏠 Home
                 </button>
-                <button class="nav-btn" onclick="window.location.href='app.html'" id="navPatient">
+                <button class="nav-btn" onclick="showSPASection('patientSection')" id="navPatient">
                     📱 Patient App
                 </button>
-                <button class="nav-btn" onclick="window.location.href='admin.html'" id="navAdmin">
+                <button class="nav-btn" onclick="showSPASection('adminSection')" id="navAdmin">
                     🔐 Admin Portal
                 </button>
                 <div style="display: flex; gap: 5px; margin-left: 10px;">
-                    <button class="nav-btn" data-lang="en">EN</button>
-                    <button class="nav-btn" data-lang="kr">KR</button>
+                    <button class="nav-btn" onclick="switchGlobalLanguage('en')" id="langEn">EN</button>
+                    <button class="nav-btn" onclick="switchGlobalLanguage('kr')" id="langKr">KR</button>
                 </div>
             </nav>
         </div>
@@ -461,54 +481,96 @@
     </div>
 
     <!-- ============================================
-         SECTION 2: PATIENT APP (100% ORIGINAL FROM app.html)
+         SECTION 2: PATIENT APP
          ============================================ -->
     <div id="patientSection" class="spa-section">
-        <div id="patientAppContent">
-            <!-- Complete content from app.html loaded dynamically -->
-        </div>
+        <iframe src="app.html" class="app-iframe" title="Patient App"></iframe>
     </div>
 
     <!-- ============================================
-         SECTION 3: ADMIN PORTAL (100% ORIGINAL FROM admin.html)
+         SECTION 3: ADMIN PORTAL
          ============================================ -->
     <div id="adminSection" class="spa-section">
-        <div id="adminAppContent">
-            <!-- Complete content from admin.html loaded dynamically -->
-        </div>
+        <iframe src="admin.html" class="app-iframe" title="Admin Portal"></iframe>
     </div>
 
     <!-- Leaflet JS for Map -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Main Navigation Script -->
+    <!-- Main SPA Navigation & Content Loading Script -->
     <script>
         // ============================================
-        // SIMPLE NAVIGATION LOGIC
+        // GLOBAL STATE
         // ============================================
+        let currentSection = 'homeSection';
+        let homeMap = null;
 
-        // Mobile Menu
-        function toggleMobileMenu() {
-            document.getElementById('headerNav').classList.toggle('show');
+        // ============================================
+        // SPA NAVIGATION
+        // ============================================
+        function showSPASection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.spa-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active nav button
+            const navBtnMap = {
+                'homeSection': 'navHome',
+                'patientSection': 'navPatient',
+                'adminSection': 'navAdmin'
+            };
+            document.getElementById(navBtnMap[sectionId]).classList.add('active');
+
+            // Initialize home map if needed
+            if (sectionId === 'homeSection' && !homeMap) {
+                setTimeout(initializeHomeMap, 100);
+            }
+
+            currentSection = sectionId;
+            document.getElementById('headerNav').classList.remove('show');
+
+            // If going home, scroll top
+            if (sectionId === 'homeSection') {
+                window.scrollTo(0, 0);
+            }
         }
 
-        // Initialize Map Preview
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 MedFind Salone Landing Page Loaded');
-            setTimeout(initializeHomeMap, 500);
+        // ============================================
+        // SERVICE WORKER (OFFLINE SUPPORT)
+        // ============================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('✅ ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('❌ ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
 
-            // Check language preference
-            const savedLang = localStorage.getItem('medfind_lang_pref') || 'en';
-            // Simple visual toggle for homepage content if we had implementations
-        });
-
+        // ============================================
+        // HOME MAP INITIALIZATION
+        // ============================================
         async function initializeHomeMap() {
             try {
                 const mapContainer = document.getElementById('homeMapContainer');
-                if (!mapContainer) return;
+                // Check if map is already initialized on this container
+                if (homeMap || mapContainer._leaflet_id) return;
 
                 mapContainer.innerHTML = '';
-                const homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
+
+                homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors',
@@ -528,19 +590,81 @@
                             </div>
                         `);
                 });
+
+                const group = new L.featureGroup(hospitals.map(h =>
+                    L.marker([h.latitude, h.longitude])
+                ));
+                homeMap.fitBounds(group.getBounds().pad(0.1));
             } catch (error) {
                 console.error('Failed to load map:', error);
+                const container = document.getElementById('homeMapContainer');
+                if (container) container.innerHTML = '<p style="color: white;">Map unavailable. Please check your connection.</p>';
             }
         }
 
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('✅ SW Registered'))
-                    .catch(err => console.log('❌ SW Failed', err));
-            });
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function toggleMobileMenu() {
+            document.getElementById('headerNav').classList.toggle('show');
         }
+
+        // ============================================
+        // GLOBAL LANGUAGE
+        // ============================================
+        function switchGlobalLanguage(lang) {
+            console.log('Switching language to:', lang);
+
+            // Update global buttons
+            const enBtn = document.getElementById('langEn');
+            const krBtn = document.getElementById('langKr');
+            if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+            if (krBtn) krBtn.classList.toggle('active', lang === 'kr');
+
+            // Save preference
+            localStorage.setItem('medfind_lang_pref', lang);
+
+            // 1. Try to switch Patient App Language
+            // The Patient App (app-script.js) uses internal buttons with class 'lang-btn' and data-lang attribute.
+            // We can simulate a click on the correct button within the patient section.
+            const patientAppContainer = document.getElementById('patientAppContent');
+            if (patientAppContainer) {
+                const targetBtn = patientAppContainer.querySelector(`.lang-btn[data-lang="${lang}"]`);
+                if (targetBtn) {
+                    targetBtn.click();
+                    console.log(`Triggered Patient App switch to ${lang}`);
+                }
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 MedFind Salone SPA Initialized');
+            setTimeout(initializeHomeMap, 500);
+
+            // Hash routing
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSPASection(hash);
+            }
+
+            // Check language preference
+            const savedLang = localStorage.getItem('medfind_lang_pref') || 'en';
+            switchGlobalLanguage(savedLang);
+        });
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSPASection(hash);
+            }
+        });
+
+        // Make functions global
+        window.showSPASection = showSPASection;
+        window.switchGlobalLanguage = switchGlobalLanguage;
     </script>
 </body>
 

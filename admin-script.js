@@ -13,8 +13,20 @@ let isOnline = navigator.onLine;
 // INITIALIZATION
 // ============================================
 
-document.addEventListener('DOMContentLoaded', async () => {
+async function initAdmin() {
     console.log('🏥 Admin Portal Initializing...');
+
+    // CHECK IF RUNNING IN IFRAME (SPA MODE)
+    if (window.self !== window.top) {
+        console.log('🔐 Running in SPA Mode (Iframe)');
+        // Hide Login Header if needed, or adjust padding
+        // The Admin Portal uses a different layout, let's just ensure it fits.
+        const header = document.querySelector('.login-header');
+        // We might want to keep the login header (MedFind Salone) on the login screen?
+        // Actually, the main SPA header says 'Admin Portal'. 
+        // Let's keep it for context unless it looks redundant.
+        // It's fine to leave it for now, as Admin Portal is a distinct "Place".
+    }
 
     // Load hospital data
     await loadHospitalData();
@@ -29,7 +41,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadUpdateHistory();
 
     console.log('✅ Admin Portal Ready');
-});
+}
+
+// Initialize on load or immediately if already loaded (SPA Support)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdmin);
+} else {
+    initAdmin();
+}
 
 // ============================================
 // DATA LOADING
@@ -37,31 +56,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadHospitalData() {
     try {
-        // Try to load from network first
-        const response = await fetch('./data/hospitals_complete.json');
-        const data = await response.json();
-        hospitals = data;
+        console.log('🔄 Loading hospital data via MedFindData...');
+        hospitals = await MedFindData.init();
 
-        // Save to localStorage as backup
-        localStorage.setItem('admin_hospitals_data', JSON.stringify(hospitals));
-        console.log(`✅ Loaded ${hospitals.length} hospitals from network`);
-    } catch (error) {
-        console.warn('⚠️ Network load failed, using cached data');
-
-        // Try localStorage
-        const cached = localStorage.getItem('admin_hospitals_data');
-        if (cached) {
-            hospitals = JSON.parse(cached);
-            console.log(`✅ Loaded ${hospitals.length} hospitals from cache`);
+        if (!hospitals || hospitals.length === 0) {
+            console.warn('⚠️ No data returned from MedFindData. Attempting emergency fallback...');
+            hospitals = [
+                { id: "hosp_001", hospital_name: "Connaught Hospital (Fallback)", district: "Western Area", facility_type: "Government" },
+                { id: "hosp_002", hospital_name: "PCMH (Fallback)", district: "Western Area", facility_type: "Government" }
+            ];
+            showToast('Loaded emergency fallback data.', 'warning');
         } else {
-            console.error('❌ No hospital data available');
-            showToast('Failed to load hospital data. Please refresh.', 'error');
+            console.log(`✅ Loaded ${hospitals.length} hospitals via MedFindData`);
         }
+    } catch (error) {
+        console.error('❌ Data load failed:', error);
+        showToast('Failed to load data.', 'error');
     }
 }
 
 function populateHospitalSelect() {
     const select = document.getElementById('hospitalSelect');
+
+    // Clear existing options except the first one (placeholder)
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+
+    if (!hospitals || hospitals.length === 0) {
+        const option = document.createElement('option');
+        option.textContent = "No data available";
+        option.disabled = true;
+        select.appendChild(option);
+        return;
+    }
 
     // Sort hospitals by name
     const sortedHospitals = [...hospitals].sort((a, b) =>
@@ -373,20 +401,18 @@ function resetForm() {
 // ============================================
 
 function saveHospitalData() {
-    // Update the hospital in the array
-    const index = hospitals.findIndex(h => h.id === currentHospital.id);
-    if (index !== -1) {
-        hospitals[index] = currentHospital;
+    // Save via Shared Module
+    const success = MedFindData.saveHospital(currentHospital);
+
+    if (success) {
+        console.log('✅ Hospital data saved to persistent storage');
+        // Update local array reference just in case
+        const index = hospitals.findIndex(h => h.id === currentHospital.id);
+        if (index !== -1) hospitals[index] = currentHospital;
+    } else {
+        console.error('❌ Failed to save hospital data');
+        showToast('Failed to save data', 'error');
     }
-
-    // Save to localStorage
-    localStorage.setItem('admin_hospitals_data', JSON.stringify(hospitals));
-
-    // Also update the main app's data
-    localStorage.setItem('hospitals_data', JSON.stringify(hospitals));
-    localStorage.setItem('last_sync', new Date().toISOString());
-
-    console.log('✅ Hospital data saved');
 }
 
 // ============================================

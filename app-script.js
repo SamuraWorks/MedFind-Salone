@@ -62,60 +62,79 @@ const translations = {
 async function initApp() {
     console.log('🚀 Initializing MedFind Salone...');
 
-    // Show loading screen
-    document.getElementById('loadingScreen').style.display = 'flex';
+    const loadingScreen = document.getElementById('loadingScreen');
+    const appContainer = document.getElementById('app');
 
-    // Load hospitals data
-    await loadHospitalsData();
+    try {
+        // Show loading screen
+        if (loadingScreen) loadingScreen.style.display = 'flex';
 
-    // Load favorites from localStorage
-    loadFavorites();
+        // CHECK IF RUNNING IN IFRAME (SPA MODE)
+        if (window.self !== window.top) {
+            console.log('📱 Running in SPA Mode (Iframe)');
+            const header = document.querySelector('.app-header');
+            if (header) header.style.display = 'none';
+            document.body.style.paddingTop = '10px';
+        }
 
-    // Check geolocation
-    getCurrentLocation();
+        // Load hospitals data - CRITICAL STEP
+        await loadHospitalsData();
 
-    // Populate district filter
-    populateDistrictFilter();
+        // Load favorites
+        loadFavorites();
 
-    // Check online status
-    checkOnlineStatus();
-    window.addEventListener('online', checkOnlineStatus);
-    window.addEventListener('offline', checkOnlineStatus);
+        // Check geolocation (non-blocking)
+        getCurrentLocation();
 
-    // Setup language selector
-    setupLanguageSelector();
+        // Populate district filter
+        populateDistrictFilter();
 
-    // Display all hospitals initially
-    displayHospitals(hospitals);
+        // Check online status
+        checkOnlineStatus();
+        window.addEventListener('online', checkOnlineStatus);
+        window.addEventListener('offline', checkOnlineStatus);
 
-    // Hide loading screen and show app
-    setTimeout(() => {
-        document.getElementById('loadingScreen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-    }, 1500);
+        // Setup language selector
+        setupLanguageSelector();
 
-    console.log('✅ App initialized with', hospitals.length, 'hospitals');
+        // Display hospitals
+        // Display hospitals (handles empty state internally)
+        // Display hospitals (with safety check)
+        if (Array.isArray(hospitals)) {
+            displayHospitals(hospitals);
+        } else {
+            hospitals = [];
+            displayHospitals([]);
+        }
+
+        console.log('✅ App initialized with', hospitals.length, 'hospitals');
+
+    } catch (error) {
+        console.error('❌ Critical Initialization Error:', error);
+        // FORCE HIDE LOADER ON ERROR
+        if (loadingScreen) loadingScreen.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'block';
+    } finally {
+        // FAMOUS "INFINITE LOADING" FIX: Always hide loader
+        setTimeout(() => {
+            if (loadingScreen) loadingScreen.style.display = 'none';
+            if (appContainer) appContainer.style.display = 'block';
+        }, 100);
+    }
 }
 
 // Load Hospital Data
 async function loadHospitalsData() {
     try {
-        const response = await fetch('./data/hospitals_complete.json');
-        const data = await response.json();
-        hospitals = data;
+        console.log('🔄 Loading hospital data via MedFindData...');
+        hospitals = await MedFindData.init();
         currentHospitals = [...hospitals];
-
-        // Store in localStorage for offline access
-        localStorage.setItem('hospitals_data', JSON.stringify(hospitals));
-        localStorage.setItem('last_sync', new Date().toISOString());
+        console.log(`✅ Loaded ${hospitals.length} hospitals via MedFindData`);
     } catch (error) {
-        console.warn('⚠️ Loading from network failed, using offline data');
-        // Load from localStorage if network fails
-        const offlineData = localStorage.getItem('hospitals_data');
-        if (offlineData) {
-            hospitals = JSON.parse(offlineData);
-            currentHospitals = [...hospitals];
-        }
+        console.error('❌ Data load failed:', error);
+        hospitals = [];
+        currentHospitals = [];
+        // Allow the UI to show "No Data" message
     }
 }
 
@@ -129,27 +148,20 @@ function getCurrentLocation() {
                     longitude: position.coords.longitude
                 };
                 console.log('📍 Location obtained:', userLocation);
-                // Recalculate distances and re-render
                 calculateDistances();
-                displayHospitals(currentHospitals);
+                displayHospitals(currentHospitals); // Re-render with distances
             },
             error => {
                 console.warn('⚠️ Geolocation error:', error.message);
-                // Use default location (Freetown center)
-                userLocation = {
-                    latitude: 8.4844,
-                    longitude: -13.2344
-                };
+                // Default: Freetown
+                userLocation = { latitude: 8.4844, longitude: -13.2344 };
                 calculateDistances();
                 displayHospitals(currentHospitals);
             }
         );
     } else {
-        // Use default location
-        userLocation = {
-            latitude: 8.4844,
-            longitude: -13.2344
-        };
+        // Default: Freetown
+        userLocation = { latitude: 8.4844, longitude: -13.2344 };
         calculateDistances();
         displayHospitals(currentHospitals);
     }
@@ -911,8 +923,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize on load
-// Initialize on load
-window.addEventListener('load', initApp);
+// Initialize on load or immediately if already loaded (SPA Support)
+if (document.readyState === 'complete') {
+    initApp();
+} else {
+    window.addEventListener('load', initApp);
+}
 
 // Expose functions globally for HTML event handlers
 window.activateEmergency = activateEmergency;
