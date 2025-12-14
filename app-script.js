@@ -760,8 +760,9 @@ function activateEmergency() {
             `${nearest.district}, ${nearest.region}`;
 
         // Setup call button
+        // Setup call button - ALWAYS dial 117 for national emergency
         const callBtn = document.getElementById('emergencyCallBtn');
-        callBtn.onclick = () => callHospital(nearest.emergency_numbers?.[0] || nearest.phone);
+        callBtn.onclick = () => window.location.href = 'tel:117';
 
         // Setup directions button
         const directionsBtn = document.getElementById('emergencyDirectionsBtn');
