@@ -12,10 +12,10 @@ const ASSETS_TO_CACHE = [
     './admin-script.js',
     './data/hospitals_complete.json',
     './assets/logo.png',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+    './assets/vendor/leaflet/leaflet.css',
+    './assets/vendor/leaflet/leaflet.js',
+    './assets/vendor/leaflet/images/marker-icon.png',
+    './assets/vendor/leaflet/images/marker-shadow.png'
 ];
 
 // Install Service Worker

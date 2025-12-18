@@ -534,9 +534,8 @@ async function resetToDefault() {
     }
 
     try {
-        // Reload from original file
-        const response = await fetch('./data/hospitals_complete.json');
-        const data = await response.json();
+        // Reset to FALLBACK_DATA via MedFindData
+        const data = JSON.parse(JSON.stringify(MedFindData.FALLBACK_DATA));
         hospitals = data;
 
         // Update current hospital reference
