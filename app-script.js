@@ -204,7 +204,7 @@ function calculateDistances() {
     hospitals.sort((a, b) => a.distance - b.distance);
 }
 
-// Display Hospitals
+// Display hospitals
 function displayHospitals(hospitalsToDisplay) {
     const container = document.getElementById('hospitalList');
     container.innerHTML = '';
@@ -227,7 +227,141 @@ function displayHospitals(hospitalsToDisplay) {
     });
 
     document.getElementById('resultCount').textContent = hospitalsToDisplay.length;
-    document.getElementById('mapHospitalCount').textContent = hospitalsToDisplay.length;
+
+    // Update map if visible
+    if (mapViewActive && mapInstance) {
+        updateMapMarkers(hospitalsToDisplay);
+    }
+
+    // Update map count text
+    const mapCountEl = document.getElementById('mapHospitalCount');
+    if (mapCountEl) mapCountEl.textContent = hospitalsToDisplay.length;
+}
+
+// Map State
+let mapInstance = null;
+let mapMarkers = [];
+let mapViewActive = false;
+
+function switchView(view) {
+    const listBtn = document.getElementById('listViewBtn');
+    const mapBtn = document.getElementById('mapViewBtn');
+    const listContainer = document.getElementById('hospitalsContainer');
+    const mapContainer = document.getElementById('mapContainer');
+
+    if (view === 'list') {
+        listBtn.classList.add('active');
+        mapBtn.classList.remove('active');
+        listContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+        mapViewActive = false;
+    } else {
+        listBtn.classList.remove('active');
+        mapBtn.classList.add('active');
+        listContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+        mapViewActive = true;
+
+        // Initialize map if needed
+        if (!mapInstance) {
+            initMap();
+        } else {
+            // Refresh map size due to display change
+            setTimeout(() => {
+                mapInstance.invalidateSize();
+                updateMapMarkers(currentHospitals);
+            }, 100);
+        }
+    }
+}
+
+function initMap() {
+    const mapPlaceholder = document.querySelector('.map-placeholder');
+    if (mapPlaceholder) mapPlaceholder.style.display = 'none';
+
+    // Create map div if it doesn't exist cleaner
+    let mapDiv = document.getElementById('appMap');
+    if (!mapDiv) {
+        mapDiv = document.createElement('div');
+        mapDiv.id = 'appMap';
+        mapDiv.style.height = '100%';
+        mapDiv.style.width = '100%';
+        mapDiv.style.minHeight = '500px';
+        mapDiv.style.borderRadius = '12px';
+        document.getElementById('mapContainer').appendChild(mapDiv);
+    }
+
+    // Default to Sierra Leone center
+    const defaultCenter = [8.4844, -13.2344];
+    const zoomLevel = userLocation ? 10 : 8;
+    const center = userLocation ? [userLocation.latitude, userLocation.longitude] : defaultCenter;
+
+    if (typeof L !== 'undefined') {
+        mapInstance = L.map('appMap').setView(center, zoomLevel);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18
+        }).addTo(mapInstance);
+
+        // Add user location marker
+        if (userLocation) {
+            const userIcon = L.divIcon({
+                className: 'user-marker',
+                html: '<div style="background-color: #2563eb; width: 15px; height: 15px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20]
+            });
+            L.marker([userLocation.latitude, userLocation.longitude], { icon: userIcon })
+                .addTo(mapInstance)
+                .bindPopup("You are here");
+        }
+
+        updateMapMarkers(currentHospitals);
+    } else {
+        document.getElementById('mapContainer').innerHTML =
+            '<div style="text-align: center; padding: 40px;">Map library not loaded. Please refresh or use List view.</div>';
+    }
+}
+
+function updateMapMarkers(hospitalsToDisplay) {
+    if (!mapInstance) return;
+
+    // Clear existing markers
+    mapMarkers.forEach(marker => mapInstance.removeLayer(marker));
+    mapMarkers = [];
+
+    const group = new L.featureGroup();
+
+    hospitalsToDisplay.forEach(hospital => {
+        const marker = L.marker([hospital.latitude, hospital.longitude])
+            .bindPopup(`
+                <div style="min-width: 200px;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">${hospital.hospital_name}</h3>
+                    <p style="margin: 0 0 5px 0; color: #666;">${hospital.distance ? hospital.distance + ' km away' : ''}</p>
+                    <div style="margin-top: 8px;">
+                        <span style="font-weight: bold; color: ${hospital.dynamic_availability.beds_available_now > 0 ? 'green' : 'red'};">
+                            ${hospital.dynamic_availability.beds_available_now} Beds
+                        </span>
+                         • 
+                        <span style="font-weight: bold; color: ${hospital.dynamic_availability.oxygen_available === 'Yes' ? 'green' : 'red'};">
+                            O₂
+                        </span>
+                    </div>
+                    <button onclick="showHospitalDetail(MedFindData.getHospitalById('${hospital.id}'))" 
+                        style="width: 100%; margin-top: 10px; padding: 8px; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        View Details
+                    </button>
+                </div>
+            `);
+
+        marker.addTo(mapInstance);
+        group.addLayer(marker);
+        mapMarkers.push(marker);
+    });
+
+    if (hospitalsToDisplay.length > 0) {
+        mapInstance.fitBounds(group.getBounds().pad(0.1));
+    }
 }
 
 // Create Hospital Card
@@ -647,8 +781,27 @@ function showHospitalDetail(hospital) {
 
 // Filter Functions
 function filterByService(service) {
-    currentFilters.service = service;
+    // Toggle logic: if clicking same service, clear it
+    if (currentFilters.service === service) {
+        currentFilters.service = null;
+    } else {
+        currentFilters.service = service;
+    }
+
+    // Update visual state of service buttons
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.classList.remove('active-service');
+        if (currentFilters.service && card.onclick.toString().includes(currentFilters.service)) {
+            card.classList.add('active-service');
+        }
+    });
+
     applyFilters();
+
+    // Scroll to results if a service is selected
+    if (currentFilters.service) {
+        document.getElementById('hospitalsContainer').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function showAllHospitals() {
@@ -689,6 +842,18 @@ function applyFilters() {
 
     currentHospitals = filtered;
     displayHospitals(currentHospitals);
+
+    // Update Section Title based on filter
+    const titleSpan = document.querySelector('.results-header .section-title span:first-child');
+    if (titleSpan) {
+        if (currentFilters.service) {
+            // Capitalize first letter
+            const serviceName = currentFilters.service.charAt(0).toUpperCase() + currentFilters.service.slice(1);
+            titleSpan.textContent = `${serviceName} Services`;
+        } else {
+            titleSpan.textContent = 'Nearby Hospitals';
+        }
+    }
 
     // Update filter count
     const activeFilters = [

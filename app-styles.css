@@ -788,3 +788,13 @@ body {
 .hospital-card {
     animation: fadeIn 0.3s ease-out;
 }
+
+/* Active Service State */
+.service-card.active-service {
+    background: #e0e7ff; /* Light indigo */
+    border: 2px solid #3730a3; /* Dark indigo */
+    transform: scale(0.98);
+}
+.service-card.active-service .service-icon {
+    transform: scale(1.1);
+}
