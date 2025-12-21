@@ -8,6 +8,9 @@
     <meta name="description"
         content="Complete healthcare access platform for Sierra Leone - Find hospitals, manage data, view live map">
 
+    <!-- Offline Data Source -->
+    <script src="data.js"></script>
+
     <!-- Leaflet (Local/Offline) -->
     <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">
 
@@ -333,13 +336,6 @@
         </div>
     </header>
 
-    <style>
-        /* Hide the internal language selector of the Patient App since we have a global one */
-        #patientSection .language-selector {
-            display: none !important;
-        }
-    </style>
-    </div>
     </header>
 
     <!-- ============================================
@@ -651,16 +647,24 @@
                     maxZoom: 18
                 }).addTo(homeMap);
 
-                const response = await fetch('./data/hospitals_complete.json');
-                const hospitals = await response.json();
+                // Use MedFindData for offline robustness instead of fetch
+                console.log("[HomeMap] Initializing data...");
+                await MedFindData.init();
+                const hospitals = MedFindData.getAllHospitals();
+
+                console.log(`[HomeMap] Loaded ${hospitals.length} hospitals for map.`);
 
                 hospitals.forEach(hospital => {
+                    const statusColor = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes')
+                        ? 'green' : 'red';
+
                     L.marker([hospital.latitude, hospital.longitude])
                         .addTo(homeMap)
                         .bindPopup(`
                             <div style="padding: 10px;">
                                 <strong>${hospital.hospital_name}</strong><br>
-                                <small>${hospital.district}</small>
+                                <small>${hospital.district}</small><br>
+                                <small>Status: <b style="color:${statusColor}">${statusColor === 'green' ? 'Capable' : 'Limited'}</b></small>
                             </div>
                         `);
                 });

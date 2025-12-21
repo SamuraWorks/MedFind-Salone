@@ -8,15 +8,11 @@
     <meta name="description"
         content="Complete healthcare access platform for Sierra Leone - Find hospitals, manage data, view live map">
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
-
     <!-- Offline Data Source -->
     <script src="data.js"></script>
 
-    <!-- Leaflet CSS for Map Section -->
-    <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css" />
+    <!-- Leaflet (Local/Offline) -->
+    <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">
 
     <style>
         /* ============================================
@@ -121,33 +117,13 @@
         /* ============================================
            SECTION MANAGEMENT
            ============================================ */
-        /* SPA Sections */
         .spa-section {
             display: none;
-            width: 100%;
-            height: calc(100vh - 60px);
-            /* Fill remaining height */
-            border: none;
-            overflow: hidden;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .spa-section.active {
             display: block;
-        }
-
-        /* Iframe Styling */
-        .app-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        /* Landing Page Specific */
-        #homeSection {
-            height: auto;
-            min-height: calc(100vh - 60px);
-            overflow-y: auto;
         }
 
         @keyframes fadeIn {
@@ -276,13 +252,7 @@
         }
 
         /* Load patient and admin styles ONLY when their sections are active */
-        #patientSection.active {
-            /* Patient app will use its own styles from app-styles.css loaded dynamically */
-        }
-
-        #adminSection.active {
-            /* Admin will use its own styles from admin-styles.css loaded dynamically */
-        }
+        /* Styles are loaded dynamically via JS */
 
         /* ============================================
            MOBILE RESPONSIVE
@@ -366,13 +336,6 @@
         </div>
     </header>
 
-    <style>
-        /* Hide the internal language selector of the Patient App since we have a global one */
-        #patientSection .language-selector {
-            display: none !important;
-        }
-    </style>
-    </div>
     </header>
 
     <!-- ============================================
@@ -488,20 +451,24 @@
     </div>
 
     <!-- ============================================
-         SECTION 2: PATIENT APP
+         SECTION 2: PATIENT APP (100% ORIGINAL FROM app.html)
          ============================================ -->
     <div id="patientSection" class="spa-section">
-        <iframe src="app.html" class="app-iframe" title="Patient App"></iframe>
+        <div id="patientAppContent">
+            <!-- Complete content from app.html loaded dynamically -->
+        </div>
     </div>
 
     <!-- ============================================
-         SECTION 3: ADMIN PORTAL
+         SECTION 3: ADMIN PORTAL (100% ORIGINAL FROM admin.html)
          ============================================ -->
     <div id="adminSection" class="spa-section">
-        <iframe src="admin.html" class="app-iframe" title="Admin Portal"></iframe>
+        <div id="adminAppContent">
+            <!-- Complete content from admin.html loaded dynamically -->
+        </div>
     </div>
 
-    <!-- Leaflet JS for Map -->
+    <!-- Leaflet JS (Local/Offline) -->
     <script src="./assets/vendor/leaflet/leaflet.js"></script>
 
     <!-- Main SPA Navigation & Content Loading Script -->
@@ -510,7 +477,10 @@
         // GLOBAL STATE
         // ============================================
         let currentSection = 'homeSection';
+        let loadedSections = new Set(['homeSection']);
         let homeMap = null;
+        let patientStylesLoaded = false;
+        let adminStylesLoaded = false;
 
         // ============================================
         // SPA NAVIGATION
@@ -537,17 +507,113 @@
             };
             document.getElementById(navBtnMap[sectionId]).classList.add('active');
 
-            // Initialize home map if needed
+            // Load content if needed
+            if (!loadedSections.has(sectionId)) {
+                loadSectionContent(sectionId);
+            }
+
+            // Initialize home map
             if (sectionId === 'homeSection' && !homeMap) {
                 setTimeout(initializeHomeMap, 100);
             }
 
             currentSection = sectionId;
             document.getElementById('headerNav').classList.remove('show');
+            window.scrollTo(0, 0);
+        }
 
-            // If going home, scroll top
-            if (sectionId === 'homeSection') {
-                window.scrollTo(0, 0);
+        // ============================================
+        // DYNAMIC CONTENT LOADING
+        // ============================================
+        async function loadSectionContent(sectionId) {
+            if (sectionId === 'patientSection') {
+                await loadPatientApp();
+            } else if (sectionId === 'adminSection') {
+                await loadAdminApp();
+            }
+            loadedSections.add(sectionId);
+        }
+
+        async function loadPatientApp() {
+            const container = document.getElementById('patientAppContent');
+
+            try {
+                // Load CSS first (only once)
+                if (!patientStylesLoaded) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'app-styles.css';
+                    document.head.appendChild(link);
+                    patientStylesLoaded = true;
+                }
+
+                // Load HTML content
+                const response = await fetch('app.html');
+                const html = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                container.innerHTML = doc.body.innerHTML;
+
+                // Load JavaScript (Data Module FIRST)
+                if (!window.MedFindData) {
+                    const dataScript = document.createElement('script');
+                    dataScript.src = 'data.js';
+                    dataScript.async = false; // Ensure sequential loading
+                    document.body.appendChild(dataScript);
+                }
+
+                // Load App Script
+                const script = document.createElement('script');
+                script.src = 'app-script.js';
+                script.async = false;
+                document.body.appendChild(script);
+
+                console.log('✅ Patient App loaded with original design');
+            } catch (error) {
+                console.error('❌ Failed to load patient app:', error);
+                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Patient App. Please refresh.</p>';
+            }
+        }
+
+        async function loadAdminApp() {
+            const container = document.getElementById('adminAppContent');
+
+            try {
+                // Load CSS first (only once)
+                if (!adminStylesLoaded) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'admin-styles.css';
+                    document.head.appendChild(link);
+                    adminStylesLoaded = true;
+                }
+
+                // Load HTML content
+                const response = await fetch('admin.html');
+                const html = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                container.innerHTML = doc.body.innerHTML;
+
+                // Load JavaScript (Data Module FIRST)
+                if (!window.MedFindData) {
+                    const dataScript = document.createElement('script');
+                    dataScript.src = 'data.js';
+                    dataScript.async = false;
+                    document.body.appendChild(dataScript);
+                }
+
+                const script = document.createElement('script');
+                script.src = 'admin-script.js';
+                script.async = false;
+                document.body.appendChild(script);
+
+                console.log('✅ Admin Portal loaded with original design');
+            } catch (error) {
+                console.error('❌ Failed to load admin portal:', error);
+                container.innerHTML = '<p style="padding: 40px; text-align: center; color: #ef4444;">Failed to load Admin Portal. Please refresh.</p>';
             }
         }
 
@@ -572,9 +638,6 @@
         async function initializeHomeMap() {
             try {
                 const mapContainer = document.getElementById('homeMapContainer');
-                // Check if map is already initialized on this container
-                if (homeMap || mapContainer._leaflet_id) return;
-
                 mapContainer.innerHTML = '';
 
                 homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
@@ -592,7 +655,7 @@
                 console.log(`[HomeMap] Loaded ${hospitals.length} hospitals for map.`);
 
                 hospitals.forEach(hospital => {
-                    const statusColor = hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes'
+                    const statusColor = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes')
                         ? 'green' : 'red';
 
                     L.marker([hospital.latitude, hospital.longitude])
@@ -606,16 +669,14 @@
                         `);
                 });
 
-                if (hospitals.length > 0) {
-                    const group = new L.featureGroup(hospitals.map(h =>
-                        L.marker([h.latitude, h.longitude])
-                    ));
-                    homeMap.fitBounds(group.getBounds().pad(0.1));
-                }
+                const group = new L.featureGroup(hospitals.map(h =>
+                    L.marker([h.latitude, h.longitude])
+                ));
+                homeMap.fitBounds(group.getBounds().pad(0.1));
             } catch (error) {
                 console.error('Failed to load map:', error);
-                const container = document.getElementById('homeMapContainer');
-                if (container) container.innerHTML = '<p style="color: white;">Map data unavailable. Mode: Offline fallback active.</p>';
+                document.getElementById('homeMapContainer').innerHTML =
+                    '<p style="color: white;">Map unavailable. Please check your connection.</p>';
             }
         }
 
@@ -626,6 +687,9 @@
             document.getElementById('headerNav').classList.toggle('show');
         }
 
+        // ============================================
+        // GLOBAL LANGUAGE
+        // ============================================
         // ============================================
         // GLOBAL LANGUAGE
         // ============================================
