@@ -24,6 +24,7 @@ const MedFindData = (function () {
 
     // NUCLEAR FALLBACK: FULL DATASET EMBEDDED
     const FALLBACK_DATA = [
+        // --- HOSPITALS (FREETOWN) ---
         {
             "id": "hosp_001",
             "hospital_name": "Connaught Hospital",
@@ -31,208 +32,64 @@ const MedFindData = (function () {
             "region": "Western Area",
             "latitude": 8.4844,
             "longitude": -13.2344,
-            "phone": "+232 76 123 456",
+            "phone": "+232 76 616 182",
             "email": "info@connaughthospital.sl",
             "website": "http://www.connaughthospital.gov.sl",
             "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 350,
-                "adult": 200,
-                "maternity": 80,
-                "pediatric": 50,
-                "icu": 20
-            },
-            "average_occupancy_rates": {
-                "overall": 0.85,
-                "adult": 0.88,
-                "maternity": 0.90,
-                "pediatric": 0.75,
-                "icu": 0.95
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": true,
-                "other": [
-                    "Internal Medicine",
-                    "Outpatient Services",
-                    "Pharmacy"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 4,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Abscess Drainage",
-                        "Trauma Surgery"
-                    ]
-                },
-                "orthopedic_surgery": {
-                    "count": 3,
-                    "services": [
-                        "Fracture Repair",
-                        "Joint Surgery",
-                        "Bone Trauma",
-                        "Spine Surgery"
-                    ]
-                },
-                "neurosurgery": {
-                    "count": 1,
-                    "services": [
-                        "Head Trauma",
-                        "Brain Surgery",
-                        "Spinal Cord Procedures"
-                    ]
-                },
-                "cardiothoracic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Chest Trauma",
-                        "Heart Procedures",
-                        "Lung Surgery"
-                    ]
-                },
-                "vascular_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Blood Vessel Repair",
-                        "Vascular Access"
-                    ]
-                },
-                "plastic_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Burn Treatment",
-                        "Reconstructive Surgery",
-                        "Wound Care"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 6,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Surgery",
-                        "Gynecological Procedures"
-                    ]
-                },
-                "pediatric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Neonatal Surgery",
-                        "Pediatric Emergency Surgery"
-                    ]
-                },
-                "urological_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Kidney Stones",
-                        "Urinary Tract Procedures"
-                    ]
-                },
-                "ent_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Ear Surgery",
-                        "Nose Surgery",
-                        "Throat Procedures",
-                        "Tonsillectomy"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "pediatricians": 5,
-                "anesthetists": 3,
-                "radiologists": 2,
-                "cardiologists": 2,
-                "neurologists": 1,
-                "oncologists": 1,
-                "nephrologists": 1,
-                "gastroenterologists": 1,
-                "pulmonologists": 1,
-                "psychiatrists": 2
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": true,
-                    "mri": false,
-                    "mammography": true,
-                    "fluoroscopy": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true,
-                    "pcr_testing": true
-                },
-                "cardiology": {
-                    "ecg": true,
-                    "echocardiography": true,
-                    "holter_monitoring": false,
-                    "stress_testing": false
-                },
-                "critical_care": {
-                    "ventilators": 12,
-                    "oxygen_concentrators": 25,
-                    "patient_monitors": 30,
-                    "defibrillators": 8,
-                    "infusion_pumps": 40
-                },
-                "surgical": {
-                    "operating_theatres": 4,
-                    "anesthesia_machines": 4,
-                    "surgical_instruments": "Complete",
-                    "laparoscopic_equipment": true,
-                    "sterilization_unit": true
-                },
-                "dialysis": {
-                    "available": true,
-                    "machines": 4,
-                    "hemodialysis": true,
-                    "peritoneal_dialysis": false
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "chemotherapy_drugs": true,
-                    "controlled_substances": true
-                },
-                "other": {
-                    "ambulances": 3,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "blood_storage": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 52,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T16:30:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 123 456",
-                "+232 76 123 457"
-            ],
+            "static_bed_capacity": { "total": 350, "adult": 200, "maternity": 80, "pediatric": 50, "icu": 20 },
+            "average_occupancy_rates": { "overall": 0.85, "adult": 0.88, "maternity": 0.90, "pediatric": 0.75, "icu": 0.95 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "mental_health": true, "pharmacy": true, "other": ["Internal Medicine", "Outpatient Services"] },
+            "surgeons_by_specialty": { "general_surgery": { "count": 4, "services": ["Appendectomy", "Hernia Repair", "Abscess Drainage", "Trauma Surgery"] } },
+            "medical_specialists": { "pediatricians": 5, "anesthetists": 3, "radiologists": 2 },
+            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true, "ct_scan": true }, "laboratory": { "clinical_chemistry": true, "blood_bank": true }, "critical_care": { "ventilators": 12, "oxygen_concentrators": 25 }, "surgical": { "operating_theatres": 4 }, "pharmacy": { "24_hour": true, "emergency_drugs": true }, "other": { "ambulances": 3 } },
+            "dynamic_availability": { "beds_available_now": 52, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T16:30:00Z" },
+            "emergency_numbers": ["+232 76 616 182", "+232 22 222 023"],
             "notes": "National referral hospital. Main trauma center for Freetown. 24/7 emergency services."
         },
         {
             "id": "hosp_002",
+            "hospital_name": "Choithram Memorial Hospital",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.4550,
+            "longitude": -13.2550,
+            "phone": "+232 76 980 000",
+            "email": "info@choithram.sl",
+            "website": "http://www.choithramhospital.sl",
+            "facility_type": "Private",
+            "static_bed_capacity": { "total": 60, "adult": 40, "maternity": 10, "pediatric": 8, "icu": 2 },
+            "average_occupancy_rates": { "overall": 0.60, "adult": 0.62, "maternity": 0.65, "pediatric": 0.55, "icu": 0.70 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": false, "icu": true, "mental_health": false, "pharmacy": true, "other": ["Cardiology", "MRI/CT Scan", "Dialysis"] },
+            "surgeons_by_specialty": { "general_surgery": { "count": 2, "services": ["Laparoscopic Surgery", "Hernia Repair"] } },
+            "medical_specialists": { "general_practitioners": 4, "pediatricians": 2, "cardiologists": 2 },
+            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true, "ct_scan": true, "mri": true }, "laboratory": { "clinical_chemistry": true }, "critical_care": { "ventilators": 4 }, "surgical": { "operating_theatres": 2 }, "dialysis": { "available": true, "machines": 6 }, "pharmacy": { "24_hour": true } },
+            "dynamic_availability": { "beds_available_now": 24, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T16:25:00Z" },
+            "emergency_numbers": ["+232 76 980 000", "+232 22 232 598"],
+            "notes": "Premium private hospital with advanced diagnostic equipment including MRI and CT scan."
+        },
+        {
+            "id": "hosp_003",
+            "hospital_name": "Emergency Hospital Goderich",
+            "district": "Western Area Rural",
+            "region": "Western Area",
+            "latitude": 8.4330,
+            "longitude": -13.2900,
+            "phone": "+232 76 611 386",
+            "email": "info@emergency.it",
+            "website": "https://www.emergency.it",
+            "facility_type": "NGO",
+            "static_bed_capacity": { "total": 100, "adult": 60, "maternity": 0, "pediatric": 40, "icu": 10 },
+            "average_occupancy_rates": { "overall": 0.90, "adult": 0.95, "maternity": 0, "pediatric": 0.85, "icu": 0.95 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": false, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "mental_health": false, "pharmacy": true, "other": ["Trauma Surgery", "Free Care"] },
+            "surgeons_by_specialty": { "trauma_surgery": { "count": 4, "services": ["Advanced Trauma"] }, "pediatric_surgery": { "count": 2, "services": ["General"] } },
+            "medical_specialists": { "surgeons": 6, "anesthetists": 3, "pediatricians": 4 },
+            "technology_services": { "imaging": { "x_ray": true, "ct_scan": true }, "laboratory": { "advanced_labs": true }, "critical_care": { "ventilators": 8, "oxygen_concentrators": 20 }, "surgical": { "operating_theatres": 3 }, "pharmacy": { "free_meds": true }, "other": { "ambulances": 2 } },
+            "dynamic_availability": { "beds_available_now": 5, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:30:00Z" },
+            "emergency_numbers": ["+232 76 611 386"],
+            "notes": "World-class trauma and surgical center. Services are free of charge. Specializes in Trauma and Paediatrics."
+        },
+        {
+            "id": "hosp_004",
             "hospital_name": "Princess Christian Maternity Hospital (PCMH)",
             "district": "Western Area Urban",
             "region": "Western Area",
@@ -242,141 +99,18 @@ const MedFindData = (function () {
             "email": "pcmh@health.gov.sl",
             "website": null,
             "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 150,
-                "adult": 0,
-                "maternity": 130,
-                "pediatric": 20,
-                "icu": 0
-            },
-            "average_occupancy_rates": {
-                "overall": 0.92,
-                "adult": 0,
-                "maternity": 0.95,
-                "pediatric": 0.80,
-                "icu": 0
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": false,
-                "icu": false,
-                "mental_health": false,
-                "other": [
-                    "Obstetrics",
-                    "Gynecology",
-                    "Family Planning",
-                    "Neonatal Care"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "obstetric_surgery": {
-                    "count": 8,
-                    "services": [
-                        "C-Section",
-                        "Emergency C-Section",
-                        "Ectopic Pregnancy Surgery",
-                        "Post-Partum Hemorrhage Control"
-                    ]
-                },
-                "gynecological_surgery": {
-                    "count": 4,
-                    "services": [
-                        "Hysterectomy",
-                        "Ovarian Surgery",
-                        "Fibroid Removal",
-                        "D&C"
-                    ]
-                },
-                "neonatal_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Neonatal Emergency Procedures"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "obstetricians": 8,
-                "gynecologists": 4,
-                "pediatricians": 3,
-                "anesthetists": 2,
-                "radiologists": 1,
-                "neonatologists": 2,
-                "midwives": 25
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "mammography": false,
-                    "fetal_monitoring": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": true,
-                    "serology": true,
-                    "pregnancy_testing": true
-                },
-                "obstetric": {
-                    "fetal_monitors": 15,
-                    "ultrasound_machines": 4,
-                    "delivery_beds": 20,
-                    "neonatal_incubators": 10,
-                    "phototherapy_units": 8
-                },
-                "critical_care": {
-                    "ventilators": 0,
-                    "oxygen_concentrators": 15,
-                    "patient_monitors": 20,
-                    "defibrillators": 3,
-                    "infusion_pumps": 25
-                },
-                "surgical": {
-                    "operating_theatres": 3,
-                    "anesthesia_machines": 3,
-                    "surgical_instruments": "Complete",
-                    "cesarean_section_kits": true,
-                    "sterilization_unit": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "obstetric_drugs": true,
-                    "contraceptives": true
-                },
-                "other": {
-                    "ambulances": 1,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "blood_storage": false
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 12,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "No",
-                "last_updated_timestamp": "2025-12-13T15:45:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 000 002",
-                "+232 30 555 001"
-            ],
+            "static_bed_capacity": { "total": 150, "adult": 0, "maternity": 130, "pediatric": 20, "icu": 0 },
+            "average_occupancy_rates": { "overall": 0.92, "adult": 0, "maternity": 0.95, "pediatric": 0.80, "icu": 0 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "pharmacy": true, "other": ["Obstetrics", "Gynecology", "Family Planning"] },
+            "surgeons_by_specialty": { "obstetric_surgery": { "count": 8, "services": ["C-Section", "Emergency C-Section"] } },
+            "medical_specialists": { "obstetricians": 8, "gynecologists": 4, "midwives": 25 },
+            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "clinical_chemistry": true, "hematology": true }, "obstetric": { "fetal_monitors": 15, "ultrasound_machines": 4 }, "pharmacy": { "24_hour": true, "obstetric_drugs": true } },
+            "dynamic_availability": { "beds_available_now": 12, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "No", "last_updated_timestamp": "2025-12-13T15:45:00Z" },
+            "emergency_numbers": ["+232 76 000 002"],
             "notes": "Specialized maternity hospital. Handles high-risk pregnancies and C-sections."
         },
         {
-            "id": "hosp_003",
+            "id": "hosp_005",
             "hospital_name": "Ola During Children's Hospital",
             "district": "Western Area Urban",
             "region": "Western Area",
@@ -386,1086 +120,15 @@ const MedFindData = (function () {
             "email": "oladuring@health.gov.sl",
             "website": null,
             "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 120,
-                "adult": 0,
-                "maternity": 0,
-                "pediatric": 110,
-                "icu": 10
-            },
-            "average_occupancy_rates": {
-                "overall": 0.88,
-                "adult": 0,
-                "maternity": 0,
-                "pediatric": 0.90,
-                "icu": 0.85
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": false,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": false,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "Neonatal Care",
-                    "Nutrition",
-                    "Immunization"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "pediatric_surgery": {
-                    "count": 3,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Congenital Defects",
-                        "Emergency Pediatric Surgery"
-                    ]
-                },
-                "neonatal_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Neonatal Emergency Surgery",
-                        "Congenital Anomaly Repair"
-                    ]
-                },
-                "orthopedic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Pediatric Fractures",
-                        "Bone Deformity Correction"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "pediatricians": 7,
-                "neonatologists": 3,
-                "pediatric_cardiologists": 1,
-                "anesthetists": 2,
-                "radiologists": 1,
-                "nutritionists": 2,
-                "child_psychologists": 1
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "pediatric_imaging": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": true,
-                    "serology": true,
-                    "genetic_screening": false
-                },
-                "pediatric_care": {
-                    "neonatal_incubators": 12,
-                    "phototherapy_units": 10,
-                    "pediatric_ventilators": 8,
-                    "cpap_machines": 6,
-                    "warming_beds": 15
-                },
-                "critical_care": {
-                    "ventilators": 10,
-                    "oxygen_concentrators": 20,
-                    "patient_monitors": 25,
-                    "defibrillators": 4,
-                    "infusion_pumps": 30
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Pediatric Complete",
-                    "sterilization_unit": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "pediatric_formulations": true,
-                    "vaccines": true
-                },
-                "other": {
-                    "ambulances": 2,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "milk_bank": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 14,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T16:00:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 000 001"
-            ],
+            "static_bed_capacity": { "total": 120, "adult": 0, "maternity": 0, "pediatric": 110, "icu": 10 },
+            "average_occupancy_rates": { "overall": 0.88 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": false, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": false, "icu": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 14, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T16:00:00Z" },
+            "emergency_numbers": ["+232 76 000 001"],
             "notes": "National pediatric referral hospital. Specialized in child healthcare."
         },
         {
-            "id": "hosp_004",
-            "hospital_name": "Bo Government Hospital",
-            "district": "Bo",
-            "region": "Southern Province",
-            "latitude": 7.9600,
-            "longitude": -11.7400,
-            "phone": "+232 75 333 444",
-            "email": "bogovhospital@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 200,
-                "adult": 120,
-                "maternity": 50,
-                "pediatric": 25,
-                "icu": 5
-            },
-            "average_occupancy_rates": {
-                "overall": 0.80,
-                "adult": 0.82,
-                "maternity": 0.85,
-                "pediatric": 0.70,
-                "icu": 0.90
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "General Practice",
-                    "Outpatient",
-                    "Dental"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery",
-                        "Abscess Drainage"
-                    ]
-                },
-                "orthopedic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Fracture Repair",
-                        "Joint Surgery"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 3,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Procedures"
-                    ]
-                },
-                "pediatric_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Pediatric Emergency Surgery"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 8,
-                "pediatricians": 2,
-                "obstetricians": 3,
-                "anesthetists": 1,
-                "radiologists": 1,
-                "dentists": 2,
-                "internists": 3
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "mammography": false,
-                    "dental_x_ray": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true,
-                    "malaria_testing": true
-                },
-                "critical_care": {
-                    "ventilators": 5,
-                    "oxygen_concentrators": 15,
-                    "patient_monitors": 18,
-                    "defibrillators": 3,
-                    "infusion_pumps": 20
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Complete",
-                    "sterilization_unit": true
-                },
-                "dental": {
-                    "dental_chairs": 3,
-                    "x_ray": true,
-                    "extraction_tools": true,
-                    "sterilization": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "antimalarials": true,
-                    "antibiotics": true
-                },
-                "other": {
-                    "ambulances": 2,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "blood_storage": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 40,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T14:20:00Z"
-            },
-            "emergency_numbers": [
-                "+232 75 333 444",
-                "+232 75 333 445"
-            ],
-            "notes": "Regional referral hospital for Southern Province."
-        },
-        {
-            "id": "hosp_005",
-            "hospital_name": "Kenema Government Hospital",
-            "district": "Kenema",
-            "region": "Eastern Province",
-            "latitude": 7.8750,
-            "longitude": -11.1850,
-            "phone": "+232 76 777 666",
-            "email": "kenemahosp@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 180,
-                "adult": 110,
-                "maternity": 40,
-                "pediatric": 25,
-                "icu": 5
-            },
-            "average_occupancy_rates": {
-                "overall": 0.78,
-                "adult": 0.80,
-                "maternity": 0.82,
-                "pediatric": 0.68,
-                "icu": 0.85
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "Lassa Fever Unit",
-                    "Infectious Diseases"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Surgery"
-                    ]
-                },
-                "pediatric_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Pediatric Emergency Procedures"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 6,
-                "pediatricians": 2,
-                "obstetricians": 2,
-                "anesthetists": 1,
-                "radiologists": 1,
-                "infectious_disease_specialists": 2,
-                "internists": 2
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "portable_x_ray": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true,
-                    "lassa_fever_testing": true,
-                    "pcr_lab": true
-                },
-                "infectious_disease": {
-                    "isolation_units": 10,
-                    "biosafety_cabinets": 2,
-                    "protective_equipment": true,
-                    "negative_pressure_rooms": 4
-                },
-                "critical_care": {
-                    "ventilators": 5,
-                    "oxygen_concentrators": 12,
-                    "patient_monitors": 15,
-                    "defibrillators": 3,
-                    "infusion_pumps": 18
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Complete",
-                    "sterilization_unit": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "antivirals": true,
-                    "antibiotics": true
-                },
-                "other": {
-                    "ambulances": 1,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "blood_storage": true,
-                    "incinerator": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 39,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "No",
-                "last_updated_timestamp": "2025-12-13T13:50:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 777 666"
-            ],
-            "notes": "Regional hospital with specialized Lassa Fever treatment unit."
-        },
-        {
             "id": "hosp_006",
-            "hospital_name": "Makeni Government Hospital",
-            "district": "Bombali",
-            "region": "Northern Province",
-            "latitude": 8.8850,
-            "longitude": -12.0450,
-            "phone": "+232 79 111 222",
-            "email": "makenihospital@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 160,
-                "adult": 100,
-                "maternity": 35,
-                "pediatric": 20,
-                "icu": 5
-            },
-            "average_occupancy_rates": {
-                "overall": 0.75,
-                "adult": 0.78,
-                "maternity": 0.80,
-                "pediatric": 0.65,
-                "icu": 0.80
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "Eye Clinic",
-                    "Dental",
-                    "General Practice"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery",
-                        "Abscess Drainage"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Procedures"
-                    ]
-                },
-                "ophthalmic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Cataract Surgery",
-                        "Eye Trauma",
-                        "Pterygium Surgery"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 6,
-                "pediatricians": 2,
-                "obstetricians": 2,
-                "anesthetists": 1,
-                "radiologists": 1,
-                "ophthalmologists": 2,
-                "dentists": 2,
-                "internists": 2
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "dental_x_ray": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true
-                },
-                "ophthalmology": {
-                    "slit_lamp": 2,
-                    "tonometer": 2,
-                    "surgical_microscope": 1,
-                    "phacoemulsification": true
-                },
-                "critical_care": {
-                    "ventilators": 5,
-                    "oxygen_concentrators": 12,
-                    "patient_monitors": 15,
-                    "defibrillators": 3,
-                    "infusion_pumps": 18
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Complete",
-                    "sterilization_unit": true
-                },
-                "dental": {
-                    "dental_chairs": 2,
-                    "x_ray": true,
-                    "extraction_tools": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "eye_medications": true
-                },
-                "other": {
-                    "ambulances": 2,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "blood_storage": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 40,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T15:10:00Z"
-            },
-            "emergency_numbers": [
-                "+232 79 111 222",
-                "+232 79 111 223"
-            ],
-            "notes": "Regional referral hospital for Northern Province. Eye clinic available."
-        },
-        {
-            "id": "hosp_007",
-            "hospital_name": "Koidu Government Hospital",
-            "district": "Kono",
-            "region": "Eastern Province",
-            "latitude": 8.6440,
-            "longitude": -10.9710,
-            "phone": "+232 77 888 999",
-            "email": "koiduhospital@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 100,
-                "adult": 60,
-                "maternity": 25,
-                "pediatric": 12,
-                "icu": 3
-            },
-            "average_occupancy_rates": {
-                "overall": 0.70,
-                "adult": 0.72,
-                "maternity": 0.75,
-                "pediatric": 0.60,
-                "icu": 0.80
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": false,
-                "lab": true,
-                "blood_bank": false,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "General Practice",
-                    "Outpatient"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Basic Trauma"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 1,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Surgery"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 5,
-                "pediatricians": 1,
-                "obstetricians": 1,
-                "anesthetists": 1,
-                "nurses": 15,
-                "midwives": 8
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": false,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": false,
-                    "serology": true,
-                    "rapid_diagnostic_tests": true
-                },
-                "critical_care": {
-                    "ventilators": 2,
-                    "oxygen_concentrators": 8,
-                    "patient_monitors": 10,
-                    "defibrillators": 2,
-                    "infusion_pumps": 12
-                },
-                "surgical": {
-                    "operating_theatres": 1,
-                    "anesthesia_machines": 1,
-                    "surgical_instruments": "Basic",
-                    "sterilization_unit": true
-                },
-                "pharmacy": {
-                    "24_hour": false,
-                    "emergency_drugs": true,
-                    "basic_medications": true
-                },
-                "other": {
-                    "ambulances": 1,
-                    "emergency_generator": true,
-                    "oxygen_cylinders": 20
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 30,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "No",
-                "last_updated_timestamp": "2025-12-13T12:30:00Z"
-            },
-            "emergency_numbers": [
-                "+232 77 888 999"
-            ],
-            "notes": "District hospital serving Kono region."
-        },
-        {
-            "id": "hosp_008",
-            "hospital_name": "Port Loko Government Hospital",
-            "district": "Port Loko",
-            "region": "Northern Province",
-            "latitude": 8.7680,
-            "longitude": -12.7870,
-            "phone": "+232 78 222 333",
-            "email": "portlokohospital@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 90,
-                "adult": 55,
-                "maternity": 20,
-                "pediatric": 12,
-                "icu": 3
-            },
-            "average_occupancy_rates": {
-                "overall": 0.72,
-                "adult": 0.75,
-                "maternity": 0.78,
-                "pediatric": 0.62,
-                "icu": 0.75
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": false,
-                "lab": true,
-                "blood_bank": false,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "General Practice"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 1,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Procedures"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 4,
-                "pediatricians": 1,
-                "obstetricians": 1,
-                "anesthetists": 1,
-                "nurses": 12,
-                "midwives": 6
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": false,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": false,
-                    "serology": true,
-                    "malaria_testing": true
-                },
-                "critical_care": {
-                    "ventilators": 2,
-                    "oxygen_concentrators": 6,
-                    "patient_monitors": 8,
-                    "defibrillators": 2,
-                    "infusion_pumps": 10
-                },
-                "surgical": {
-                    "operating_theatres": 1,
-                    "anesthesia_machines": 1,
-                    "surgical_instruments": "Basic",
-                    "sterilization_unit": true
-                },
-                "pharmacy": {
-                    "24_hour": false,
-                    "emergency_drugs": true,
-                    "basic_medications": true
-                },
-                "other": {
-                    "ambulances": 1,
-                    "emergency_generator": true,
-                    "oxygen_cylinders": 15
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 25,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T14:00:00Z"
-            },
-            "emergency_numbers": [
-                "+232 78 222 333"
-            ],
-            "notes": "District hospital for Port Loko area."
-        },
-        {
-            "id": "hosp_009",
-            "hospital_name": "China-Sierra Leone Friendship Hospital",
-            "district": "Western Area Urban",
-            "region": "Western Area",
-            "latitude": 8.4200,
-            "longitude": -13.2100,
-            "phone": "+232 76 555 777",
-            "email": "cslf.hospital@health.gov.sl",
-            "website": "http://www.cslhospital.sl",
-            "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 100,
-                "adult": 60,
-                "maternity": 20,
-                "pediatric": 15,
-                "icu": 5
-            },
-            "average_occupancy_rates": {
-                "overall": 0.68,
-                "adult": 0.70,
-                "maternity": 0.72,
-                "pediatric": 0.60,
-                "icu": 0.75
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "Orthopedics",
-                    "ENT",
-                    "Ophthalmology"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 3,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery",
-                        "Laparoscopic Surgery"
-                    ]
-                },
-                "orthopedic_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Fracture Repair",
-                        "Joint Surgery",
-                        "Spine Surgery",
-                        "Arthroscopy"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "C-Section",
-                        "Gynecological Surgery"
-                    ]
-                },
-                "ent_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Tonsillectomy",
-                        "Adenoidectomy",
-                        "Sinus Surgery",
-                        "Ear Surgery"
-                    ]
-                },
-                "ophthalmic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Cataract Surgery",
-                        "Eye Trauma",
-                        "Glaucoma Surgery"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 5,
-                "pediatricians": 2,
-                "obstetricians": 2,
-                "anesthetists": 2,
-                "radiologists": 1,
-                "orthopedic_surgeons": 2,
-                "ent_specialists": 1,
-                "ophthalmologists": 1,
-                "internists": 3
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": true,
-                    "mri": false,
-                    "mammography": true,
-                    "fluoroscopy": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true,
-                    "immunology": true
-                },
-                "critical_care": {
-                    "ventilators": 5,
-                    "oxygen_concentrators": 12,
-                    "patient_monitors": 18,
-                    "defibrillators": 4,
-                    "infusion_pumps": 20
-                },
-                "surgical": {
-                    "operating_theatres": 3,
-                    "anesthesia_machines": 3,
-                    "surgical_instruments": "Advanced",
-                    "laparoscopic_equipment": true,
-                    "arthroscopic_equipment": true,
-                    "sterilization_unit": true
-                },
-                "orthopedics": {
-                    "c_arm_fluoroscopy": true,
-                    "traction_beds": 4,
-                    "orthopedic_instruments": "Complete"
-                },
-                "ophthalmology": {
-                    "slit_lamp": 2,
-                    "surgical_microscope": 1,
-                    "phacoemulsification": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "specialized_medications": true
-                },
-                "other": {
-                    "ambulances": 2,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "blood_storage": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 32,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T16:15:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 555 777",
-                "+232 76 555 778"
-            ],
-            "notes": "Modern facility with Chinese medical cooperation. Well-equipped."
-        },
-        {
-            "id": "hosp_010",
-            "hospital_name": "Waterloo Hospital (Adventist)",
-            "district": "Western Area Rural",
-            "region": "Western Area",
-            "latitude": 8.3380,
-            "longitude": -13.0700,
-            "phone": "+232 76 444 555",
-            "email": "waterloo.hospital@adventist.sl",
-            "website": "http://www.adventisthealthsl.org",
-            "facility_type": "Mission",
-            "static_bed_capacity": {
-                "total": 80,
-                "adult": 45,
-                "maternity": 20,
-                "pediatric": 12,
-                "icu": 3
-            },
-            "average_occupancy_rates": {
-                "overall": 0.65,
-                "adult": 0.68,
-                "maternity": 0.70,
-                "pediatric": 0.55,
-                "icu": 0.70
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": false,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "General Practice",
-                    "Dental"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Trauma Surgery",
-                        "Abscess Drainage"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Surgery"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 4,
-                "pediatricians": 1,
-                "obstetricians": 2,
-                "anesthetists": 1,
-                "radiologists": 1,
-                "dentists": 2,
-                "internists": 2
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "dental_x_ray": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": true,
-                    "serology": true
-                },
-                "critical_care": {
-                    "ventilators": 3,
-                    "oxygen_concentrators": 10,
-                    "patient_monitors": 12,
-                    "defibrillators": 2,
-                    "infusion_pumps": 15
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Complete",
-                    "sterilization_unit": true
-                },
-                "dental": {
-                    "dental_chairs": 2,
-                    "x_ray": true,
-                    "extraction_tools": true
-                },
-                "pharmacy": {
-                    "24_hour": false,
-                    "emergency_drugs": true,
-                    "basic_medications": true
-                },
-                "other": {
-                    "ambulances": 1,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 28,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "On Call",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T15:30:00Z"
-            },
-            "emergency_numbers": [
-                "+232 76 444 555"
-            ],
-            "notes": "Mission hospital run by Seventh-day Adventist Church. Quality care."
-        },
-        {
-            "id": "hosp_011",
             "hospital_name": "34 Military Hospital",
             "district": "Western Area Urban",
             "region": "Western Area",
@@ -1473,709 +136,351 @@ const MedFindData = (function () {
             "longitude": -13.2670,
             "phone": "+232 78 555 123",
             "email": "34military@mod.gov.sl",
-            "website": null,
             "facility_type": "Government",
-            "static_bed_capacity": {
-                "total": 120,
-                "adult": 80,
-                "maternity": 20,
-                "pediatric": 15,
-                "icu": 5
-            },
-            "average_occupancy_rates": {
-                "overall": 0.70,
-                "adult": 0.72,
-                "maternity": 0.75,
-                "pediatric": 0.62,
-                "icu": 0.80
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": true,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "General Practice",
-                    "Infectious Diseases",
-                    "Trauma"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 3,
-                    "services": [
-                        "Appendectomy",
-                        "Hernia Repair",
-                        "Gunshot Wounds",
-                        "Blast Injuries"
-                    ]
-                },
-                "trauma_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Emergency Trauma",
-                        "Penetrating Trauma",
-                        "Blunt Trauma"
-                    ]
-                },
-                "orthopedic_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Fracture Repair",
-                        "Combat Injuries",
-                        "Joint Surgery"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 2,
-                    "services": [
-                        "C-Section",
-                        "Emergency Obstetric Procedures"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 6,
-                "pediatricians": 2,
-                "obstetricians": 2,
-                "anesthetists": 2,
-                "radiologists": 1,
-                "trauma_specialists": 2,
-                "internists": 3,
-                "emergency_physicians": 2
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": false,
-                    "mri": false,
-                    "portable_x_ray": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": true,
-                    "pathology": true,
-                    "serology": true,
-                    "toxicology": true
-                },
-                "critical_care": {
-                    "ventilators": 5,
-                    "oxygen_concentrators": 15,
-                    "patient_monitors": 18,
-                    "defibrillators": 5,
-                    "infusion_pumps": 20
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Advanced",
-                    "trauma_kits": true,
-                    "sterilization_unit": true
-                },
-                "emergency": {
-                    "trauma_bay": true,
-                    "resuscitation_room": true,
-                    "emergency_kits": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "antibiotics": true,
-                    "pain_management": true
-                },
-                "other": {
-                    "ambulances": 3,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "blood_storage": true,
-                    "helipad": false
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 36,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T16:20:00Z"
-            },
-            "emergency_numbers": [
-                "+232 78 555 123",
-                "+232 78 555 124"
-            ],
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 36, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T16:20:00Z" },
+            "emergency_numbers": ["+232 78 555 123"],
             "notes": "Military hospital that also serves civilians. Well-equipped emergency department."
         },
         {
-            "id": "hosp_012",
-            "hospital_name": "Choithram Memorial Hospital",
+            "id": "hosp_007",
+            "hospital_name": "Life Care Hospital - Western",
             "district": "Western Area Urban",
             "region": "Western Area",
-            "latitude": 8.4550,
-            "longitude": -13.2550,
-            "phone": "+232 88 999 888",
-            "email": "info@choithram.sl",
-            "website": "http://www.choithramhospital.sl",
+            "latitude": 8.450,
+            "longitude": -13.260,
+            "phone": "+232 80 220 220",
+            "email": "info@lifecare-hospital.com",
             "facility_type": "Private",
-            "static_bed_capacity": {
-                "total": 60,
-                "adult": 40,
-                "maternity": 10,
-                "pediatric": 8,
-                "icu": 2
-            },
-            "average_occupancy_rates": {
-                "overall": 0.60,
-                "adult": 0.62,
-                "maternity": 0.65,
-                "pediatric": 0.55,
-                "icu": 0.70
-            },
-            "key_services": {
-                "emergency": true,
-                "surgery": true,
-                "maternity": true,
-                "pediatrics": true,
-                "radiology": true,
-                "lab": true,
-                "blood_bank": false,
-                "icu": true,
-                "mental_health": false,
-                "other": [
-                    "Cardiology",
-                    "MRI/CT Scan",
-                    "Dialysis",
-                    "Pharmacy"
-                ]
-            },
-            "surgeons_by_specialty": {
-                "general_surgery": {
-                    "count": 2,
-                    "services": [
-                        "Laparoscopic Surgery",
-                        "Hernia Repair",
-                        "Appendectomy",
-                        "Gallbladder Surgery"
-                    ]
-                },
-                "cardiothoracic_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Cardiac Procedures",
-                        "Thoracic Surgery"
-                    ]
-                },
-                "obstetric_surgery": {
-                    "count": 1,
-                    "services": [
-                        "C-Section",
-                        "Gynecological Surgery"
-                    ]
-                },
-                "urological_surgery": {
-                    "count": 1,
-                    "services": [
-                        "Prostate Surgery",
-                        "Kidney Stones",
-                        "Urinary Tract Procedures"
-                    ]
-                }
-            },
-            "medical_specialists": {
-                "general_practitioners": 4,
-                "pediatricians": 2,
-                "obstetricians": 1,
-                "anesthetists": 2,
-                "radiologists": 2,
-                "cardiologists": 2,
-                "nephrologists": 1,
-                "endocrinologists": 1,
-                "internists": 3
-            },
-            "technology_services": {
-                "imaging": {
-                    "x_ray": true,
-                    "ultrasound": true,
-                    "ct_scan": true,
-                    "mri": true,
-                    "mammography": true,
-                    "fluoroscopy": true,
-                    "doppler_ultrasound": true
-                },
-                "laboratory": {
-                    "clinical_chemistry": true,
-                    "hematology": true,
-                    "microbiology": true,
-                    "blood_bank": false,
-                    "pathology": true,
-                    "serology": true,
-                    "immunology": true,
-                    "endocrinology": true,
-                    "molecular_diagnostics": true
-                },
-                "cardiology": {
-                    "ecg": true,
-                    "echocardiography": true,
-                    "holter_monitoring": true,
-                    "stress_testing": true,
-                    "cardiac_cathlab": false
-                },
-                "critical_care": {
-                    "ventilators": 4,
-                    "oxygen_concentrators": 10,
-                    "patient_monitors": 15,
-                    "defibrillators": 4,
-                    "infusion_pumps": 18
-                },
-                "surgical": {
-                    "operating_theatres": 2,
-                    "anesthesia_machines": 2,
-                    "surgical_instruments": "Premium",
-                    "laparoscopic_equipment": true,
-                    "endoscopy": true,
-                    "sterilization_unit": true
-                },
-                "dialysis": {
-                    "available": true,
-                    "machines": 6,
-                    "hemodialysis": true,
-                    "peritoneal_dialysis": true
-                },
-                "pharmacy": {
-                    "24_hour": true,
-                    "emergency_drugs": true,
-                    "specialized_medications": true,
-                    "chemotherapy_drugs": false
-                },
-                "other": {
-                    "ambulances": 2,
-                    "emergency_generator": true,
-                    "central_oxygen_system": true,
-                    "medical_gas_system": true,
-                    "vip_rooms": 5,
-                    "telemedicine": true
-                }
-            },
-            "dynamic_availability": {
-                "beds_available_now": 24,
-                "oxygen_available": "Yes",
-                "surgeons_on_duty": "Yes",
-                "operating_theatre_status": "Functional",
-                "ambulance_available": "Yes",
-                "last_updated_timestamp": "2025-12-13T16:25:00Z"
-            },
-            "emergency_numbers": [
-                "+232 88 999 888",
-                "+232 88 999 889"
-            ],
-            "notes": "Premium private hospital with advanced diagnostic equipment including MRI and CT scan."
+            "key_services": { "emergency": true, "surgery": true, "radiology": true, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 20, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 80 220 220"],
+            "notes": "Modern private hospital located at 198 Wilkinson Road."
+        },
+        {
+            "id": "hosp_008",
+            "hospital_name": "Life Care Hospital - Eastern",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.470,
+            "longitude": -13.200,
+            "phone": "+232 80 330 000",
+            "email": "info@lifecare-hospital.com",
+            "facility_type": "Private",
+            "key_services": { "emergency": true, "surgery": true, "radiology": true, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 15, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 80 330 000"],
+            "notes": "Located at 116 Bai Bureh Road, Freetown."
+        },
+        {
+            "id": "hosp_009",
+            "hospital_name": "Blue Shield Hospital",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.480,
+            "longitude": -13.240,
+            "phone": "+232 33 312 545",
+            "facility_type": "Private",
+            "key_services": { "emergency": true, "surgery": false, "radiology": false, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 5, "oxygen_available": "Yes", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 33 312 545"],
+            "notes": "Located at 27 Ascension Town Road."
+        },
+        {
+            "id": "hosp_010",
+            "hospital_name": "Ansar Clinical",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.475,
+            "longitude": -13.200,
+            "phone": "+232 76 760 760",
+            "facility_type": "Private",
+            "key_services": { "emergency": false, "surgery": false, "radiology": false, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 2, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 76 760 760"],
+            "notes": "Located at 134 Bai Bureh Road, Kissy."
+        },
+        {
+            "id": "hosp_011",
+            "hospital_name": "Marie Stopes (Aberdeen)",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.490,
+            "longitude": -13.280,
+            "phone": "+232 76 422 810",
+            "facility_type": "NGO",
+            "key_services": { "emergency": false, "surgery": true, "maternity": true, "radiology": false, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 5, "oxygen_available": "Yes", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 76 422 810"],
+            "notes": "Specializes in sexual and reproductive health. Located at 10A Ahmed Drive, Aberdeen."
         },
         {
             "id": "hosp_012",
-            "hospital_name": "Bonthe Government Hospital",
-            "district": "Bonthe",
-            "region": "Southern Province",
-            "latitude": 7.526,
-            "longitude": -12.505,
-            "phone": "+232 76 000 012",
-            "email": "bonthe@health.gov.sl",
-            "website": null,
+            "hospital_name": "Brookfields Community Hospital",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.470,
+            "longitude": -13.240,
+            "phone": "+232 22 242 003",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 50, "adult": 30, "maternity": 10, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.60, "adult": 0.65, "maternity": 0.55, "pediatric": 0.50, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic Trauma"] } },
-            "medical_specialists": { "general_practitioners": 2, "nurses": 8 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "malaria_testing": true }, "critical_care": { "oxygen_concentrators": 2 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1, "boat_ambulance": true } },
-            "dynamic_availability": { "beds_available_now": 20, "oxygen_available": "Limited", "surgeons_on_duty": "No", "operating_theatre_status": "Limited", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T08:00:00Z" },
-            "emergency_numbers": ["+232 76 000 012"],
-            "notes": "Access via boat available."
+            "key_services": { "emergency": true, "surgery": false, "radiology": false, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 10, "oxygen_available": "Yes", "surgeons_on_duty": "No", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 22 242 003"],
+            "notes": "Located at 11 King Harman Road."
         },
         {
             "id": "hosp_013",
-            "hospital_name": "Kabala Government Hospital",
-            "district": "Koinadugu",
-            "region": "Northern Province",
-            "latitude": 9.588,
-            "longitude": -11.551,
-            "phone": "+232 76 000 013",
-            "email": "kabala@health.gov.sl",
-            "website": null,
+            "hospital_name": "China-Sierra Leone Friendship Hospital",
+            "district": "Western Area Rural",
+            "region": "Western Area",
+            "latitude": 8.4200,
+            "longitude": -13.2100,
+            "phone": "+232 76 555 777",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 80, "adult": 40, "maternity": 20, "pediatric": 20, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.70, "adult": 0.75, "maternity": 0.65, "pediatric": 0.60, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Hernia", "Appendectomy"] } },
-            "medical_specialists": { "general_practitioners": 3, "midwives": 5 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 4 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 15, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T09:30:00Z" },
-            "emergency_numbers": ["+232 76 000 013"],
-            "notes": "Main referral for Koinadugu."
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "icu": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 32, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T16:15:00Z" },
+            "emergency_numbers": ["+232 76 555 777"],
+            "notes": "Modern facility with Chinese medical cooperation. Well-equipped."
         },
+
+        // --- HOSPITALS (PROVINCIAL) ---
         {
             "id": "hosp_014",
-            "hospital_name": "Moyamba Government Hospital",
-            "district": "Moyamba",
+            "hospital_name": "Bo Government Hospital",
+            "district": "Bo",
             "region": "Southern Province",
-            "latitude": 8.160,
-            "longitude": -12.433,
-            "phone": "+232 76 000 014",
-            "email": null,
-            "website": null,
+            "latitude": 7.9600,
+            "longitude": -11.7400,
+            "phone": "+232 79 036 508",
+            "email": "bogovhospital@health.gov.sl",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 70, "adult": 40, "maternity": 20, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.65, "adult": 0.70, "maternity": 0.60, "pediatric": 0.50, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic"] } },
-            "medical_specialists": { "general_practitioners": 3 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 25, "oxygen_available": "Yes", "surgeons_on_duty": "No", "operating_theatre_status": "Limited", "ambulance_available": "No", "last_updated_timestamp": "2025-12-18T10:00:00Z" },
-            "emergency_numbers": ["+232 76 000 014"],
-            "notes": "District hospital."
+            "static_bed_capacity": { "total": 200, "adult": 120, "maternity": 50, "pediatric": 25, "icu": 5 },
+            "average_occupancy_rates": { "overall": 0.80 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "pharmacy": true },
+            "surgeons_by_specialty": { "general_surgery": { "count": 2, "services": ["Appendectomy", "Trauma Surgery"] } },
+            "dynamic_availability": { "beds_available_now": 40, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T14:20:00Z" },
+            "emergency_numbers": ["+232 79 036 508"],
+            "notes": "Regional referral hospital for Southern Province."
         },
         {
             "id": "hosp_015",
-            "hospital_name": "Pujehun Government Hospital",
-            "district": "Pujehun",
-            "region": "Southern Province",
-            "latitude": 7.356,
-            "longitude": -11.725,
-            "phone": "+232 76 000 015",
-            "email": null,
-            "website": null,
+            "hospital_name": "Kenema Government Hospital",
+            "district": "Kenema",
+            "region": "Eastern Province",
+            "latitude": 7.8750,
+            "longitude": -11.1850,
+            "phone": "+232 76 777 666",
+            "email": "kenemahosp@health.gov.sl",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 60, "adult": 30, "maternity": 20, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.60, "adult": 0.65, "maternity": 0.55, "pediatric": 0.40, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic"] } },
-            "medical_specialists": { "general_practitioners": 2 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 2 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 22, "oxygen_available": "Limited", "surgeons_on_duty": "No", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T11:00:00Z" },
-            "emergency_numbers": ["+232 76 000 015"],
-            "notes": "Serving Pujehun district."
+            "static_bed_capacity": { "total": 180, "adult": 110, "maternity": 40 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "pharmacy": true, "other": ["Lassa Fever Unit"] },
+            "dynamic_availability": { "beds_available_now": 39, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "No", "last_updated_timestamp": "2025-12-13T13:50:00Z" },
+            "emergency_numbers": ["+232 76 777 666"],
+            "notes": "Regional hospital with specialized Lassa Fever treatment unit."
         },
         {
             "id": "hosp_016",
-            "hospital_name": "Magburaka Government Hospital",
-            "district": "Tonkolili",
+            "hospital_name": "Makeni Government Hospital",
+            "district": "Bombali",
             "region": "Northern Province",
-            "latitude": 8.717,
-            "longitude": -11.950,
-            "phone": "+232 76 000 016",
-            "email": null,
-            "website": null,
+            "latitude": 8.8850,
+            "longitude": -12.0450,
+            "phone": "+232 79 111 222",
+            "email": "makenihospital@health.gov.sl",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 100, "adult": 60, "maternity": 25, "pediatric": 15, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.75, "adult": 0.78, "maternity": 0.72, "pediatric": 0.65, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["General"] } },
-            "medical_specialists": { "general_practitioners": 4, "midwives": 6 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 5 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 30, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T12:00:00Z" },
-            "emergency_numbers": ["+232 76 000 016"],
-            "notes": "Key hospital for Tonkolili."
+            "static_bed_capacity": { "total": 160 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 40, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T15:10:00Z" },
+            "emergency_numbers": ["+232 79 111 222"],
+            "notes": "Regional referral hospital for Northern Province."
         },
         {
             "id": "hosp_017",
-            "hospital_name": "Kambia Government Hospital",
-            "district": "Kambia",
-            "region": "Northern Province",
-            "latitude": 9.125,
-            "longitude": -12.918,
-            "phone": "+232 76 000 017",
-            "email": null,
-            "website": null,
+            "hospital_name": "Koidu Government Hospital",
+            "district": "Kono",
+            "region": "Eastern Province",
+            "latitude": 8.6440,
+            "longitude": -10.9710,
+            "phone": "+232 77 888 999",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 60, "adult": 30, "maternity": 20, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.68, "adult": 0.70, "maternity": 0.65, "pediatric": 0.60, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic"] } },
-            "medical_specialists": { "general_practitioners": 3 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 18, "oxygen_available": "Yes", "surgeons_on_duty": "No", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T13:00:00Z" },
-            "emergency_numbers": ["+232 76 000 017"],
-            "notes": "Border district hospital."
+            "static_bed_capacity": { "total": 100 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 30, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "ambulance_available": "No", "last_updated_timestamp": "2025-12-13T12:30:00Z" },
+            "emergency_numbers": ["+232 77 888 999"],
+            "notes": "District hospital serving Kono region."
         },
         {
             "id": "hosp_018",
-            "hospital_name": "Kailahun Government Hospital",
-            "district": "Kailahun",
-            "region": "Eastern Province",
-            "latitude": 8.276,
-            "longitude": -10.573,
-            "phone": "+232 76 000 018",
-            "email": null,
-            "website": null,
+            "hospital_name": "Port Loko Government Hospital",
+            "district": "Port Loko",
+            "region": "Northern Province",
+            "latitude": 8.7680,
+            "longitude": -12.7870,
+            "phone": "+232 78 222 333",
             "facility_type": "Government",
-            "static_bed_capacity": { "total": 70, "adult": 40, "maternity": 20, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.70, "adult": 0.72, "maternity": 0.68, "pediatric": 0.65, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice", "Infectious Disease"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic"] } },
-            "medical_specialists": { "general_practitioners": 3, "infectious_disease_specialists": 1 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 20, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "No", "last_updated_timestamp": "2025-12-18T14:00:00Z" },
-            "emergency_numbers": ["+232 76 000 018"],
-            "notes": "Regional importance."
+            "static_bed_capacity": { "total": 90 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 25, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-13T14:00:00Z" },
+            "emergency_numbers": ["+232 78 222 333"],
+            "notes": "District hospital for Port Loko area."
         },
         {
             "id": "hosp_019",
-            "hospital_name": "Kamakwie Wesleyan Hospital",
-            "district": "Karene",
+            "hospital_name": "Holy Spirit Hospital",
+            "district": "Bombali",
             "region": "Northern Province",
-            "latitude": 9.497,
-            "longitude": -12.240,
-            "phone": "+232 76 000 019",
-            "email": null,
-            "website": null,
-            "facility_type": "Mission",
-            "static_bed_capacity": { "total": 80, "adult": 40, "maternity": 20, "pediatric": 20, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.75, "adult": 0.80, "maternity": 0.70, "pediatric": 0.70, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["General"] } },
-            "medical_specialists": { "general_practitioners": 3 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 4 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 10, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T15:00:00Z" },
-            "emergency_numbers": ["+232 76 000 019"],
-            "notes": "Mission hospital serving Karene."
+            "latitude": 8.890,
+            "longitude": -12.050,
+            "phone": "+232 76 603 252",
+            "email": "info@hsh-makeni.com",
+            "facility_type": "Private",
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 10, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 76 603 252"],
+            "notes": "Located in Masuba, Makeni."
         },
         {
             "id": "hosp_020",
-            "hospital_name": "Falaba Community Health Centre",
-            "district": "Falaba",
-            "region": "Northern Province",
-            "latitude": 9.850,
-            "longitude": -11.300,
-            "phone": "+232 76 000 020",
-            "email": null,
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": { "total": 30, "adult": 15, "maternity": 10, "pediatric": 5, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.50, "adult": 0.55, "maternity": 0.50, "pediatric": 0.40, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": false, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["Primary Care"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 0, "services": [] } },
-            "medical_specialists": { "nurses": 5, "midwives": 2 },
-            "technology_services": { "imaging": { "ultrasound": false }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 1 }, "surgical": { "operating_theatres": 0 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 0 } },
-            "dynamic_availability": { "beds_available_now": 15, "oxygen_available": "Limited", "surgeons_on_duty": "No", "operating_theatre_status": "Not Functional", "ambulance_available": "No", "last_updated_timestamp": "2025-12-18T16:00:00Z" },
-            "emergency_numbers": ["+232 76 000 020"],
-            "notes": "Primary care facility."
-        },
-        {
-            "id": "hosp_021",
-            "hospital_name": "Emergency Surgical and Paediatric Centre (Goderich)",
-            "district": "Western Area Rural",
-            "region": "Western Area",
-            "latitude": 8.433,
-            "longitude": -13.290,
-            "phone": "+232 76 000 021",
-            "email": "info@emergency.it",
-            "website": "https://www.emergency.it",
-            "facility_type": "NGO",
-            "static_bed_capacity": { "total": 100, "adult": 60, "maternity": 0, "pediatric": 40, "icu": 10 },
-            "average_occupancy_rates": { "overall": 0.90, "adult": 0.95, "maternity": 0, "pediatric": 0.85, "icu": 0.95 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": false, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": true, "mental_health": false, "other": ["Trauma Surgery", "Free Care"] },
-            "surgeons_by_specialty": { "trauma_surgery": { "count": 4, "services": ["Advanded Trauma"] }, "pediatric_surgery": { "count": 2, "services": ["General"] } },
-            "medical_specialists": { "surgeons": 6, "anesthetists": 3, "pediatricians": 4 },
-            "technology_services": { "imaging": { "x_ray": true, "ct_scan": true }, "laboratory": { "advanced_labs": true }, "critical_care": { "ventilators": 8, "oxygen_concentrators": 20 }, "surgical": { "operating_theatres": 3 }, "pharmacy": { "free_meds": true }, "other": { "ambulances": 2 } },
-            "dynamic_availability": { "beds_available_now": 5, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:30:00Z" },
-            "emergency_numbers": ["+232 76 000 021"],
-            "notes": "World-class trauma and surgical center. Services are free of charge."
-        },
-        {
-            "id": "hosp_022",
-            "hospital_name": "St. John of God Hospital (Mabessaneh)",
-            "district": "Port Loko",
-            "region": "Northern Province",
-            "latitude": 8.690,
-            "longitude": -12.540,
-            "phone": "+232 76 000 022",
-            "email": "mabessaneh@sjog.sl",
-            "website": null,
-            "facility_type": "Mission",
-            "static_bed_capacity": { "total": 110, "adult": 60, "maternity": 25, "pediatric": 25, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.80, "adult": 0.85, "maternity": 0.75, "pediatric": 0.70, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Medicine", "Holistic Care"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 2, "services": ["General"] } },
-            "medical_specialists": { "general_practitioners": 5, "midwives": 8 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "microbiology": true }, "critical_care": { "oxygen_concentrators": 5 }, "surgical": { "operating_theatres": 2 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 2 } },
-            "dynamic_availability": { "beds_available_now": 20, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:00:00Z" },
-            "emergency_numbers": ["+232 76 000 022"],
-            "notes": "Major Catholic mission hospital in Lunsar."
-        },
-        {
-            "id": "hosp_023",
             "hospital_name": "Masanga Hospital",
             "district": "Tonkolili",
             "region": "Northern Province",
             "latitude": 8.740,
             "longitude": -11.830,
-            "phone": "+232 76 000 023",
+            "phone": "+232 76 626 000",
             "email": "info@masanga.org",
             "website": "https://masangahospital.org",
             "facility_type": "Mission",
-            "static_bed_capacity": { "total": 120, "adult": 70, "maternity": 25, "pediatric": 25, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.75, "adult": 0.80, "maternity": 0.70, "pediatric": 0.65, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["Rehabilitation", "Surgery Training"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 2, "services": ["General", "Plastic/Reconstructive"] } },
-            "medical_specialists": { "surgeons": 3, "general_practitioners": 4, "physiotherapists": 2 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 6 }, "surgical": { "operating_theatres": 3 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1, "rehab_center": true } },
+            "static_bed_capacity": { "total": 120 },
+            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "pharmacy": true },
             "dynamic_availability": { "beds_available_now": 30, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T15:30:00Z" },
-            "emergency_numbers": ["+232 76 000 023"],
+            "emergency_numbers": ["+232 76 626 000"],
             "notes": "Renowned for surgical training and rehabilitation services."
         },
         {
-            "id": "hosp_024",
-            "hospital_name": "Serabu Catholic Hospital",
-            "district": "Bo",
-            "region": "Southern Province",
-            "latitude": 7.800,
-            "longitude": -11.600,
-            "phone": "+232 76 000 024",
-            "email": null,
-            "website": null,
-            "facility_type": "Mission",
-            "static_bed_capacity": { "total": 80, "adult": 45, "maternity": 20, "pediatric": 15, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.70, "adult": 0.75, "maternity": 0.65, "pediatric": 0.60, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["General"] } },
-            "medical_specialists": { "general_practitioners": 3 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 4 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 25, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T14:45:00Z" },
-            "emergency_numbers": ["+232 76 000 024"],
-            "notes": "Key healthcare provider in rural Bo district."
+            "id": "hosp_021",
+            "hospital_name": "Bai Bureh Memorial Community Hospital",
+            "district": "Port Loko",
+            "region": "Northern Province",
+            "latitude": 8.620,
+            "longitude": -13.200,
+            "phone": "+232 76 656 124",
+            "facility_type": "Government",
+            "key_services": { "emergency": true, "surgery": false, "maternity": true, "lab": true, "pharmacy": true },
+            "dynamic_availability": { "beds_available_now": 15, "oxygen_available": "Yes", "surgeons_on_duty": "No", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 76 656 124"],
+            "notes": "Located at Mahera Road, Mahera, Lungi."
         },
+
+        // --- PHARMACIES ---
         {
-            "id": "hosp_025",
-            "hospital_name": "Aberdeen Women's Centre",
+            "id": "pharm_001",
+            "hospital_name": "QuickTrip Pharmacy",
             "district": "Western Area Urban",
             "region": "Western Area",
-            "latitude": 8.490,
-            "longitude": -13.280,
-            "phone": "+232 76 000 025",
-            "email": "info@aberdeenwomenscentre.org",
-            "website": "https://www.aberdeenwomenscentre.org",
-            "facility_type": "NGO",
-            "static_bed_capacity": { "total": 70, "adult": 40, "maternity": 30, "pediatric": 0, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.95, "adult": 0.95, "maternity": 0.95, "pediatric": 0, "icu": 0 },
-            "key_services": { "emergency": false, "surgery": true, "maternity": true, "pediatrics": false, "radiology": false, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["Fistula Repair", "Teenage Pregnancy Support"] },
-            "surgeons_by_specialty": { "obstetric_surgery": { "count": 2, "services": ["Fistula Repair", "C-Section"] } },
-            "medical_specialists": { "obstetricians": 3, "midwives": 15 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 2 }, "pharmacy": { "maternal_meds": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 3, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:50:00Z" },
-            "emergency_numbers": ["+232 76 000 025"],
-            "notes": "Specializes in fistula repair and maternity care for young mothers."
+            "latitude": 8.480,
+            "longitude": -13.230,
+            "phone": "+232 74 381 729",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy", "Prescriptions"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "operating_theatre_status": "Closed", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 74 381 729"],
+            "notes": "50 Circular Road, Freetown. Open Mon-Fri 8AM-10PM."
         },
         {
-            "id": "hosp_026",
-            "hospital_name": "Life Care Hospital",
+            "id": "pharm_002",
+            "hospital_name": "People's Pharmacy",
             "district": "Western Area Urban",
             "region": "Western Area",
-            "latitude": 8.450,
-            "longitude": -13.260,
-            "phone": "+232 78 000 026",
-            "email": "info@lifecare.sl",
-            "website": "http://lifecare-hospital.com",
-            "facility_type": "Private",
-            "static_bed_capacity": { "total": 40, "adult": 25, "maternity": 10, "pediatric": 5, "icu": 2 },
-            "average_occupancy_rates": { "overall": 0.50, "adult": 0.55, "maternity": 0.45, "pediatric": 0.40, "icu": 0.60 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": false, "icu": true, "mental_health": false, "other": ["Specialist Clinics"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["General"] } },
-            "medical_specialists": { "general_practitioners": 3, "specialists_on_call": 5 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "advanced_labs": true }, "critical_care": { "ventilators": 2, "oxygen_concentrators": 5 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "24_hour": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 20, "oxygen_available": "Yes", "surgeons_on_duty": "On Call", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:00:00Z" },
-            "emergency_numbers": ["+232 78 000 026"],
-            "notes": "Modern private hospital with specialist clinics."
+            "latitude": 8.485,
+            "longitude": -13.235,
+            "phone": "076-617-296",
+            "email": "peoplespharmacy1@yahoo.co",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy", "Wholesale Medicine"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["076-617-296"],
+            "notes": "34 Regent Road, Freetown."
         },
         {
-            "id": "hosp_027",
-            "hospital_name": "Mercy Hospital",
-            "district": "Bo",
-            "region": "Southern Province",
-            "latitude": 7.955,
-            "longitude": -11.735,
-            "phone": "+232 76 000 027",
-            "email": "info@mercy.sl",
-            "website": "https://mercyhospital.sl",
-            "facility_type": "Mission",
-            "static_bed_capacity": { "total": 45, "adult": 25, "maternity": 10, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.65, "adult": 0.70, "maternity": 0.60, "pediatric": 0.60, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["Outreach"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 1, "services": ["Basic"] } },
-            "medical_specialists": { "general_practitioners": 2 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "basic_medications": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 15, "oxygen_available": "Yes", "surgeons_on_duty": "No", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T15:00:00Z" },
-            "emergency_numbers": ["+232 76 000 027"],
-            "notes": "Mission hospital focusing on accessible care in Bo."
-        },
-        {
-            "id": "hosp_028",
-            "hospital_name": "Kissy United Methodist Hospital",
+            "id": "pharm_003",
+            "hospital_name": "Rodyna Pharmacy",
             "district": "Western Area Urban",
             "region": "Western Area",
-            "latitude": 8.475,
-            "longitude": -13.205,
-            "phone": "+232 76 000 028",
-            "email": null,
-            "website": null,
-            "facility_type": "Mission",
-            "static_bed_capacity": { "total": 60, "adult": 30, "maternity": 15, "pediatric": 15, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.85, "adult": 0.88, "maternity": 0.85, "pediatric": 0.80, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": false, "other": ["Eye Clinic"] },
-            "surgeons_by_specialty": { "ophthalmic_surgery": { "count": 1, "services": ["Cataract"] } },
-            "medical_specialists": { "general_practitioners": 3, "ophthalmologists": 1 },
-            "technology_services": { "imaging": { "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 4 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 8, "oxygen_available": "Yes", "surgeons_on_duty": "No", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:00:00Z" },
-            "emergency_numbers": ["+232 76 000 028"],
-            "notes": "Serves eastern Freetown, known for eye care."
+            "latitude": 8.460,
+            "longitude": -13.270,
+            "phone": "+232 76 966 669",
+            "email": "rskeiky@gmail.com",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 76 966 669"],
+            "notes": "29 Lower Pipe-Line, Off Wilkinson Road, Freetown."
         },
         {
-            "id": "hosp_029",
-            "hospital_name": "Sierra Leone Psychiatric Teaching Hospital",
+            "id": "pharm_004",
+            "hospital_name": "Health For All Pharmacy",
+            "district": "Western Area Urban",
+            "region": "Western Area",
+            "latitude": 8.465,
+            "longitude": -13.250,
+            "phone": "+232 78 915 440",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["+232 78 915 440"],
+            "notes": "39 Old Railway Line, Brookfields, Freetown."
+        },
+        {
+            "id": "pharm_005",
+            "hospital_name": "Welfare Pharmacy",
             "district": "Western Area Urban",
             "region": "Western Area",
             "latitude": 8.470,
-            "longitude": -13.210,
-            "phone": "+232 76 000 029",
-            "email": "psychiatric@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": { "total": 150, "adult": 150, "maternity": 0, "pediatric": 0, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.60, "adult": 0.60, "maternity": 0, "pediatric": 0, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": false, "maternity": false, "pediatrics": false, "radiology": false, "lab": true, "blood_bank": false, "icu": false, "mental_health": true, "other": ["Rehabilitation", "Substance Abuse"] },
-            "surgeons_by_specialty": { "general_surgery": { "count": 0, "services": [] } },
-            "medical_specialists": { "psychiatrists": 4, "psychologists": 3, "mental_health_nurses": 20 },
-            "technology_services": { "imaging": { "x_ray": false }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 1 }, "surgical": { "operating_theatres": 0 }, "pharmacy": { "psychotropic_meds": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 50, "oxygen_available": "No", "surgeons_on_duty": "No", "operating_theatre_status": "Not Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T12:00:00Z" },
-            "emergency_numbers": ["+232 76 000 029"],
-            "notes": "The only dedicated psychiatric hospital in the country."
+            "longitude": -13.230,
+            "phone": "099-314-400",
+            "email": "welfarepharmacy@yahoo.com",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["099-314-400"],
+            "notes": "34 Wellington Street, Freetown."
         },
         {
-            "id": "hosp_030",
-            "hospital_name": "Rokupa Government Hospital",
-            "district": "Western Area Urban",
-            "region": "Western Area",
-            "latitude": 8.472,
-            "longitude": -13.190,
-            "phone": "+232 76 000 030",
-            "email": "rokupa@health.gov.sl",
-            "website": null,
-            "facility_type": "Government",
-            "static_bed_capacity": { "total": 80, "adult": 40, "maternity": 30, "pediatric": 10, "icu": 0 },
-            "average_occupancy_rates": { "overall": 0.85, "adult": 0.88, "maternity": 0.90, "pediatric": 0.75, "icu": 0 },
-            "key_services": { "emergency": true, "surgery": true, "maternity": true, "pediatrics": true, "radiology": true, "lab": true, "blood_bank": true, "icu": false, "mental_health": false, "other": ["General Practice"] },
-            "surgeons_by_specialty": { "obstetric_surgery": { "count": 2, "services": ["C-Section"] } },
-            "medical_specialists": { "general_practitioners": 4, "midwives": 10 },
-            "technology_services": { "imaging": { "x_ray": true, "ultrasound": true }, "laboratory": { "basic_labs": true }, "critical_care": { "oxygen_concentrators": 3 }, "surgical": { "operating_theatres": 1 }, "pharmacy": { "essential_drugs": true }, "other": { "ambulances": 1 } },
-            "dynamic_availability": { "beds_available_now": 5, "oxygen_available": "Yes", "surgeons_on_duty": "Yes", "operating_theatre_status": "Functional", "ambulance_available": "Yes", "last_updated_timestamp": "2025-12-18T16:30:00Z" },
-            "emergency_numbers": ["+232 76 000 030"],
-            "notes": "Major government hospital in eastern Freetown."
+            "id": "pharm_006",
+            "hospital_name": "Amsall Pharmaceuticals",
+            "district": "Bombali",
+            "region": "Northern Province",
+            "latitude": 8.880,
+            "longitude": -12.040,
+            "phone": "076-699-842",
+            "email": "amsallpharmaceuticals@gmail.com",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["076-699-842"],
+            "notes": "12 Ladies Mile, Makeni."
+        },
+        {
+            "id": "pharm_007",
+            "hospital_name": "C. C. C Pharmacy",
+            "district": "Bombali",
+            "region": "Northern Province",
+            "latitude": 8.885,
+            "longitude": -12.045,
+            "phone": "076-723-288",
+            "email": "msjallohccc@gmail.com",
+            "facility_type": "Pharmacy",
+            "static_bed_capacity": { "total": 0 },
+            "key_services": { "emergency": false, "surgery": false, "lab": false, "pharmacy": true, "other": ["Pharmacy"] },
+            "dynamic_availability": { "beds_available_now": 0, "oxygen_available": "No", "surgeons_on_duty": "No", "ambulance_available": "No", "last_updated_timestamp": "2025-12-20T10:00:00Z" },
+            "emergency_numbers": ["076-723-288"],
+            "notes": "4 Rogbaneh Road, Makeni."
         }
     ];
 
@@ -2263,7 +568,6 @@ const MedFindData = (function () {
     };
 })();
 
-// Expose to window
 // Expose to window
 window.MedFindData = MedFindData;
 // Also expose fallback data separately just in case
