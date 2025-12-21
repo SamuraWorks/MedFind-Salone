@@ -176,7 +176,11 @@ function logout() {
 }
 
 function goToApp() {
-    window.open('./spa.html', '_blank');
+    if (window.showSPASection) {
+        window.showSPASection('patientSection');
+    } else {
+        window.location.href = './index.html#patientSection';
+    }
 }
 
 // ============================================

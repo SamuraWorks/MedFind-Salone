@@ -298,6 +298,21 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Hide internal headers and duplicate elements when running in SPA shell */
+        #patientSection .app-header,
+        #patientSection .language-selector,
+        #adminSection .dashboard-header {
+            display: none !important;
+        }
+
+        #patientSection .app {
+            padding-top: 20px !important;
+        }
+
+        #adminSection #adminDashboard {
+            padding-top: 20px !important;
+        }
     </style>
 </head>
 
@@ -334,8 +349,6 @@
                 </div>
             </nav>
         </div>
-    </header>
-
     </header>
 
     <!-- ============================================
@@ -746,6 +759,7 @@
         // Make functions global
         window.showSPASection = showSPASection;
         window.switchGlobalLanguage = switchGlobalLanguage;
+        window.goToApp = () => showSPASection('patientSection');
     </script>
 </body>
 

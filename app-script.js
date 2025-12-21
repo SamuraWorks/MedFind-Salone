@@ -1103,7 +1103,6 @@ window.performSearch = performSearch;
 window.filterByService = filterByService;
 window.showAllHospitals = showAllHospitals;
 window.switchView = switchView;
-window.showSPASection = showSPASection;
 window.toggleFilters = toggleFilters;
 window.applyFilters = applyFilters;
 window.clearFilters = clearFilters;
