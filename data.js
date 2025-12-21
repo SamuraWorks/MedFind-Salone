@@ -4,8 +4,8 @@
  */
 
 const MedFindData = (function () {
-    const STORAGE_KEY = "medfind_hospitals"; // The official key
-    const LEGACY_KEYS = ["medfind_hospitals_db", "admin_hospitals_data", "hospitals_data"];
+    const STORAGE_KEY = "medfind_hospitals_v2"; // Updated key to force refresh with pharmacy data
+    const LEGACY_KEYS = ["medfind_hospitals", "medfind_hospitals_db", "admin_hospitals_data", "hospitals_data"];
 
     // Check if data exists in localStorage
     function hasData() {
