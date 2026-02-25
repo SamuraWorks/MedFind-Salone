@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="MedFind Salone - Complete healthcare access platform for Sierra Leone">
+    <title>MedFind Salone - Healthcare Access Platform</title>
+
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="unified-styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+    <!-- ============================================
+         SECTION 1: HOME / LANDING PAGE
+         ============================================ -->
+    <div id="homeSection" class="section active">
+        <div class="landing-container">
+            <!-- Hero Header -->
+            <header class="hero-header">
+                <div class="hero-logo">🏥</div>
+                <h1 class="hero-title">MedFind Salone</h1>
+                <p class="hero-subtitle">Emergency Healthcare Access for Sierra Leone</p>
+                <p class="hero-tagline">Find hospitals. Save lives. Access healthcare.</p>
+            </header>
+
+            <!-- Main Navigation Cards -->
+            <div class="nav-cards">
+                <div class="nav-card patient-card" onclick="navigateTo('patientSection')">
+                    <div class="card-icon">📱</div>
+                    <h2>Patient App</h2>
+                    <p>Find hospitals and emergency services</p>
+                    <ul class="card-features">
+                        <li>🚨 Emergency SOS</li>
+                        <li>🔍 Search by service</li>
+                        <li>📍 Real-time availability</li>
+                        <li>📞 Call & directions</li>
+                    </ul>
+                    <button class="card-btn">Open Patient App →</button>
+                </div>
+
+                <div class="nav-card admin-card" onclick="navigateTo('adminSection')">
+                    <div class="card-icon">🔐</div>
+                    <h2>Hospital Admin</h2>
+                    <p>Update hospital availability data</p>
+                    <ul class="card-features">
+                        <li>⚡ Quick updates</li>
+                        <li>📝 Detailed forms</li>
+                        <li>📊 Update history</li>
+                        <li>💾 Data management</li>
+                    </ul>
+                    <button class="card-btn">Open Admin Portal →</button>
+                </div>
+
+                <div class="nav-card map-card" onclick="navigateTo('mapSection')">
+                    <div class="card-icon">🗺️</div>
+                    <h2>Live Hospital Map</h2>
+                    <p>Interactive map of all hospitals</p>
+                    <ul class="card-features">
+                        <li>📍 100+ hospitals</li>
+                        <li>🎨 Color-coded status</li>
+                        <li>🔍 Search & filter</li>
+                        <li>📱 Click for details</li>
+                    </ul>
+                    <button class="card-btn">Open Live Map →</button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="landing-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="landingTotalHospitals">100+</div>
+                    <div class="stat-label">Hospitals</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">16</div>
+                    <div class="stat-label">Districts</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">Offline</div>
+                    <div class="stat-label">Works Offline</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="landing-footer">
+                <p>© 2025 MedFind Salone - Making Healthcare Accessible</p>
+                <p>🇸🇱 Built for Sierra Leone</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ============================================
+         SECTION 2: PATIENT APP
+         ============================================ -->
+    <div id="patientSection" class="section">
+        <!-- Navigation Bar -->
+        <nav class="app-nav">
+            <button class="nav-back-btn" onclick="navigateTo('homeSection')">← Home</button>
+            <h1 class="nav-title">Patient App</h1>
+            <button class="nav-menu-btn" onclick="showQuickMenu()">☰</button>
+        </nav>
+
+        <!-- Patient App Content Container -->
+        <div id="patientAppContainer">
+            <!-- Content loaded dynamically from spa.html -->
+        </div>
+    </div>
+
+    <!-- ============================================
+         SECTION 3: ADMIN PORTAL
+         ============================================ -->
+    <div id="adminSection" class="section">
+        <!-- Navigation Bar -->
+        <nav class="app-nav admin-nav">
+            <button class="nav-back-btn" onclick="navigateTo('homeSection')">← Home</button>
+            <h1 class="nav-title">Admin Portal</h1>
+            <button class="nav-menu-btn" onclick="showQuickMenu()">☰</button>
+        </nav>
+
+        <!-- Admin App Content Container -->
+        <div id="adminAppContainer">
+            <!-- Content loaded dynamically from admin.html -->
+        </div>
+    </div>
+
+    <!-- ============================================
+         SECTION 4: LIVE MAP
+         ============================================ -->
+    <div id="mapSection" class="section">
+        <!-- Navigation Bar -->
+        <nav class="app-nav map-nav">
+            <button class="nav-back-btn" onclick="navigateTo('homeSection')">← Home</button>
+            <h1 class="nav-title">Live Hospital Map</h1>
+            <button class="nav-menu-btn" onclick="showQuickMenu()">☰</button>
+        </nav>
+
+        <!-- Map Content Container -->
+        <div id="mapAppContainer">
+            <!-- Content loaded dynamically from map.html -->
+        </div>
+    </div>
+
+    <!-- ============================================
+         QUICK MENU OVERLAY
+         ============================================ -->
+    <div id="quickMenu" class="quick-menu">
+        <div class="quick-menu-content">
+            <button class="quick-menu-close" onclick="hideQuickMenu()">✖</button>
+            <h2>Quick Navigation</h2>
+            <ul class="quick-menu-list">
+                <li onclick="navigateTo('homeSection'); hideQuickMenu();">🏠 Home</li>
+                <li onclick="navigateTo('patientSection'); hideQuickMenu();">📱 Patient App</li>
+                <li onclick="navigateTo('adminSection'); hideQuickMenu();">🔐 Admin Portal</li>
+                <li onclick="navigateTo('mapSection'); hideQuickMenu();">🗺️ Live Map</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================
+         LOADING SCREEN
+         ============================================ -->
+    <div id="unifiedLoading" class="unified-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading MedFind Salone...</p>
+    </div>
+
+    <!-- Leaflet JS for Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Global Offline Banner -->
+    <div id="offlineBanner" class="offline-banner">
+        <span>📡 You are offline - Using cached data. Last synced: <span id="lastSyncTime">Never</span></span>
+    </div>
+
+    <!-- Unified App Script -->
+    <script src="unified-script.js"></script>
+</body>
+
+</html>

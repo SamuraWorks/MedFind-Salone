@@ -1,0 +1,10 @@
+id,name,type,city,latitude,longitude,address,contact,open_24_7
+hosp_001,Connaught Hospital,Public,Freetown,8.4844,-13.2344,"Percival Street, Freetown",+232 76 123 456,true
+hosp_002,34 Military Hospital,Public/Military,Freetown,8.4680,-13.2670,"Wilberforce, Freetown",+232 78 555 123,true
+hosp_003,Choithram Memorial Hospital,Private,Freetown,8.4550,-13.2550,"Hill Station, Freetown",+232 88 999 888,true
+hosp_004,Ola During Children's Hospital,Public,Freetown,8.4890,-13.2200,"Fourah Bay Road, Freetown",+232 76 000 001,true
+hosp_005,Princess Christian Maternity Hospital (PCMH),Public,Freetown,8.4885,-13.2205,"Fourah Bay Road, Freetown",+232 76 000 002,true
+hosp_006,Emergency Surgical Centre,NGO,Goderich,8.4330,-13.2800,"Goderich, Western Area Rural",+232 30 111 222,true
+hosp_007,Bo Government Hospital,Public,Bo,7.9600,-11.7400,"Bo-Kenema Highway, Bo",+232 75 333 444,true
+hosp_008,Kenema Government Hospital,Public,Kenema,7.8750,-11.1850,"Combema Road, Kenema",+232 76 777 666,true
+hosp_009,Makeni Regional Hospital,Public,Makeni,8.8850,-12.0450,"Azzolini Highway, Makeni",+232 79 111 222,true
