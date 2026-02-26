@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medfind-salone-v8';
+const CACHE_NAME = 'medfind-salone-v16';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -11,6 +11,7 @@ const ASSETS_TO_CACHE = [
     './app-script.js',
     './admin-script.js',
     './spa-script.js',
+    './google-map-fix.js',
     './data/hospitals_complete.json',
     './assets/logo.svg',
     './assets/vendor/leaflet/leaflet.css',

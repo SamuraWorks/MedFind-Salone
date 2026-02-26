@@ -634,48 +634,7 @@
         // HOME MAP INITIALIZATION
         // ============================================
         async function initializeHomeMap() {
-            try {
-                const mapContainer = document.getElementById('homeMapContainer');
-                mapContainer.innerHTML = '';
-
-                homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors',
-                    maxZoom: 18
-                }).addTo(homeMap);
-
-                // Use MedFindData for offline robustness instead of fetch
-                console.log("[HomeMap] Initializing data...");
-                await MedFindData.init();
-                const hospitals = MedFindData.getAllHospitals();
-
-                console.log(`[HomeMap] Loaded ${hospitals.length} hospitals for map.`);
-
-                hospitals.forEach(hospital => {
-                    const statusColor = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes')
-                        ? 'green' : 'red';
-
-                    L.marker([hospital.latitude, hospital.longitude])
-                        .addTo(homeMap)
-                        .bindPopup(`
-                            <div style="padding: 10px;">
-                                <strong>${hospital.hospital_name}</strong><br>
-                                <small>${hospital.district}</small><br>
-                                <small>Status: <b style="color:${statusColor}">${statusColor === 'green' ? 'Capable' : 'Limited'}</b></small>
-                            </div>
-                        `);
-                });
-
-                const group = new L.featureGroup(hospitals.map(h =>
-                    L.marker([h.latitude, h.longitude])
-                ));
-                homeMap.fitBounds(group.getBounds().pad(0.1));
-            } catch (error) {
-                console.error('Failed to load map:', error);
-                document.getElementById('homeMapContainer').innerHTML =
-                    '<p style="color: white;">Map unavailable. Please check your connection.</p>';
-            }
+            console.log('Map handled by google-map-fix.js');
         }
 
         // ============================================
@@ -745,6 +704,7 @@
         window.showSPASection = showSPASection;
         window.switchGlobalLanguage = switchGlobalLanguage;
     </script>
+    <script src="google-map-fix.js"></script>
 </body>
 
 </html>

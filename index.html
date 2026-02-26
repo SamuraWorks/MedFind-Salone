@@ -12,7 +12,7 @@
     <script src="data.js"></script>
 
     <!-- Leaflet (Local/Offline) -->
-    <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet_disabled.css">
 
     <style>
         /* ============================================
@@ -326,8 +326,9 @@
                 <img src="./assets/logo.svg" alt="MedFind Salone" class="header-logo-img"
                     onerror="this.style.display='none'">
                 <div>
-                    <div class="header-title">MedFind Salone</div>
-                    <div class="header-subtitle">Healthcare Access for Sierra Leone</div>
+                    <div class="header-title" data-translate="header_title">MedFind Salone</div>
+                    <div class="header-subtitle" data-translate="header_subtitle">Healthcare Access for Sierra Leone
+                    </div>
                 </div>
             </div>
 
@@ -335,13 +336,13 @@
 
             <nav class="header-nav" id="headerNav">
                 <button class="nav-btn active" onclick="showSPASection('homeSection')" id="navHome">
-                    🏠 Home
+                    <span data-translate="nav_home">🏠 Home</span>
                 </button>
                 <button class="nav-btn" onclick="showSPASection('patientSection')" id="navPatient">
-                    📱 Patient App
+                    <span data-translate="nav_patient">📱 Patient App</span>
                 </button>
                 <button class="nav-btn" onclick="showSPASection('adminSection')" id="navAdmin">
-                    🔐 Admin Portal
+                    <span data-translate="nav_admin">🔐 Admin Portal</span>
                 </button>
                 <div style="display: flex; gap: 5px; margin-left: 10px;">
                     <button class="nav-btn" onclick="switchGlobalLanguage('en')" id="langEn">EN</button>
@@ -357,43 +358,48 @@
     <div id="homeSection" class="spa-section active">
         <div class="home-container">
             <div class="home-hero">
-                <h1>Welcome to MedFind Salone</h1>
-                <p class="subtitle">Your Complete Healthcare Access Platform for Sierra Leone</p>
-                <p class="description">Find emergency medical services instantly, manage hospital availability data in
-                    real-time, and access comprehensive healthcare information across all 16 districts</p>
+                <h1 data-translate="hero_title">Welcome to MedFind Salone</h1>
+                <p class="subtitle" data-translate="hero_subtitle">Your Complete Healthcare Access Platform for Sierra
+                    Leone</p>
+                <p class="description" data-translate="hero_desc">Find emergency medical services instantly, manage
+                    hospital availability data in real-time, and access comprehensive healthcare information across all
+                    16 districts</p>
             </div>
 
             <div class="home-cards">
                 <div class="home-card" onclick="showSPASection('patientSection')">
                     <div class="icon">📱</div>
-                    <h2>For Patients</h2>
-                    <p>Find hospitals, emergency services, and healthcare facilities near you</p>
+                    <h2 data-translate="card_patient_title">For Patients</h2>
+                    <p data-translate="card_patient_desc">Find hospitals, emergency services, and healthcare facilities
+                        near you</p>
                     <ul>
                         <li>🚨 Emergency SOS &bull; Find help immediately</li>
                         <li>🔍 Search &bull; Browse all hospitals</li>
                         <li>📍 Real-Time Data &bull; Live availability</li>
                         <li>📞 Quick Actions &bull; Call & get directions</li>
                     </ul>
-                    <div class="cta-btn">Open Patient App →</div>
+                    <div class="cta-btn"><span data-translate="launch_patient_app">Open Patient App →</span></div>
                 </div>
 
                 <div class="home-card" onclick="showSPASection('adminSection')">
                     <div class="icon">🔐</div>
-                    <h2>For Hospital Staff</h2>
-                    <p>Update your hospital's availability status and manage data securely</p>
+                    <h2 data-translate="card_admin_title">For Hospital Staff</h2>
+                    <p data-translate="card_admin_desc">Update your hospital's availability status and manage data
+                        securely</p>
                     <ul>
                         <li>⚡ Quick Updates &bull; One-click status changes</li>
                         <li>📝 Detailed Forms &bull; Comprehensive data entry</li>
                         <li>📊 History Tracking &bull; Audit all changes</li>
                         <li>💾 Data Tools &bull; Export & manage records</li>
                     </ul>
-                    <div class="cta-btn">Open Admin Portal →</div>
+                    <div class="cta-btn"><span data-translate="launch_admin_app">Open Admin Portal →</span></div>
                 </div>
 
                 <div class="home-card">
                     <div class="icon">🗺️</div>
-                    <h2>Interactive Map</h2>
-                    <p>Explore hospitals across Sierra Leone on our interactive map (below)</p>
+                    <h2 data-translate="card_map_title">Interactive Map</h2>
+                    <p><span data-translate="card_map_desc">Explore hospitals across Sierra Leone on our interactive map
+                            (below)</span></p>
                     <ul>
                         <li>📍 Coverage &bull; 100+ hospitals nationwide</li>
                         <li>🎨 Visual Status &bull; Color-coded availability</li>
@@ -409,10 +415,13 @@
                 style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);">
                 <h2
                     style="font-size: 28px; color: white; margin-bottom: 10px; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
-                    🗺️ Live Hospital Map</h2>
+                    <span data-translate="map_title">🗺️ Live Hospital Map</span>
+                </h2>
                 <p
                     style="font-size: 15px; color: rgba(255,255,255,0.95); margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
-                    Explore all healthcare facilities across Sierra Leone's 16 districts</p>
+                    <span data-translate="map_subtitle">Explore all healthcare facilities across Sierra Leone's 16
+                        districts</span>
+                </p>
                 <div id="homeMapContainer"
                     style="height: 500px; border-radius: 15px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 4px 12px rgba(0,0,0,0.3);">
                     <p style="color: white; font-size: 18px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🗺️ Loading
@@ -481,14 +490,57 @@
         </div>
     </div>
 
-    <!-- Leaflet JS (Local/Offline) -->
-    <script src="./assets/vendor/leaflet/leaflet.js"></script>
+    <!-- Map Logic handled at end of file -->
 
     <!-- Main SPA Navigation & Content Loading Script -->
     <script>
         // ============================================
         // GLOBAL STATE
         // ============================================
+
+        const landingTranslations = {
+            en: {
+                header_title: "MedFind Salone",
+                header_subtitle: "Healthcare Access for Sierra Leone",
+                nav_home: "🏠 Home",
+                nav_patient: "📱 Patient App",
+                nav_admin: "🔐 Admin Portal",
+                hero_title: "Welcome to MedFind Salone",
+                hero_subtitle: "Your Complete Healthcare Access Platform for Sierra Leone",
+                hero_desc: "Find emergency medical services instantly, manage hospital availability data in real-time, and access comprehensive healthcare information across all 16 districts",
+                card_patient_title: "For Patients",
+                card_patient_desc: "Find hospitals, emergency services, and healthcare facilities near you",
+                launch_patient_app: "Open Patient App →",
+                card_admin_title: "For Hospital Staff",
+                card_admin_desc: "Update your hospital's availability status and manage data securely",
+                launch_admin_app: "Open Admin Portal →",
+                card_map_title: "Interactive Map",
+                card_map_desc: "Explore hospitals across Sierra Leone on our interactive map (below)",
+                map_title: "🗺️ Live Hospital Map",
+                map_subtitle: "Explore all healthcare facilities across Sierra Leone's 16 districts"
+            },
+            kr: {
+                header_title: "MedFind Salone",
+                header_subtitle: "Mɛdikal Hɛlp fɔ Ɔlman na Salone",
+                nav_home: "🏠 Om",
+                nav_patient: "📱 Peshɛnt App",
+                nav_admin: "🔐 Admin Portal",
+                hero_title: "Wɛlkɔm na MedFind Salone",
+                hero_subtitle: "Yu BɛtƐ Ples fɔ Fɛn MƐdikal HƐlp na Salone",
+                hero_desc: "FƐn hospital dƐn we de wok wantƐm wantƐm, manƐj hospital tin dƐn, ɛn sev layf - ɔl na wan ples.",
+                card_patient_title: "Fɔ Peshɛnt Dɛn",
+                card_patient_desc: "FƐn hospital dƐn, ɛmajɛnsi savis dƐn, ɛn ples fɔ trit yu we de klos yu",
+                launch_patient_app: "Opun Peshɛnt App →",
+                card_admin_title: "Fɔ Hospital Wokman Dɛn",
+                card_admin_desc: "Abdeʈ yu hospital status ɛn manɛj data wit bƐtƐ sekuriti",
+                launch_admin_app: "Opun Admin Portal →",
+                card_map_title: "Map We De Wok",
+                card_map_desc: "Luk hospital dƐn na ɔl Salone na wi map (na bɔtɔm)",
+                map_title: "🗺️ Layv Hospital Map",
+                map_subtitle: "Luk ɔl hospital dƐn na Salone na ɔl di 16 distrikt dɛn"
+            }
+        };
+
         let currentSection = 'homeSection';
         let loadedSections = new Set(['homeSection']);
         let homeMap = null;
@@ -649,56 +701,7 @@
         // HOME MAP INITIALIZATION
         // ============================================
         async function initializeHomeMap() {
-            try {
-                const mapContainer = document.getElementById('homeMapContainer');
-                mapContainer.innerHTML = '';
-
-                homeMap = L.map('homeMapContainer').setView([8.4844, -13.2344], 8);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors',
-                    maxZoom: 18
-                }).addTo(homeMap);
-
-                // Fix for broken markers
-                delete L.Icon.Default.prototype._getIconUrl;
-                L.Icon.Default.mergeOptions({
-                    iconRetinaUrl: 'assets/vendor/leaflet/images/marker-icon-2x.png',
-                    iconUrl: 'assets/vendor/leaflet/images/marker-icon.png',
-                    shadowUrl: 'assets/vendor/leaflet/images/marker-shadow.png',
-                });
-
-                // Use MedFindData for offline robustness instead of fetch
-                console.log("[HomeMap] Initializing data...");
-                await MedFindData.init();
-                const hospitals = MedFindData.getAllHospitals();
-
-                console.log(`[HomeMap] Loaded ${hospitals.length} hospitals for map.`);
-
-                hospitals.forEach(hospital => {
-                    const statusColor = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes')
-                        ? 'green' : 'red';
-
-                    L.marker([hospital.latitude, hospital.longitude])
-                        .addTo(homeMap)
-                        .bindPopup(`
-                            <div style="padding: 10px;">
-                                <strong>${hospital.hospital_name}</strong><br>
-                                <small>${hospital.district}</small><br>
-                                <small>Status: <b style="color:${statusColor}">${statusColor === 'green' ? 'Capable' : 'Limited'}</b></small>
-                            </div>
-                        `);
-                });
-
-                const group = new L.featureGroup(hospitals.map(h =>
-                    L.marker([h.latitude, h.longitude])
-                ));
-                homeMap.fitBounds(group.getBounds().pad(0.1));
-            } catch (error) {
-                console.error('Failed to load map:', error);
-                document.getElementById('homeMapContainer').innerHTML =
-                    '<p style="color: white;">Map unavailable. Please check your connection.</p>';
-            }
+            console.log('Map handled by google-map-fix.js');
         }
 
         // ============================================
@@ -716,14 +719,11 @@
         // ============================================
         function switchGlobalLanguage(lang) {
             console.log('Switching language to:', lang);
-
-            // Update global buttons
-            const enBtn = document.getElementById('langEn');
-            const krBtn = document.getElementById('langKr');
-            if (enBtn) enBtn.classList.toggle('active', lang === 'en');
-            if (krBtn) krBtn.classList.toggle('active', lang === 'kr');
-
-            // Save preference
+            const trans = landingTranslations[lang];
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (trans[key]) el.textContent = trans[key];
+            });
             localStorage.setItem('medfind_lang_pref', lang);
 
             // 1. Try to switch Patient App Language
@@ -769,6 +769,7 @@
         window.switchGlobalLanguage = switchGlobalLanguage;
         window.goToApp = () => showSPASection('patientSection');
     </script>
+    <script src="google-map-fix.js"></script>
 </body>
 
 </html>

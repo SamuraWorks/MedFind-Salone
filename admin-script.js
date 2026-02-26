@@ -5,6 +5,96 @@
 
 (function () {
 
+    
+    const adminTranslations = {
+        en: {
+            admin_subtitle: "Hospital Admin Portal",
+            username: "Username",
+            password: "Password",
+            hospital_select_label: "Hospital",
+            select_hospital_placeholder: "Select your hospital...",
+            login_btn: "Login",
+            need_help: "Need help? Contact:",
+            demo_note: "🔓 Demo Mode: Use any username/password to login",
+            view_patient_app: "View Patient App",
+            logout: "Logout",
+            beds_available: "Beds Available",
+            oxygen_status: "Oxygen Status",
+            surgeons_on_duty: "Surgeons on Duty",
+            ambulance: "Ambulance",
+            quick_updates_title: "⚡ Quick Updates",
+            beds_full: "Beds Full",
+            no_oxygen: "No Oxygen",
+            oxygen_ok: "Oxygen OK",
+            surgeon_available: "Surgeon Available",
+            surgeon_oncall: "Surgeon On-Call",
+            ambulance_out: "Ambulance Out",
+            ambulance_ready: "Ambulance Ready",
+            detailed_update_title: "📝 Detailed Availability Update",
+            beds_input_label: "🛏️ Beds Available Now",
+            oxygen_input_label: "💨 Oxygen Availability",
+            surgeons_input_label: "👨‍⚕️ Surgeons on Duty",
+            theatre_input_label: "🏥 Operating Theatre Status",
+            ambulance_input_label: "🚑 Ambulance Availability",
+            notes_input_label: "📝 Additional Notes (Optional)",
+            save_changes_btn: "💾 Save All Changes",
+            reset_btn: "Reset"
+        },
+        kr: {
+            admin_subtitle: "Hospital Admin Portal",
+            username: "Nem",
+            password: "Password",
+            hospital_select_label: "Hospital",
+            select_hospital_placeholder: "Pik yu hospital...",
+            login_btn: "Login",
+            need_help: "Yu nid hɛlp? Kɔntackt:",
+            demo_note: "🔓 Demo Mode: Yu fɔ yuz ɛni nem/password fɔ login",
+            view_patient_app: "Luk Peshɛnt App",
+            logout: "Lɔgawt",
+            beds_available: "Bed Dɛn We De",
+            oxygen_status: "Oxygen Wetin De",
+            surgeons_on_duty: "Dɔkta Dɛn De",
+            ambulance: "Ambulans",
+            quick_updates_title: "⚡ Kwik Abdeʈ Dɛn",
+            beds_full: "Bed Dɛn Dɔn Ful",
+            no_oxygen: "Oxygen Nɔ De",
+            oxygen_ok: "Oxygen BƐTƐ",
+            surgeon_available: "Dɔkta De",
+            surgeon_oncall: "Dɔkta De Na Fɔn",
+            ambulance_out: "Ambulans Nɔ De",
+            ambulance_ready: "Ambulans De Ready",
+            detailed_update_title: "📝 Bɛtɛ BɛtƐ Abdeʈ",
+            beds_input_label: "🛏️ Bed Dɛn We De Naw",
+            oxygen_input_label: "💨 Oxygen Wetin De",
+            surgeons_input_label: "👨‍⚕️ Dɔkta Dɛn De",
+            theatre_input_label: "🏥 Wok Rum Status",
+            ambulance_input_label: "🚑 Ambulans Wetin De",
+            notes_input_label: "📝 Oda Tin Dɛn (If I De)",
+            save_changes_btn: "💾 Sev Ɔl Abdeʈ",
+            reset_btn: "Rizɛt"
+        }
+    };
+
+    let currentAdminLanguage = 'en';
+
+    function setAdminLanguage(lang) {
+        currentAdminLanguage = lang;
+        const trans = adminTranslations[lang];
+        
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const key = el.getAttribute('data-translate');
+            if (trans[key]) el.textContent = trans[key];
+        });
+
+        const enBtn = document.getElementById('adminLangEn');
+        const krBtn = document.getElementById('adminLangKr');
+        if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+        if (krBtn) krBtn.classList.toggle('active', lang === 'kr');
+
+        localStorage.setItem('admin_lang_pref', lang);
+    }
+    window.setAdminLanguage = setAdminLanguage;
+
     let hospitals = [];
     let currentHospital = null;
     let currentUser = null;
@@ -32,6 +122,7 @@
 
         // Load hospital data
         await loadHospitalData();
+        setAdminLanguage(localStorage.getItem('admin_lang_pref') || 'en');
 
         // Populate hospital dropdown
         populateHospitalSelect();
@@ -58,18 +149,18 @@
 
     async function loadHospitalData() {
         try {
-            console.log('🔄 Loading hospital data via MedFindData...');
-            hospitals = await MedFindData.init();
+            console.log('🔄 Loading hospital data via window.MedFindData...');
+            hospitals = await window.MedFindData.init();
 
             if (!hospitals || hospitals.length === 0) {
-                console.warn('⚠️ No data returned from MedFindData. Attempting emergency fallback...');
+                console.warn('⚠️ No data returned from window.MedFindData. Attempting emergency fallback...');
                 hospitals = [
                     { id: "hosp_001", hospital_name: "Connaught Hospital (Fallback)", district: "Western Area", facility_type: "Government" },
                     { id: "hosp_002", hospital_name: "PCMH (Fallback)", district: "Western Area", facility_type: "Government" }
                 ];
                 showToast('Loaded emergency fallback data.', 'warning');
             } else {
-                console.log(`✅ Loaded ${hospitals.length} hospitals via MedFindData`);
+                console.log(`✅ Loaded ${hospitals.length} hospitals via window.MedFindData`);
             }
         } catch (error) {
             console.error('❌ Data load failed:', error);
@@ -414,7 +505,7 @@
 
     function saveHospitalData() {
         // Save via Shared Module
-        const success = MedFindData.saveHospital(currentHospital);
+        const success = window.MedFindData.saveHospital(currentHospital);
 
         if (success) {
             console.log('✅ Hospital data saved to persistent storage');
@@ -546,8 +637,8 @@
         }
 
         try {
-            // Reset to FALLBACK_DATA via MedFindData
-            const data = JSON.parse(JSON.stringify(MedFindData.FALLBACK_DATA));
+            // Reset to FALLBACK_DATA via window.MedFindData
+            const data = JSON.parse(JSON.stringify(window.MedFindData.FALLBACK_DATA));
             hospitals = data;
 
             // Update current hospital reference
