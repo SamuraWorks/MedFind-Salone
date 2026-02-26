@@ -382,10 +382,17 @@
     window.PatientApp_Call = (phone) => window.location.href = `tel:${phone}`;
     window.PatientApp_Directions = (lat, lon) => window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
 
-    function showHospitalDetail(hospital) {
+    function showHospitalDetail(idOrHospital) {
+        const hospital = typeof idOrHospital === 'string'
+            ? hospitals.find(h => h.id === idOrHospital)
+            : idOrHospital;
+
+        if (!hospital) return;
         currentDetailHospital = hospital;
+
         const avail = hospital.dynamic_availability || {};
         const cap = hospital.static_bed_capacity || {};
+        const resources = hospital.technology_services || {};
         const isFav = favorites.includes(hospital.id);
 
         const favBtn = document.getElementById('favoriteBtn');
@@ -397,49 +404,130 @@
         const detailContent = document.getElementById('detailContent');
         if (!detailContent) return;
 
-        let timestampDisplay = 'Not Updated';
-        if (avail.last_updated_timestamp) {
-            timestampDisplay = new Date(avail.last_updated_timestamp).toLocaleString();
-        }
+        // Helper for status classes
+        const getStatusClass = (val) => {
+            if (!val || val === 'No' || val === 'Closed' || val === 'Offline') return 'status-unavailable';
+            if (val === 'Limited' || val === 'On Call' || val === 'Functional (Limited)') return 'status-limited';
+            return 'status-available';
+        };
 
-        const surgicalSpecialties = hospital.surgeons_by_specialty && Object.keys(hospital.surgeons_by_specialty).length > 0
-            ? Object.keys(hospital.surgeons_by_specialty).map(s => `<li>${s.replace(/_/g, ' ')}</li>`).join('')
-            : '<li>Not Updated</li>';
+        const getPulse = (val) => {
+            const cls = getStatusClass(val);
+            const color = cls === 'status-available' ? '#10b981' : (cls === 'status-limited' ? '#f59e0b' : '#ef4444');
+            return `<span class="pulse-dot" style="background: ${color}"></span>`;
+        };
 
-        detailContent.innerHTML = translateDetailHtml(`
-            <div class="detail-section">
+        detailContent.innerHTML = `
+            <div class="detail-card detail-title-section">
                 <h2>${hospital.hospital_name}</h2>
-                <p class="detail-type">${hospital.facility_type}</p>
-                <div class="detail-grid">
-                    <div><strong>District:</strong> ${hospital.district}</div>
-                    <div><strong>Phone:</strong> <a href="tel:${hospital.phone}">${hospital.phone}</a></div>
-                    <div><strong>Distance:</strong> ${hospital.distance ? hospital.distance + ' km' : '---'}</div>
+                <span class="detail-type-badge">${hospital.facility_type || 'General Hospital'}</span>
+                <p style="margin-top: 10px; font-size: 14px; color: #4a5568;">
+                    📍 ${hospital.address || hospital.district}<br>
+                    📞 ${hospital.phone || 'Contact not listed'}<br>
+                    🕒 Hours: ${hospital.hours || '24/7'}
+                </p>
+                <div class="action-bar" style="margin-top: 15px;">
+                    <button class="btn-primary" onclick="window.PatientApp_Call('${hospital.phone}')">📞 Call</button>
+                    <button class="btn-secondary" onclick="window.PatientApp_Directions(${hospital.latitude}, ${hospital.longitude})">🗺️ Directions</button>
+                    <button class="btn-ambulance" onclick="window.PatientApp_Call('${hospital.emergency_numbers?.[0] || '117'}')">🚑 Request Ambulance</button>
                 </div>
-                <div class="detail-actions">
-                    <button onclick="window.PatientApp_Call('${hospital.phone}')">📞 Call Now</button>
-                    <button onclick="window.PatientApp_Directions(${hospital.latitude}, ${hospital.longitude})">🗺️ Directions</button>
+            </div>
+
+            <div class="detail-card">
+                <h3 style="font-size: 16px; margin-bottom: 15px;">🛏️ Bed Availability</h3>
+                <div class="bed-grid">
+                    <div class="bed-item">
+                        <div class="bed-count">${avail.beds_male_available || 0}</div>
+                        <div class="bed-label">Male Ward / ${cap.male || 0}</div>
+                    </div>
+                    <div class="bed-item">
+                        <div class="bed-count">${avail.beds_female_available || 0}</div>
+                        <div class="bed-label">Female Ward / ${cap.female || 0}</div>
+                    </div>
+                    <div class="bed-item">
+                        <div class="bed-count">${avail.beds_ped_available || 0}</div>
+                        <div class="bed-label">Children / ${cap.pediatric || 0}</div>
+                    </div>
+                    <div class="bed-item">
+                        <div class="bed-count">${avail.beds_icu_available || 0}</div>
+                        <div class="bed-label">ICU / ${cap.icu || 0}</div>
+                    </div>
                 </div>
             </div>
-            <div class="detail-section emergency-status">
-                <h3>🚨 EMERGENCY STATUS</h3>
-                <div class="status-row"><span>ER Status:</span><strong>${hospital.key_services?.emergency ? 'Open' : 'Closed'}</strong></div>
-                <div class="status-row"><span>Surgeons:</span><strong>${avail.surgeons_on_duty || 'Unknown'}</strong></div>
-                <div class="status-row"><span>Beds:</span><strong>${avail.beds_available_now || 0} / ${cap.total || 0}</strong></div>
+
+            <div class="detail-card">
+                <h3 style="font-size: 16px; margin-bottom: 12px;">🏥 Services & Resources</h3>
+                <div class="resource-grid">
+                    <div class="resource-item">
+                        <div class="resource-label">Surgery</div>
+                        <div class="resource-status">${getPulse(avail.operating_theatre_status)} ${avail.operating_theatre_status || 'Functional'}</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-label">Oxygen</div>
+                        <div class="resource-status">${getPulse(avail.oxygen_available)} ${avail.oxygen_available || 'Available'}</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-label">Blood Bank</div>
+                        <div class="resource-status">${getPulse(hospital.key_services?.blood_bank ? 'Yes' : 'No')} ${hospital.key_services?.blood_bank ? 'Available' : 'No'}</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-label">Ambulance</div>
+                        <div class="resource-status">${getPulse(avail.ambulance_available)} ${avail.ambulance_available || 'Ready'}</div>
+                    </div>
+                </div>
             </div>
-            <div class="detail-section">
-                <h3>🛏️ BED CAPACITY</h3>
-                <div class="status-row"><span>Adult:</span><strong>${cap.adult || 0}</strong></div>
-                <div class="status-row"><span>Maternity:</span><strong>${cap.maternity || 0}</strong></div>
-                <div class="status-row"><span>Pediatric:</span><strong>${cap.pediatric || 0}</strong></div>
-                <div class="status-row"><span>ICU:</span><strong>${cap.icu || 0}</strong></div>
+
+            ${(hospital.key_services?.eye_care || hospital.key_services?.ent || hospital.key_services?.dental || hospital.key_services?.orthopedics) ? `
+            <div class="detail-card">
+                <h3 style="font-size: 16px; margin-bottom: 12px;">🩺 Specialized Services</h3>
+                <div class="resource-grid">
+                    ${hospital.key_services?.eye_care ? `
+                    <div class="resource-item">
+                        <div class="resource-label">Eye Care</div>
+                        <div class="resource-status">${getPulse('Yes')} Available</div>
+                    </div>` : ''}
+                    ${hospital.key_services?.ent ? `
+                    <div class="resource-item">
+                        <div class="resource-label">ENT (Ear/Nose)</div>
+                        <div class="resource-status">${getPulse('Yes')} Available</div>
+                    </div>` : ''}
+                    ${hospital.key_services?.dental ? `
+                    <div class="resource-item">
+                        <div class="resource-label">Dental (Tooth)</div>
+                        <div class="resource-status">${getPulse('Yes')} Available</div>
+                    </div>` : ''}
+                    ${hospital.key_services?.orthopedics ? `
+                    <div class="resource-item">
+                        <div class="resource-label">Orthopedic</div>
+                        <div class="resource-status">${getPulse('Yes')} Available</div>
+                    </div>` : ''}
+                </div>
+            </div>` : ''}
+
+            <div class="detail-card">
+                <h3 style="font-size: 16px; margin-bottom: 12px;">👨‍⚕️ Specialists Available</h3>
+                <div class="specialist-list">
+                    <div class="specialist-item">
+                        <div class="specialist-info">
+                            <div class="specialist-name">Surgeons</div>
+                            <div class="specialist-title">General & Specialty</div>
+                        </div>
+                        <div class="status-badge ${getStatusClass(avail.surgeons_on_duty)}">${avail.surgeons_on_duty || 'On Call'}</div>
+                    </div>
+                    <div class="specialist-item">
+                        <div class="specialist-info">
+                            <div class="specialist-name">Pediatricians</div>
+                            <div class="specialist-title">Childhood Specialists</div>
+                        </div>
+                        <div class="status-badge ${hospital.medical_specialists?.pediatricians > 0 ? 'status-available' : 'status-limited'}">${hospital.medical_specialists?.pediatricians > 0 ? 'On-site' : 'On Call'}</div>
+                    </div>
+                </div>
             </div>
-            <div class="detail-section">
-                <h3>👨‍⚕️ SPECIALTIES</h3>
-                <ul>${surgicalSpecialties}</ul>
+
+            <div style="text-align: center; color: #718096; font-size: 12px; margin-top: 10px;">
+                Last Sync: ${avail.last_updated_timestamp ? new Date(avail.last_updated_timestamp).toLocaleString() : 'Just now'}
             </div>
-            <div class="detail-section data-transparency">
-                <p>Last Updated: ${timestampDisplay}</p>
-            </div>`, currentLanguage);
+        `;
 
         showScreen('detailScreen');
     }

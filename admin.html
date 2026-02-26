@@ -2,42 +2,10 @@
 <html lang="en">
 
 <head>
-    <!--
-        ⚠️ FINAL MAINTAINER NOTE - CRITICAL: READ THIS CAREFULLY ⚠️
-        
-        FOR THE VERY LAST TIME - ALL DESIGNS MUST BE MAINTAINED:
-        
-        ✅ The Admin HTML and App HTML MUST maintain ALL designs
-        ✅ EVERYTHING in the page MUST be maintained:
-           - All visual designs, layouts, colors, fonts, spacing
-           - All UI components, buttons, forms, cards, tables
-           - All icons, emojis, images, and visual elements
-           - All CSS classes, IDs, and HTML structure
-           - All asset links (CSS, JS, images)
-           - All offline functionality hooks
-           - All responsive design breakpoints
-           - All animations and transitions
-           - All user interface elements and interactions
-        
-        ❌ DO NOT modify:
-           - Structure, IDs, classes, or asset links
-           - Visual design elements or layouts
-           - CSS styling or responsive design
-           - Any offline hooks or service-worker integration
-           - Any content, text, or UI elements
-        
-        ⚠️ If you need to change something, you MUST:
-           1. Coordinate with the project owner
-           2. Verify service-worker/cache behavior
-           3. Run visual regression tests
-           4. Ensure 100% offline functionality is maintained
-           5. Ensure consistent UX across all devices
-        
-        This file is the Admin HTML - ALL DESIGNS MUST BE PRESERVED EXACTLY AS IMPLEMENTED.
-    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedFind Salone - Hospital Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
     <link rel="stylesheet" href="admin-styles.css">
 </head>
 
@@ -45,12 +13,12 @@
     <!-- Login Screen -->
     <div id="loginScreen" class="login-screen">
         <div class="login-container">
-            
-            <div class="language-selector" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+            <div class="language-selector"
+                style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
                 <button class="lang-btn active" onclick="setAdminLanguage('en')" id="adminLangEn">EN</button>
                 <button class="lang-btn" onclick="setAdminLanguage('kr')" id="adminLangKr">KR</button>
             </div>
-        <div class="login-header">
+            <div class="login-header">
                 <img src="./assets/logo.svg" alt="MedFind Salone Logo"
                     style="width: 80px; height: 80px; margin-bottom: 15px;">
                 <h1>🏥 MedFind Salone</h1>
@@ -74,8 +42,10 @@
                 <button type="submit" class="login-btn" data-translate="login_btn">Login</button>
             </form>
             <div class="login-footer">
-                <p><span data-translate="need_help">Need help? Contact:</span> <a href="mailto:medfindsalone@gmail.com">medfindsalone@gmail.com</a></p>
-                <p class="demo-note"><span data-translate="demo_note">🔓 Demo Mode: Use any username/password to login</span></p>
+                <p><span data-translate="need_help">Need help? Contact:</span> <a
+                        href="mailto:medfindsalone@gmail.com">medfindsalone@gmail.com</a></p>
+                <p class="demo-note"><span data-translate="demo_note">🔓 Demo Mode: Use any username/password to
+                        login</span></p>
             </div>
         </div>
     </div>
@@ -96,14 +66,17 @@
                         <h1><span id="hospitalName">Hospital Name</span></h1>
                         <p class="hospital-type" id="hospitalType">Hospital Type</p>
                     </div>
-                    <div class="header-right">
-                        <div class="sync-status">
-                            <span class="sync-dot" id="syncDot"></span>
-                            <span id="syncStatus">Online</span>
-                        </div>
-                        <button class="btn-secondary" onclick="goToApp()" data-translate="view_patient_app">View Patient App</button>
-                        <button class="btn-danger" onclick="logout()" data-translate="logout">Logout</button>
-                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="sync-status">
+                    <span class="sync-dot" id="syncDot"></span>
+                    <span id="syncStatus">Online</span>
+                </div>
+                <button class="btn-secondary" onclick="goToApp()" data-translate="view_patient_app">View Patient
+                    App</button>
+                <button class="btn-danger" onclick="logout()" data-translate="logout">Logout</button>
+            </div>
         </header>
 
         <!-- Stats Dashboard -->
@@ -111,26 +84,29 @@
             <div class="stat-card stat-primary">
                 <div class="stat-icon">🛏️</div>
                 <div class="stat-content">
-                    <div class="stat-label" data-translate="beds_available">Beds Available</div>
+                    <div class="stat-label">Total Beds Available</div>
                     <div class="stat-value" id="statBeds">0</div>
-                    <div class="stat-total" id="statBedsTotal">of 0 total</div>
+                    <div id="bedBreakdown" style="font-size: 11px; color: #6b7280; margin-top: 5px;">
+                        ICU: <span id="statICU">0</span> | Mat: <span id="statMat">0</span> | Ped: <span
+                            id="statPed">0</span>
+                    </div>
                 </div>
             </div>
-            <div class="stat-card stat-success" id="oxygenCard">
+            <div class="stat-card" id="oxygenCard">
                 <div class="stat-icon">💨</div>
                 <div class="stat-content">
                     <div class="stat-label" data-translate="oxygen_status">Oxygen Status</div>
                     <div class="stat-value" id="statOxygen">Yes</div>
                 </div>
             </div>
-            <div class="stat-card stat-info" id="surgeonCard">
+            <div class="stat-card" id="surgeonCard">
                 <div class="stat-icon">👨‍⚕️</div>
                 <div class="stat-content">
                     <div class="stat-label" data-translate="surgeons_on_duty">Surgeons on Duty</div>
                     <div class="stat-value" id="statSurgeons">Yes</div>
                 </div>
             </div>
-            <div class="stat-card stat-warning" id="ambulanceCard">
+            <div class="stat-card" id="ambulanceCard">
                 <div class="stat-icon">🚑</div>
                 <div class="stat-content">
                     <div class="stat-label" data-translate="ambulance">Ambulance</div>
@@ -139,108 +115,134 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <section class="panel">
-            <h2 class="panel-title" data-translate="quick_updates_title">⚡ Quick Updates</h2>
-            <p class="panel-subtitle">One-click updates for the most common status changes</p>
-
+        <!-- High-Impact Quick Status -->
+        <section class="panel emergency-panel">
+            <h2 class="panel-title" style="color: #dc2626;">🚨 Emergency & High-Impact Status</h2>
             <div class="quick-actions-grid">
-                <button class="quick-btn btn-green" onclick="quickUpdate('beds_full')">
-                    <span class="btn-icon">🛏️</span>
-                    <span class="btn-text" data-translate="beds_full">Beds Full</span>
-                </button>
-                <button class="quick-btn btn-blue" onclick="quickUpdate('beds_available')">
-                    <span class="btn-icon">🆓</span>
-                    <span class="btn-text">Beds Available</span>
-                </button>
-                <button class="quick-btn btn-red" onclick="quickUpdate('no_oxygen')">
-                    <span class="btn-icon">💨</span>
-                    <span class="btn-text" data-translate="no_oxygen">No Oxygen</span>
-                </button>
-                <button class="quick-btn btn-green" onclick="quickUpdate('oxygen_ok')">
-                    <span class="btn-icon">✅</span>
-                    <span class="btn-text" data-translate="oxygen_ok">Oxygen OK</span>
-                </button>
-                <button class="quick-btn btn-green" onclick="quickUpdate('surgeon_available')">
-                    <span class="btn-icon">👨‍⚕️</span>
-                    <span class="btn-text" data-translate="surgeon_available">Surgeon Available</span>
-                </button>
-                <button class="quick-btn btn-yellow" onclick="quickUpdate('surgeon_oncall')">
-                    <span class="btn-icon">⏰</span>
-                    <span class="btn-text" data-translate="surgeon_oncall">Surgeon On-Call</span>
-                </button>
-                <button class="quick-btn btn-red" onclick="quickUpdate('ambulance_out')">
-                    <span class="btn-icon">🚑</span>
-                    <span class="btn-text" data-translate="ambulance_out">Ambulance Out</span>
-                </button>
-                <button class="quick-btn btn-green" onclick="quickUpdate('ambulance_ready')">
-                    <span class="btn-icon">🚐</span>
-                    <span class="btn-text" data-translate="ambulance_ready">Ambulance Ready</span>
-                </button>
+                <button class="quick-btn btn-red" onclick="quickUpdate('emergency_closed')">🚨 ER Closed</button>
+                <button class="quick-btn btn-green" onclick="quickUpdate('emergency_open')">🚨 ER Open</button>
+                <button class="quick-btn btn-red" onclick="quickUpdate('no_oxygen')">💨 No Oxygen</button>
+                <button class="quick-btn btn-green" onclick="quickUpdate('oxygen_ok')">💨 Oxygen OK</button>
+                <button class="quick-btn btn-yellow" onclick="quickUpdate('surgeon_oncall')">⏰ Surgeon On-Call</button>
+                <button class="quick-btn btn-red" onclick="quickUpdate('beds_full')">🛏️ Beds Full</button>
             </div>
         </section>
 
         <!-- Detailed Update Form -->
         <section class="panel">
-            <h2 class="panel-title" data-translate="detailed_update_title">📝 Detailed Availability Update</h2>
-            <p class="panel-subtitle">Update all fields at once for comprehensive status changes</p>
-
+            <h2 class="panel-title" data-translate="detailed_update_title">📝 Full Data Update</h2>
             <form id="updateForm" class="update-form">
+
+                <h3 style="margin: 20px 0 15px 0; border-bottom: 2px solid #f3f4f6; padding-bottom: 5px;">🛏️ Bed
+                    Availability (Available / Total)</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="bedsInput" data-translate="beds_input_label">🛏️ Beds Available Now</label>
-                        <input type="number" id="bedsInput" min="0" required>
-                        <small id="bedCapacity">Total capacity: 0 beds</small>
+                        <label>Male Ward</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="number" id="bedsMaleAvail" placeholder="Avail" min="0">
+                            <input type="number" id="bedsMaleTotal" placeholder="Total" min="0">
+                        </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="oxygenInput" data-translate="oxygen_input_label">💨 Oxygen Availability</label>
-                        <select id="oxygenInput" required>
-                            <option value="Yes">Yes - Adequate Supply</option>
-                            <option value="Limited">Limited - Running Low</option>
-                            <option value="No">No - Depleted</option>
-                        </select>
+                        <label>Female Ward</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="number" id="bedsFemaleAvail" placeholder="Avail" min="0">
+                            <input type="number" id="bedsFemaleTotal" placeholder="Total" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Children (Pediatric)</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="number" id="bedsPedAvail" placeholder="Avail" min="0">
+                            <input type="number" id="bedsPedTotal" placeholder="Total" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>ICU</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="number" id="bedsICUAvail" placeholder="Avail" min="0">
+                            <input type="number" id="bedsICUTotal" placeholder="Total" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Maternity</label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="number" id="bedsMatAvail" placeholder="Avail" min="0">
+                            <input type="number" id="bedsMatTotal" placeholder="Total" min="0">
+                        </div>
                     </div>
                 </div>
 
+                <h3 style="margin: 20px 0 15px 0; border-bottom: 2px solid #f3f4f6; padding-bottom: 5px;">🏥 Service &
+                    Resource Status</h3>
+                <div class="form-grid-services"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="check-group">
+                        <label><input type="checkbox" id="srvER"> Emergency Room</label>
+                    </div>
+                    <div class="check-group">
+                        <label><input type="checkbox" id="srvSurgery"> Surgery (Theatre)</label>
+                    </div>
+                    <div class="check-group">
+                        <label><input type="checkbox" id="srvLab"> Laboratory</label>
+                    </div>
+                    <div class="check-group">
+                        <label><input type="checkbox" id="srvPharm"> Pharmacy</label>
+                    </div>
+                    <div class="check-group">
+                        <label><input type="checkbox" id="srvBlood"> Blood Bank</label>
+                    </div>
+                </div>
+
+                <h4 style="margin: 15px 0 10px 0; color: #4b5563;">🩺 Specialized Services</h4>
+                <div class="form-grid-services"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="check-group"><label><input type="checkbox" id="srvEye"> Eye Care (Ophtha)</label></div>
+                    <div class="check-group"><label><input type="checkbox" id="srvENT"> Ear, Nose, Throat (ENT)</label>
+                    </div>
+                    <div class="check-group"><label><input type="checkbox" id="srvDental"> Dental (Tooth)</label></div>
+                    <div class="check-group"><label><input type="checkbox" id="srvOrtho"> Orthopedic</label></div>
+                    <div class="check-group"><label><input type="checkbox" id="srvCardio"> Cardiology</label></div>
+                    <div class="check-group"><label><input type="checkbox" id="srvDialysis"> Dialysis</label></div>
+                </div>
+
+                <h3 style="margin: 20px 0 15px 0; border-bottom: 2px solid #f3f4f6; padding-bottom: 5px;">👨‍⚕️
+                    Specialists & Critical Status</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="surgeonsInput" data-translate="surgeons_input_label">👨‍⚕️ Surgeons on Duty</label>
-                        <select id="surgeonsInput" required>
+                        <label>Surgeons on Duty</label>
+                        <select id="surgeonsInput">
                             <option value="Yes">Yes - On Site</option>
-                            <option value="On Call">On Call - Available</option>
-                            <option value="No">No - None Available</option>
+                            <option value="On Call">On Call</option>
+                            <option value="No">No</option>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="theatreInput" data-translate="theatre_input_label">🏥 Operating Theatre Status</label>
-                        <select id="theatreInput" required>
-                            <option value="Functional">Functional</option>
-                            <option value="Limited">Limited Capacity</option>
-                            <option value="Not Functional">Not Functional</option>
+                        <label>Oxygen Availability</label>
+                        <select id="oxygenInput">
+                            <option value="Yes">Adequate Supply</option>
+                            <option value="Limited">Limited Supply</option>
+                            <option value="No">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ambulance</label>
+                        <select id="ambulanceInput">
+                            <option value="Yes">Available</option>
+                            <option value="No">Unavailable</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="ambulanceInput" data-translate="ambulance_input_label">🚑 Ambulance Availability</label>
-                        <select id="ambulanceInput" required>
-                            <option value="Yes">Yes - Ready to Dispatch</option>
-                            <option value="No">No - Out/Unavailable</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="notesInput" data-translate="notes_input_label">📝 Additional Notes (Optional)</label>
-                        <input type="text" id="notesInput" placeholder="e.g., 'Pediatric ward closed until 2pm'">
-                    </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Public Announcement / Notes</label>
+                    <textarea id="notesInput" rows="3" placeholder="Important updates for patients..."></textarea>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
-                    <button type="submit" class="btn-primary" data-translate="save_changes_btn">💾 Save All Changes</button>
+                <div class="form-actions" style="margin-top: 30px;">
+                    <button type="button" class="btn-secondary" onclick="resetForm()">Discard Changes</button>
+                    <button type="submit" class="btn-primary" style="padding: 18px 40px; font-size: 18px;">💾 Sync &
+                        Save Updates</button>
                 </div>
             </form>
         </section>
@@ -274,18 +276,10 @@
         <!-- Data Management -->
         <section class="panel">
             <h2 class="panel-title">💾 Data Management</h2>
-            <p class="panel-subtitle">Download or reset your hospital's data</p>
-
             <div class="data-management-actions">
-                <button class="btn-secondary" onclick="downloadData()">
-                    📥 Download Hospital Data (JSON)
-                </button>
-                <button class="btn-warning" onclick="viewAllHospitals()">
-                    🏥 View All Hospitals
-                </button>
-                <button class="btn-danger" onclick="resetToDefault()">
-                    🔄 Reset to Default Data
-                </button>
+                <button class="btn-secondary" onclick="downloadData()">📥 Download Data</button>
+                <button class="btn-warning" onclick="viewAllHospitals()">🏥 All Hospitals</button>
+                <button class="btn-danger" onclick="resetToDefault()">🔄 Reset Data</button>
             </div>
         </section>
     </div>

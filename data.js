@@ -16,14 +16,16 @@ try {
                     "facility_type": "Government Tertiary Referral Hospital",
                     "static_bed_capacity": {
                         "total": 350,
-                        "adult": 200,
+                        "male": 100,
+                        "female": 100,
                         "maternity": 80,
                         "pediatric": 50,
                         "icu": 20
                     },
                     "average_occupancy_rates": {
                         "overall": 0.85,
-                        "adult": 0.88,
+                        "male": 0.88,
+                        "female": 0.88,
                         "maternity": 0.9,
                         "pediatric": 0.75,
                         "icu": 0.95
@@ -39,6 +41,10 @@ try {
                         "icu": true,
                         "mental_health": true,
                         "pharmacy": true,
+                        "eye_care": true,
+                        "ent": true,
+                        "dental": true,
+                        "orthopedics": true,
                         "other": [
                             "Internal Medicine",
                             "Outpatient Services"
@@ -112,14 +118,16 @@ try {
                     "facility_type": "Private Multispecialty Hospital",
                     "static_bed_capacity": {
                         "total": 60,
-                        "adult": 40,
+                        "male": 20,
+                        "female": 20,
                         "maternity": 10,
                         "pediatric": 8,
                         "icu": 2
                     },
                     "average_occupancy_rates": {
                         "overall": 0.6,
-                        "adult": 0.62,
+                        "male": 0.62,
+                        "female": 0.62,
                         "maternity": 0.65,
                         "pediatric": 0.55,
                         "icu": 0.7
@@ -135,6 +143,9 @@ try {
                         "icu": true,
                         "mental_health": false,
                         "pharmacy": true,
+                        "cardiology": true,
+                        "dialysis": true,
+                        "dental": true,
                         "other": [
                             "Cardiology",
                             "MRI/CT Scan",
@@ -206,14 +217,16 @@ try {
                     "facility_type": "NGO",
                     "static_bed_capacity": {
                         "total": 100,
-                        "adult": 60,
+                        "male": 30,
+                        "female": 30,
                         "maternity": 0,
                         "pediatric": 40,
                         "icu": 10
                     },
                     "average_occupancy_rates": {
                         "overall": 0.9,
-                        "adult": 0.95,
+                        "male": 0.95,
+                        "female": 0.95,
                         "maternity": 0,
                         "pediatric": 0.85,
                         "icu": 0.95
@@ -229,6 +242,7 @@ try {
                         "icu": true,
                         "mental_health": false,
                         "pharmacy": true,
+                        "ent": true,
                         "other": [
                             "Trauma Surgery",
                             "Free Care"
@@ -2345,4 +2359,4 @@ try {
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = window.MedFindData;
     }
-} catch(e) { if (e !== 'skip') console.error('data.js error:', e); }
+} catch (e) { if (e !== 'skip') console.error('data.js error:', e); }

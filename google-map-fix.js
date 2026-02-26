@@ -24,11 +24,12 @@ function initMap() {
     // Attach markers for all hospitals
     if (window.MedFindData && MedFindData.hospitals && MedFindData.hospitals.length > 0) {
         console.log(`📍 Adding ${MedFindData.hospitals.length} markers to map...`);
+
         MedFindData.hospitals.forEach(hospital => {
             if (hospital.lat && hospital.lng) {
                 // Determine marker color based on oxygen availability
-                const isAvailable = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes');
-                const markerColor = isAvailable ? '#10b981' : '#ef4444'; // Green vs Red
+                const hasOxygen = (hospital.dynamic_availability && hospital.dynamic_availability.oxygen_available === 'Yes');
+                const markerColor = hasOxygen ? '#10b981' : '#ef4444'; // Green vs Red
 
                 const marker = new google.maps.Marker({
                     position: { lat: hospital.lat, lng: hospital.lng },
@@ -47,19 +48,18 @@ function initMap() {
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                     <div style="min-width: 250px; font-family: -apple-system, sans-serif; padding: 5px; color: #333;">
-                        <h3 style="margin: 0 0 5px 0; color: #2563eb; font-size: 16px;">${hospital.name}</h3>
-                        <div style="background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; color: #4b5563; display: inline-block;">${hospital.facility_type || 'Hospital'}</div>
-                        <p style="margin: 0 0 5px 0; font-size: 12px; line-height: 1.4; color: #374151;">
-                            <strong>District:</strong> ${hospital.district}<br>
-                            <strong>Address:</strong> ${hospital.address}
+                        <h3 style="margin: 0 0 5px 0; color: #1a202c; font-size: 16px;">${hospital.name}</h3>
+                        <div style="background: #ebf4ff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; color: #2b6cb0; display: inline-block;">${hospital.facility_type || 'Hospital'}</div>
+                        <p style="margin: 0 0 8px 0; font-size: 12px; line-height: 1.4; color: #4a5568;">
+                            📍 ${hospital.address || hospital.district}
                         </p>
-                        <div style="display: flex; align-items: center; gap: 8px; border-top: 1px solid #eee; padding-top: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 11px; font-weight: 600;">Contact:</span>
-                            <span style="font-size: 11px; color: #2563eb;">${hospital.phone || hospital.contact || 'No phone'}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #edf2f7; padding-top: 8px; margin-bottom: 12px;">
+                            <span style="font-size: 12px; font-weight: 700; color: #2d3748;">Oxygen: <span style="color: ${hasOxygen ? '#10b981' : '#dc2626'}">${hasOxygen ? '✅' : '❌'}</span></span>
+                            <span style="font-size: 11px; color: #718096;">Updated: Just Now</span>
                         </div>
-                        <button onclick="window.goToApp();" 
-                            style="width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                            View Details in App
+                        <button onclick="window.PatientAppDetail.show('${hospital.id}');" 
+                            style="width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.2s;">
+                            View Full Profile
                         </button>
                     </div>`
                 });
@@ -75,6 +75,20 @@ function initMap() {
 
     // Store globally
     window.HomeMap = { map };
+
+    // Bridge for Map -> Detail
+    window.PatientAppDetail = {
+        show: function (id) {
+            if (window.showSPASection) window.showSPASection('patientSection');
+            if (window.MedFindData) {
+                const h = window.MedFindData.getHospitalById(id);
+                if (h && typeof window.showHospitalDetail === 'function') {
+                    window.showHospitalDetail(h);
+                }
+            }
+        }
+    };
+
     console.log("✅ Map loaded successfully.");
 }
 

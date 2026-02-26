@@ -5,7 +5,6 @@
 
 (function () {
 
-    
     const adminTranslations = {
         en: {
             admin_subtitle: "Hospital Admin Portal",
@@ -23,22 +22,9 @@
             surgeons_on_duty: "Surgeons on Duty",
             ambulance: "Ambulance",
             quick_updates_title: "⚡ Quick Updates",
-            beds_full: "Beds Full",
-            no_oxygen: "No Oxygen",
-            oxygen_ok: "Oxygen OK",
-            surgeon_available: "Surgeon Available",
-            surgeon_oncall: "Surgeon On-Call",
-            ambulance_out: "Ambulance Out",
-            ambulance_ready: "Ambulance Ready",
-            detailed_update_title: "📝 Detailed Availability Update",
-            beds_input_label: "🛏️ Beds Available Now",
-            oxygen_input_label: "💨 Oxygen Availability",
-            surgeons_input_label: "👨‍⚕️ Surgeons on Duty",
-            theatre_input_label: "🏥 Operating Theatre Status",
-            ambulance_input_label: "🚑 Ambulance Availability",
-            notes_input_label: "📝 Additional Notes (Optional)",
-            save_changes_btn: "💾 Save All Changes",
-            reset_btn: "Reset"
+            detailed_update_title: "📝 Full Data Update",
+            save_changes_btn: "💾 Sync & Save Updates",
+            reset_btn: "Discard Changes"
         },
         kr: {
             admin_subtitle: "Hospital Admin Portal",
@@ -56,20 +42,7 @@
             surgeons_on_duty: "Dɔkta Dɛn De",
             ambulance: "Ambulans",
             quick_updates_title: "⚡ Kwik Abdeʈ Dɛn",
-            beds_full: "Bed Dɛn Dɔn Ful",
-            no_oxygen: "Oxygen Nɔ De",
-            oxygen_ok: "Oxygen BƐTƐ",
-            surgeon_available: "Dɔkta De",
-            surgeon_oncall: "Dɔkta De Na Fɔn",
-            ambulance_out: "Ambulans Nɔ De",
-            ambulance_ready: "Ambulans De Ready",
             detailed_update_title: "📝 Bɛtɛ BɛtƐ Abdeʈ",
-            beds_input_label: "🛏️ Bed Dɛn We De Naw",
-            oxygen_input_label: "💨 Oxygen Wetin De",
-            surgeons_input_label: "👨‍⚕️ Dɔkta Dɛn De",
-            theatre_input_label: "🏥 Wok Rum Status",
-            ambulance_input_label: "🚑 Ambulans Wetin De",
-            notes_input_label: "📝 Oda Tin Dɛn (If I De)",
             save_changes_btn: "💾 Sev Ɔl Abdeʈ",
             reset_btn: "Rizɛt"
         }
@@ -80,7 +53,7 @@
     function setAdminLanguage(lang) {
         currentAdminLanguage = lang;
         const trans = adminTranslations[lang];
-        
+
         document.querySelectorAll('[data-translate]').forEach(el => {
             const key = el.getAttribute('data-translate');
             if (trans[key]) el.textContent = trans[key];
@@ -108,18 +81,6 @@
     async function initAdmin() {
         console.log('🏥 Admin Portal Initializing...');
 
-        // CHECK IF RUNNING IN IFRAME (SPA MODE)
-        if (window.self !== window.top) {
-            console.log('🔐 Running in SPA Mode (Iframe)');
-            // Hide Login Header if needed, or adjust padding
-            // The Admin Portal uses a different layout, let's just ensure it fits.
-            const header = document.querySelector('.login-header');
-            // We might want to keep the login header (MedFind Salone) on the login screen?
-            // Actually, the main SPA header says 'Admin Portal'. 
-            // Let's keep it for context unless it looks redundant.
-            // It's fine to leave it for now, as Admin Portal is a distinct "Place".
-        }
-
         // Load hospital data
         await loadHospitalData();
         setAdminLanguage(localStorage.getItem('admin_lang_pref') || 'en');
@@ -133,10 +94,25 @@
         // Load update history
         loadUpdateHistory();
 
+        // Online/Offline Listeners
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
         console.log('✅ Admin Portal Ready');
     }
 
-    // Initialize on load or immediately if already loaded (SPA Support)
+    function updateOnlineStatus() {
+        isOnline = navigator.onLine;
+        const syncDot = document.getElementById('syncDot');
+        const syncStatus = document.getElementById('syncStatus');
+        const banner = document.getElementById('offlineBanner');
+
+        if (syncDot) syncDot.classList.toggle('offline', !isOnline);
+        if (syncStatus) syncStatus.textContent = isOnline ? 'Online' : 'Offline (Local Only)';
+        if (banner) banner.style.display = isOnline ? 'none' : 'block';
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initAdmin);
     } else {
@@ -149,18 +125,9 @@
 
     async function loadHospitalData() {
         try {
-            console.log('🔄 Loading hospital data via window.MedFindData...');
             hospitals = await window.MedFindData.init();
-
             if (!hospitals || hospitals.length === 0) {
-                console.warn('⚠️ No data returned from window.MedFindData. Attempting emergency fallback...');
-                hospitals = [
-                    { id: "hosp_001", hospital_name: "Connaught Hospital (Fallback)", district: "Western Area", facility_type: "Government" },
-                    { id: "hosp_002", hospital_name: "PCMH (Fallback)", district: "Western Area", facility_type: "Government" }
-                ];
-                showToast('Loaded emergency fallback data.', 'warning');
-            } else {
-                console.log(`✅ Loaded ${hospitals.length} hospitals via window.MedFindData`);
+                hospitals = JSON.parse(JSON.stringify(window.MedFindData.FALLBACK_DATA));
             }
         } catch (error) {
             console.error('❌ Data load failed:', error);
@@ -169,28 +136,11 @@
     }
 
     function populateHospitalSelect() {
-        console.log('🏗️ Populating hospital dropdown...');
         const select = document.getElementById('hospitalSelect');
+        if (!select) return;
 
-        if (!select) {
-            console.error('❌ Could not find hospitalSelect element');
-            return;
-        }
+        while (select.options.length > 1) select.remove(1);
 
-        // Clear existing options except the first one (placeholder)
-        while (select.options.length > 1) {
-            select.remove(1);
-        }
-
-        if (!hospitals || hospitals.length === 0) {
-            const option = document.createElement('option');
-            option.textContent = "No data available";
-            option.disabled = true;
-            select.appendChild(option);
-            return;
-        }
-
-        // Sort hospitals by name
         const sortedHospitals = [...hospitals].sort((a, b) =>
             a.hospital_name.localeCompare(b.hospital_name)
         );
@@ -198,7 +148,7 @@
         sortedHospitals.forEach(hospital => {
             const option = document.createElement('option');
             option.value = hospital.id;
-            option.textContent = `${hospital.hospital_name} - ${hospital.district}`;
+            option.textContent = `${hospital.hospital_name} (${hospital.district})`;
             select.appendChild(option);
         });
     }
@@ -209,14 +159,12 @@
 
     function setupLoginForm() {
         const form = document.getElementById('loginForm');
-        form.addEventListener('submit', handleLogin);
+        if (form) form.addEventListener('submit', handleLogin);
     }
 
     function handleLogin(event) {
         event.preventDefault();
-
         const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
         const hospitalId = document.getElementById('hospitalSelect').value;
 
         if (!hospitalId) {
@@ -224,14 +172,7 @@
             return;
         }
 
-        // Demo mode - accept any username/password
-        currentUser = {
-            username: username,
-            hospitalId: hospitalId,
-            loginTime: new Date().toISOString()
-        };
-
-        // Find selected hospital
+        currentUser = { username, hospitalId, loginTime: new Date().toISOString() };
         currentHospital = hospitals.find(h => h.id === hospitalId);
 
         if (!currentHospital) {
@@ -239,20 +180,14 @@
             return;
         }
 
-        // Save session
         sessionStorage.setItem('admin_session', JSON.stringify(currentUser));
-
-        // Show dashboard
         showDashboard();
-
         showToast(`Welcome, ${username}!`, 'success');
     }
 
     function showDashboard() {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminDashboard').style.display = 'block';
-
-        // Populate dashboard
         updateDashboardInfo();
         updateStats();
         updateForm();
@@ -263,23 +198,15 @@
             sessionStorage.removeItem('admin_session');
             currentUser = null;
             currentHospital = null;
-
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('adminDashboard').style.display = 'none';
-
-            // Reset form
             document.getElementById('loginForm').reset();
-
-            showToast('Logged out successfully', 'success');
+            showToast('Logged out', 'success');
         }
     }
 
     function goToApp() {
-        if (window.showSPASection) {
-            window.showSPASection('patientSection');
-        } else {
-            window.location.href = './index.html#patientSection';
-        }
+        window.location.href = './index.html';
     }
 
     // ============================================
@@ -288,262 +215,216 @@
 
     function updateDashboardInfo() {
         if (!currentHospital) return;
-
         document.getElementById('hospitalName').textContent = currentHospital.hospital_name;
         document.getElementById('hospitalType').textContent = currentHospital.facility_type;
     }
 
     function updateStats() {
         if (!currentHospital) return;
+        const avail = currentHospital.dynamic_availability || {};
 
-        const avail = currentHospital.dynamic_availability;
-        const capacity = currentHospital.static_bed_capacity;
+        document.getElementById('statBeds').textContent = avail.beds_available_now || 0;
 
-        // Update stat cards
-        document.getElementById('statBeds').textContent = avail.beds_available_now;
-        document.getElementById('statBedsTotal').textContent = `of ${capacity.total} total`;
-        document.getElementById('statOxygen').textContent = avail.oxygen_available;
-        document.getElementById('statSurgeons').textContent = avail.surgeons_on_duty;
+        if (document.getElementById('statICU')) {
+            document.getElementById('statICU').textContent = avail.beds_icu_available || 0;
+            document.getElementById('statMat').textContent = avail.beds_mat_available || 0;
+            document.getElementById('statPed').textContent = avail.beds_ped_available || 0;
+        }
+
+        const breakdown = document.getElementById('bedBreakdown');
+        if (breakdown) {
+            breakdown.innerHTML = `M: ${avail.beds_male_available || 0} | F: ${avail.beds_female_available || 0} | C: ${avail.beds_ped_available || 0}`;
+        }
+
+        document.getElementById('statOxygen').textContent = avail.oxygen_available || 'No';
+        document.getElementById('statSurgeons').textContent = avail.surgeons_on_duty || 'No';
         document.getElementById('statAmbulance').textContent = avail.ambulance_available === 'Yes' ? 'Available' : 'Unavailable';
 
-        // Update card colors based on status
         updateCardColors();
     }
 
     function updateCardColors() {
         if (!currentHospital) return;
+        const avail = currentHospital.dynamic_availability || {};
 
-        const avail = currentHospital.dynamic_availability;
-
-        // Oxygen card
-        const oxygenCard = document.getElementById('oxygenCard');
-        oxygenCard.className = 'stat-card';
-        if (avail.oxygen_available === 'Yes') {
-            oxygenCard.classList.add('stat-success');
-        } else if (avail.oxygen_available === 'Limited') {
-            oxygenCard.classList.add('stat-warning');
-        } else {
-            oxygenCard.classList.add('stat-danger');
+        const oxyCard = document.getElementById('oxygenCard');
+        if (oxyCard) {
+            oxyCard.style.borderLeft = `5px solid ${avail.oxygen_available === 'Yes' ? '#10b981' : (avail.oxygen_available === 'Limited' ? '#f59e0b' : '#ef4444')}`;
         }
 
-        // Surgeon card
-        const surgeonCard = document.getElementById('surgeonCard');
-        surgeonCard.className = 'stat-card';
-        if (avail.surgeons_on_duty === 'Yes') {
-            surgeonCard.classList.add('stat-success');
-        } else if (avail.surgeons_on_duty === 'On Call') {
-            surgeonCard.classList.add('stat-warning');
-        } else {
-            surgeonCard.classList.add('stat-danger');
+        const surgCard = document.getElementById('surgeonCard');
+        if (surgCard) {
+            surgCard.style.borderLeft = `5px solid ${avail.surgeons_on_duty === 'Yes' ? '#10b981' : (avail.surgeons_on_duty === 'On Call' ? '#f59e0b' : '#ef4444')}`;
         }
 
-        // Ambulance card
-        const ambulanceCard = document.getElementById('ambulanceCard');
-        ambulanceCard.className = 'stat-card';
-        if (avail.ambulance_available === 'Yes') {
-            ambulanceCard.classList.add('stat-success');
-        } else {
-            ambulanceCard.classList.add('stat-danger');
+        const ambCard = document.getElementById('ambulanceCard');
+        if (ambCard) {
+            ambCard.style.borderLeft = `5px solid ${avail.ambulance_available === 'Yes' ? '#10b981' : '#ef4444'}`;
         }
     }
 
     function updateForm() {
         if (!currentHospital) return;
+        const avail = currentHospital.dynamic_availability || {};
+        const cap = currentHospital.static_bed_capacity || {};
+        const services = currentHospital.key_services || {};
 
-        const avail = currentHospital.dynamic_availability;
-        const capacity = currentHospital.static_bed_capacity;
+        if (document.getElementById('bedsMaleAvail')) {
+            document.getElementById('bedsMaleAvail').value = avail.beds_male_available || 0;
+            document.getElementById('bedsMaleTotal').value = cap.male || 0;
+            document.getElementById('bedsFemaleAvail').value = avail.beds_female_available || 0;
+            document.getElementById('bedsFemaleTotal').value = cap.female || 0;
+            document.getElementById('bedsPedAvail').value = avail.beds_ped_available || 0;
+            document.getElementById('bedsPedTotal').value = cap.pediatric || 0;
+            document.getElementById('bedsICUAvail').value = avail.beds_icu_available || 0;
+            document.getElementById('bedsICUTotal').value = cap.icu || 0;
+            document.getElementById('bedsMatAvail').value = avail.beds_mat_available || 0;
+            document.getElementById('bedsMatTotal').value = cap.maternity || 0;
 
-        // Populate form with current values
-        document.getElementById('bedsInput').value = avail.beds_available_now;
-        document.getElementById('bedCapacity').textContent = `Total capacity: ${capacity.total} beds`;
-        document.getElementById('oxygenInput').value = avail.oxygen_available;
-        document.getElementById('surgeonsInput').value = avail.surgeons_on_duty;
-        document.getElementById('theatreInput').value = avail.operating_theatre_status;
-        document.getElementById('ambulanceInput').value = avail.ambulance_available;
+            document.getElementById('srvER').checked = !!services.emergency;
+            document.getElementById('srvSurgery').checked = !!services.surgery;
+            document.getElementById('srvLab').checked = !!services.lab;
+            document.getElementById('srvPharm').checked = !!services.pharmacy;
+            document.getElementById('srvBlood').checked = !!services.blood_bank;
+
+            // Specialized Services
+            if (document.getElementById('srvEye')) document.getElementById('srvEye').checked = !!services.eye_care;
+            if (document.getElementById('srvENT')) document.getElementById('srvENT').checked = !!services.ent;
+            if (document.getElementById('srvDental')) document.getElementById('srvDental').checked = !!services.dental;
+            if (document.getElementById('srvOrtho')) document.getElementById('srvOrtho').checked = !!services.orthopedics;
+            if (document.getElementById('srvCardio')) document.getElementById('srvCardio').checked = !!services.cardiology;
+            if (document.getElementById('srvDialysis')) document.getElementById('srvDialysis').checked = !!services.dialysis;
+        }
+
+        document.getElementById('surgeonsInput').value = avail.surgeons_on_duty || 'No';
+        document.getElementById('oxygenInput').value = avail.oxygen_available || 'No';
+        document.getElementById('ambulanceInput').value = avail.ambulance_available || 'No';
+        document.getElementById('notesInput').value = currentHospital.notes || '';
     }
-
-    // ============================================
-    // QUICK UPDATES
-    // ============================================
 
     function quickUpdate(action) {
         if (!currentHospital) return;
-
         const avail = currentHospital.dynamic_availability;
-        const oldValue = { ...avail };
 
         switch (action) {
-            case 'beds_full':
-                avail.beds_available_now = 0;
-                logUpdate('Beds Available', oldValue.beds_available_now, 0);
+            case 'emergency_closed':
+                currentHospital.key_services.emergency = false;
+                logUpdate('ER Status', 'Open', 'Closed');
                 break;
-
-            case 'beds_available':
-                // Restore to half capacity
-                const halfCapacity = Math.floor(currentHospital.static_bed_capacity.total / 2);
-                avail.beds_available_now = halfCapacity;
-                logUpdate('Beds Available', oldValue.beds_available_now, halfCapacity);
+            case 'emergency_open':
+                currentHospital.key_services.emergency = true;
+                logUpdate('ER Status', 'Closed', 'Open');
                 break;
-
             case 'no_oxygen':
                 avail.oxygen_available = 'No';
-                logUpdate('Oxygen Available', oldValue.oxygen_available, 'No');
+                logUpdate('Oxygen', 'Previous', 'No');
                 break;
-
             case 'oxygen_ok':
                 avail.oxygen_available = 'Yes';
-                logUpdate('Oxygen Available', oldValue.oxygen_available, 'Yes');
+                logUpdate('Oxygen', 'Previous', 'Yes');
                 break;
-
-            case 'surgeon_available':
-                avail.surgeons_on_duty = 'Yes';
-                logUpdate('Surgeons on Duty', oldValue.surgeons_on_duty, 'Yes');
-                break;
-
             case 'surgeon_oncall':
                 avail.surgeons_on_duty = 'On Call';
-                logUpdate('Surgeons on Duty', oldValue.surgeons_on_duty, 'On Call');
+                logUpdate('Surgery Duty', 'Previous', 'On Call');
                 break;
-
-            case 'ambulance_out':
-                avail.ambulance_available = 'No';
-                logUpdate('Ambulance Available', oldValue.ambulance_available, 'No');
-                break;
-
-            case 'ambulance_ready':
-                avail.ambulance_available = 'Yes';
-                logUpdate('Ambulance Available', oldValue.ambulance_available, 'Yes');
+            case 'beds_full':
+                avail.beds_available_now = 0;
+                avail.beds_male_available = 0;
+                avail.beds_female_available = 0;
+                avail.beds_icu_available = 0;
+                avail.beds_mat_available = 0;
+                avail.beds_ped_available = 0;
+                logUpdate('Bed Status', 'Previous', 'FULLY OCCUPIED');
                 break;
         }
 
-        // Update timestamp
         avail.last_updated_timestamp = new Date().toISOString();
-
-        // Save changes
         saveHospitalData();
-
-        // Update UI
         updateStats();
         updateForm();
-
-        showToast('Update saved successfully!', 'success');
+        showToast('Quick update synced!', 'success');
     }
 
-    // ============================================
-    // FULL FORM UPDATE
-    // ============================================
-
-    document.getElementById('updateForm').addEventListener('submit', handleFormSubmit);
+    const form = document.getElementById('updateForm');
+    if (form) form.addEventListener('submit', handleFormSubmit);
 
     function handleFormSubmit(event) {
         event.preventDefault();
-
         if (!currentHospital) return;
 
         const avail = currentHospital.dynamic_availability;
-        const oldValues = { ...avail };
+        const cap = currentHospital.static_bed_capacity;
+        const srv = currentHospital.key_services;
 
-        // Get form values
-        const newBeds = parseInt(document.getElementById('bedsInput').value);
-        const newOxygen = document.getElementById('oxygenInput').value;
-        const newSurgeons = document.getElementById('surgeonsInput').value;
-        const newTheatre = document.getElementById('theatreInput').value;
-        const newAmbulance = document.getElementById('ambulanceInput').value;
-        const notes = document.getElementById('notesInput').value;
+        avail.beds_male_available = parseInt(document.getElementById('bedsMaleAvail').value) || 0;
+        cap.male = parseInt(document.getElementById('bedsMaleTotal').value) || 0;
+        avail.beds_female_available = parseInt(document.getElementById('bedsFemaleAvail').value) || 0;
+        cap.female = parseInt(document.getElementById('bedsFemaleTotal').value) || 0;
+        avail.beds_ped_available = parseInt(document.getElementById('bedsPedAvail').value) || 0;
+        cap.pediatric = parseInt(document.getElementById('bedsPedTotal').value) || 0;
+        avail.beds_icu_available = parseInt(document.getElementById('bedsICUAvail').value) || 0;
+        cap.icu = parseInt(document.getElementById('bedsICUTotal').value) || 0;
+        avail.beds_mat_available = parseInt(document.getElementById('bedsMatAvail').value) || 0;
+        cap.maternity = parseInt(document.getElementById('bedsMatTotal').value) || 0;
 
-        // Track changes
-        if (oldValues.beds_available_now !== newBeds) {
-            logUpdate('Beds Available', oldValues.beds_available_now, newBeds);
-        }
-        if (oldValues.oxygen_available !== newOxygen) {
-            logUpdate('Oxygen Available', oldValues.oxygen_available, newOxygen);
-        }
-        if (oldValues.surgeons_on_duty !== newSurgeons) {
-            logUpdate('Surgeons on Duty', oldValues.surgeons_on_duty, newSurgeons);
-        }
-        if (oldValues.operating_theatre_status !== newTheatre) {
-            logUpdate('Operating Theatre Status', oldValues.operating_theatre_status, newTheatre);
-        }
-        if (oldValues.ambulance_available !== newAmbulance) {
-            logUpdate('Ambulance Available', oldValues.ambulance_available, newAmbulance);
-        }
+        avail.beds_available_now = avail.beds_male_available + avail.beds_female_available + avail.beds_ped_available + avail.beds_icu_available + avail.beds_mat_available;
+        cap.total = cap.male + cap.female + cap.pediatric + cap.icu + cap.maternity;
 
-        // Update values
-        avail.beds_available_now = newBeds;
-        avail.oxygen_available = newOxygen;
-        avail.surgeons_on_duty = newSurgeons;
-        avail.operating_theatre_status = newTheatre;
-        avail.ambulance_available = newAmbulance;
+        srv.emergency = document.getElementById('srvER').checked;
+        srv.surgery = document.getElementById('srvSurgery').checked;
+        srv.lab = document.getElementById('srvLab').checked;
+        srv.pharmacy = document.getElementById('srvPharm').checked;
+        srv.blood_bank = document.getElementById('srvBlood').checked;
+
+        // Specialized Services
+        srv.eye_care = document.getElementById('srvEye').checked;
+        srv.ent = document.getElementById('srvENT').checked;
+        srv.dental = document.getElementById('srvDental').checked;
+        srv.orthopedics = document.getElementById('srvOrtho').checked;
+        srv.cardiology = document.getElementById('srvCardio').checked;
+        srv.dialysis = document.getElementById('srvDialysis').checked;
+
+        avail.surgeons_on_duty = document.getElementById('surgeonsInput').value;
+        avail.oxygen_available = document.getElementById('oxygenInput').value;
+        avail.ambulance_available = document.getElementById('ambulanceInput').value;
+        currentHospital.notes = document.getElementById('notesInput').value;
+
         avail.last_updated_timestamp = new Date().toISOString();
 
-        // Update notes if provided
-        if (notes.trim()) {
-            currentHospital.notes = notes;
-            logUpdate('Notes', '', notes);
-        }
-
-        // Save changes
         saveHospitalData();
-
-        // Update UI
         updateStats();
-
-        showToast('All changes saved successfully!', 'success');
+        logUpdate('Bulk Update', 'Various', 'New Status Synced');
+        showToast('All changes synced successfully!', 'success');
     }
 
     function resetForm() {
-        if (confirm('Reset form to current hospital values?')) {
+        if (confirm('Discard your current changes?')) {
             updateForm();
-            document.getElementById('notesInput').value = '';
-            showToast('Form reset', 'warning');
+            showToast('Changes discarded', 'warning');
         }
     }
 
-    // ============================================
-    // DATA PERSISTENCE
-    // ============================================
-
     function saveHospitalData() {
-        // Save via Shared Module
         const success = window.MedFindData.saveHospital(currentHospital);
-
         if (success) {
-            console.log('✅ Hospital data saved to persistent storage');
-            // Update local array reference just in case
             const index = hospitals.findIndex(h => h.id === currentHospital.id);
             if (index !== -1) hospitals[index] = currentHospital;
         } else {
-            console.error('❌ Failed to save hospital data');
-            showToast('Failed to save data', 'error');
+            showToast('Failed to save data. Still saved locally.', 'warning');
         }
     }
-
-    // ============================================
-    // UPDATE HISTORY
-    // ============================================
 
     function logUpdate(field, oldValue, newValue) {
         const update = {
             timestamp: new Date().toISOString(),
-            field: field,
-            oldValue: oldValue,
-            newValue: newValue,
-            updatedBy: currentUser ? currentUser.username : 'Unknown',
+            field, oldValue, newValue,
+            updatedBy: currentUser ? currentUser.username : 'Staff',
             hospitalId: currentHospital.id,
-            status: 'Synced'
+            status: isOnline ? 'Synced' : 'Local Only'
         };
-
         updateHistory.unshift(update);
-
-        // Keep only last 50 updates
-        if (updateHistory.length > 50) {
-            updateHistory = updateHistory.slice(0, 50);
-        }
-
-        // Save to localStorage
+        if (updateHistory.length > 50) updateHistory = updateHistory.slice(0, 50);
         localStorage.setItem('update_history', JSON.stringify(updateHistory));
-
-        // Update UI
         renderUpdateHistory();
     }
 
@@ -557,162 +438,70 @@
 
     function renderUpdateHistory() {
         const tbody = document.getElementById('historyTableBody');
-
-        // Filter history for current hospital
-        const hospitalHistory = currentHospital
-            ? updateHistory.filter(u => u.hospitalId === currentHospital.id)
-            : updateHistory;
+        if (!tbody) return;
+        const hospitalHistory = currentHospital ? updateHistory.filter(u => u.hospitalId === currentHospital.id) : updateHistory;
 
         if (hospitalHistory.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="no-data">No update history yet</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data">No history yet</td></tr>';
             return;
         }
 
         tbody.innerHTML = hospitalHistory.slice(0, 20).map(update => {
-            const date = new Date(update.timestamp);
-            const formattedDate = date.toLocaleString('en-GB', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
+            const date = new Date(update.timestamp).toLocaleString('en-GB');
             return `
             <tr>
-                <td>${formattedDate}</td>
+                <td>${date}</td>
                 <td>${update.field}</td>
                 <td>${update.oldValue || '-'}</td>
                 <td><strong>${update.newValue}</strong></td>
                 <td>${update.updatedBy}</td>
-                <td><span class="status-badge badge-success">${update.status}</span></td>
-            </tr>
-        `;
+                <td><span class="status-badge ${update.status === 'Synced' ? 'badge-success' : 'badge-pending'}">${update.status}</span></td>
+            </tr>`;
         }).join('');
     }
 
-    // ============================================
-    // DATA MANAGEMENT
-    // ============================================
-
-    function downloadData() {
-        if (!currentHospital) {
-            showToast('No hospital selected', 'error');
-            return;
-        }
-
-        const dataStr = JSON.stringify(currentHospital, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${currentHospital.id}_data_${Date.now()}.json`;
-        link.click();
-
-        URL.revokeObjectURL(url);
-        showToast('Data downloaded successfully', 'success');
-    }
-
-    function viewAllHospitals() {
-        const summary = hospitals.map(h => ({
-            name: h.hospital_name,
-            district: h.district,
-            beds_available: h.dynamic_availability.beds_available_now,
-            oxygen: h.dynamic_availability.oxygen_available,
-            last_updated: h.dynamic_availability.last_updated_timestamp
-        }));
-
-        console.table(summary);
-        alert(`Viewing ${hospitals.length} hospitals in console. Press F12 to see details.`);
-    }
-
-    async function resetToDefault() {
-        if (!confirm('⚠️ This will reset all hospital data to default values. Are you sure?')) {
-            return;
-        }
-
-        if (!confirm('This action cannot be undone. Continue?')) {
-            return;
-        }
-
-        try {
-            // Reset to FALLBACK_DATA via window.MedFindData
-            const data = JSON.parse(JSON.stringify(window.MedFindData.FALLBACK_DATA));
-            hospitals = data;
-
-            // Update current hospital reference
-            currentHospital = hospitals.find(h => h.id === currentHospital.id);
-
-            // Save
-            saveHospitalData();
-
-            // Update UI
-            updateStats();
-            updateForm();
-
-            // Clear history
-            updateHistory = [];
-            localStorage.removeItem('update_history');
-            renderUpdateHistory();
-
-            showToast('Data reset to default successfully', 'success');
-        } catch (error) {
-            showToast('Failed to reset data', 'error');
-        }
-    }
-
-    // ============================================
-    // TOAST NOTIFICATIONS
-    // ============================================
-
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-
-        toastMessage.textContent = message;
+        const msgEl = document.getElementById('toastMessage');
+        if (!toast || !msgEl) return;
+        msgEl.textContent = message;
         toast.className = `toast ${type} show`;
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // ============================================
-    // AUTO-LOGIN (Development)
-    // ============================================
+    // Exports
+    window.handleLogin = handleLogin;
+    window.logout = logout;
+    window.goToApp = goToApp;
+    window.quickUpdate = quickUpdate;
+    window.resetForm = resetForm;
+    window.downloadData = () => {
+        const blob = new Blob([JSON.stringify(currentHospital, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = `hospital_${currentHospital.id}.json`; a.click();
+    };
+    window.viewAllHospitals = () => console.table(hospitals);
+    window.resetToDefault = async () => {
+        if (confirm('Reset to default?')) {
+            hospitals = JSON.parse(JSON.stringify(window.MedFindData.FALLBACK_DATA));
+            currentHospital = hospitals.find(h => h.id === currentHospital.id);
+            saveHospitalData();
+            updateStats();
+            updateForm();
+            showToast('Data reset', 'success');
+        }
+    };
 
-    // Check for existing session
+    // Auto-login
     window.addEventListener('load', () => {
         const session = sessionStorage.getItem('admin_session');
         if (session) {
             try {
                 currentUser = JSON.parse(session);
                 currentHospital = hospitals.find(h => h.id === currentUser.hospitalId);
-                if (currentHospital) {
-                    setTimeout(() => {
-                        showDashboard();
-                    }, 500);
-                }
-            } catch (error) {
-                console.error('Failed to restore session', error);
-            }
+                if (currentHospital) setTimeout(showDashboard, 100);
+            } catch (e) { }
         }
     });
 
-    console.log('✅ Admin Script Loaded');
-
-    // ============================================
-    // GLOBAL SCOPE EXPORTS
-    // ============================================
-    window.handleLogin = handleLogin;
-    window.logout = logout;
-    window.goToApp = goToApp;
-    window.quickUpdate = quickUpdate;
-    window.toggleUpdateForm = function() {};
-    window.saveFullUpdate = handleFormSubmit;
-    window.downloadData = downloadData;
-    window.resetToDefault = resetToDefault;
-
 })();
-
