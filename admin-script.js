@@ -709,9 +709,10 @@
     window.logout = logout;
     window.goToApp = goToApp;
     window.quickUpdate = quickUpdate;
-    window.toggleUpdateForm = toggleUpdateForm;
-    window.saveFullUpdate = saveFullUpdate;
+    window.toggleUpdateForm = function() {};
+    window.saveFullUpdate = handleFormSubmit;
     window.downloadData = downloadData;
     window.resetToDefault = resetToDefault;
 
 })();
+

@@ -22,6 +22,9 @@
     let mapMarkers = [];
     let mapViewActive = false;
 
+    // Detail State
+    let currentDetailHospital = null;
+
     // Translations
     const translations = {
         en: {
@@ -453,7 +456,7 @@
 
     function showFavorites() {
         if (favorites.length === 0) {
-            alert('No favorites yet!');
+            alert('No favorites saved yet. Tap ☆ on a hospital card to favorite it.');
             return;
         }
         currentHospitals = hospitals.filter(h => favorites.includes(h.id));
@@ -589,8 +592,13 @@
     window.showFavorites = showFavorites;
     window.toggleFavorite = toggleFavorite;
 
-    document.addEventListener('DOMContentLoaded', initApp);
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        initApp();
+    // Guard against double-init
+    if (!window._medfindAppLoaded) {
+        window._medfindAppLoaded = true;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initApp();
+        } else {
+            document.addEventListener('DOMContentLoaded', initApp);
+        }
     }
 })();
