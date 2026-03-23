@@ -1,0 +1,128 @@
+[
+  {
+    "id": "hosp_001",
+    "name": "Connaught Hospital",
+    "type": "Public",
+    "city": "Freetown",
+    "location": {
+      "latitude": 8.4844,
+      "longitude": -13.2344
+    },
+    "address": "Percival Street, Freetown",
+    "services": ["Emergency", "Surgery", "Internal Medicine", "Radiology", "ICU"],
+    "contact": "+232 76 123 456",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_002",
+    "name": "34 Military Hospital",
+    "type": "Public/Military",
+    "city": "Freetown",
+    "location": {
+      "latitude": 8.4680,
+      "longitude": -13.2670
+    },
+    "address": "Wilberforce, Freetown",
+    "services": ["General Practice", "Surgery", "Infectious Diseases", "Emergency"],
+    "contact": "+232 78 555 123",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_003",
+    "name": "Choithram Memorial Hospital",
+    "type": "Private",
+    "city": "Freetown",
+    "location": {
+      "latitude": 8.4550,
+      "longitude": -13.2550
+    },
+    "address": "Hill Station, Freetown",
+    "services": ["Cardiology", "MRI/CT Scan", "Dialysis", "Pediatrics", "Emergency"],
+    "contact": "+232 88 999 888",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_004",
+    "name": "Ola During Children's Hospital",
+    "type": "Public",
+    "city": "Freetown",
+    "location": {
+      "latitude": 8.4890,
+      "longitude": -13.2200
+    },
+    "address": "Fourah Bay Road, Freetown",
+    "services": ["Pediatrics", "Neonatal Care", "Nutrition", "Emergency"],
+    "contact": "+232 76 000 001",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_005",
+    "name": "Princess Christian Maternity Hospital (PCMH)",
+    "type": "Public",
+    "city": "Freetown",
+    "location": {
+      "latitude": 8.4885,
+      "longitude": -13.2205
+    },
+    "address": "Fourah Bay Road, Freetown",
+    "services": ["Maternity", "Obstetrics", "Gynecology", "Family Planning"],
+    "contact": "+232 76 000 002",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_006",
+    "name": "Emergency Surgical Centre",
+    "type": "NGO",
+    "city": "Goderich",
+    "location": {
+      "latitude": 8.4330,
+      "longitude": -13.2800
+    },
+    "address": "Goderich, Western Area Rural",
+    "services": ["Trauma Surgery", "Emergency", "Pediatric Surgery"],
+    "contact": "+232 30 111 222",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_007",
+    "name": "Bo Government Hospital",
+    "type": "Public",
+    "city": "Bo",
+    "location": {
+      "latitude": 7.9600,
+      "longitude": -11.7400
+    },
+    "address": "Bo-Kenema Highway, Bo",
+    "services": ["General Practice", "Maternity", "Surgery", "Emergency"],
+    "contact": "+232 75 333 444",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_008",
+    "name": "Kenema Government Hospital",
+    "type": "Public",
+    "city": "Kenema",
+    "location": {
+      "latitude": 7.8750,
+      "longitude": -11.1850
+    },
+    "address": "Combema Road, Kenema",
+    "services": ["General Practice", "Lassa Fever Unit", "Maternity", "Pediatrics"],
+    "contact": "+232 76 777 666",
+    "open_24_7": true
+  },
+  {
+    "id": "hosp_009",
+    "name": "Makeni Regional Hospital",
+    "type": "Public",
+    "city": "Makeni",
+    "location": {
+      "latitude": 8.8850,
+      "longitude": -12.0450
+    },
+    "address": "Azzolini Highway, Makeni",
+    "services": ["General Practice", "Surgery", "Eye Clinic", "Maternity"],
+    "contact": "+232 79 111 222",
+    "open_24_7": true
+  }
+]

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedFind Salone - Premium Emergency Finder</title>
+    <meta name="description" content="Offline-first emergency hospital finder for Sierra Leone">
+    <link rel="stylesheet" href="app-styles.css">
+    <script src="google-map-fix.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <p class="loading-text">MedFind Salone</p>
+    </div>
+
+    <div class="app d-none" id="app">
+        <!-- Offline Banner -->
+        <div class="offline-banner" id="offlineBanner">
+            ⚠️ Offline Mode - Using Cached Data
+        </div>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="kr">KR</button>
+        </div>
+
+        <!-- Emergency Selection Screen (Phase 1 of SOS) -->
+        <div class="screen emergency-screen d-none" id="emergencySelectScreen">
+            <h1 class="emergency-title">What's the Emergency?</h1>
+            <p class="emergency-subtitle">Select a type for better recommendations</p>
+            
+            <div class="emergency-grid" id="emergencyTypeGrid">
+                <div class="type-card" onclick="selectEmergencyType('trauma')">
+                    <span class="type-icon">🤕</span>
+                    <span class="type-label">Trauma / Accident</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('pregnancy')">
+                    <span class="type-icon">👶</span>
+                    <span class="type-label">Pregnancy / Labor</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('asthma')">
+                    <span class="type-icon">🫁</span>
+                    <span class="type-label">Asthma / Breathing</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('heart_attack')">
+                    <span class="type-icon">❤️</span>
+                    <span class="type-label">Heart / Stroke</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('poisoning')">
+                    <span class="type-icon">🧪</span>
+                    <span class="type-label">Food Poisoning</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('child')">
+                    <span class="type-icon">🧸</span>
+                    <span class="type-label">Child Emergency</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('surgery')">
+                    <span class="type-icon">🔪</span>
+                    <span class="type-label">Surgery Required</span>
+                </div>
+                <div class="type-card" onclick="selectEmergencyType('general')">
+                    <span class="type-icon">🆘</span>
+                    <span class="type-label">General Emergency</span>
+                </div>
+            </div>
+            
+            <div class="mt-40 text-center">
+                <button class="btn-action surface-btn" onclick="showScreen('homeScreen')">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Emergency Results Screen (Phase 2 of SOS) -->
+        <div class="screen emergency-screen d-none" id="emergencyScreen">
+            <h1 class="emergency-title">Best Recommendation</h1>
+            <p class="emergency-subtitle">Based on your emergency type and location</p>
+            
+            <div id="emergencyRecommendation">
+                <!-- Smart recommendation card will be inserted here -->
+            </div>
+            
+            <div class="mt-24">
+                <h3 class="section-title">Secondary Options</h3>
+                <div id="secondaryRecommendations" class="hospital-list">
+                    <!-- Other options here -->
+                </div>
+            </div>
+            
+            <div class="mt-40 text-center">
+                <button class="btn-action surface-btn" onclick="showScreen('homeScreen')">Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div class="screen home-screen" id="homeScreen">
+            <header class="app-header">
+                <h1 class="app-title">MedFind Salone</h1>
+                <p class="app-subtitle" data-translate="subtitle">Sierra Leone's Emergency Network</p>
+            </header>
+
+            <button class="sos-button" onclick="showScreen('emergencySelectScreen')">
+                <span>🚨</span>
+                <span data-translate="sos">SOS - FIND HELP NOW</span>
+            </button>
+
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search hospitals..." data-translate-placeholder="search_placeholder">
+                <button class="search-btn" onclick="performSearch()">🔍</button>
+            </div>
+
+            <h3 class="section-title">Quick Filters</h3>
+            <div class="filter-grid">
+                <div class="filter-item" onclick="filterByService('emergency')">
+                    <span class="filter-icon">🚑</span>
+                    <span class="filter-label">ER</span>
+                </div>
+                <div class="filter-item" onclick="filterByService('maternity')">
+                    <span class="filter-icon">👶</span>
+                    <span class="filter-label">Maternity</span>
+                </div>
+                <div class="filter-item" onclick="filterByService('icu')">
+                    <span class="filter-icon">🩺</span>
+                    <span class="filter-label">ICU</span>
+                </div>
+                <div class="filter-item" onclick="filterByService('oxygen')">
+                    <span class="filter-icon">💨</span>
+                    <span class="filter-label">Oxygen</span>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <span data-translate="nearby_hospitals">Nearby Hospitals</span>
+                <span class="count-badge" id="resultCount">0</span>
+            </div>
+
+            <div class="hospital-list" id="hospitalList">
+                <!-- Cards -->
+            </div>
+        </div>
+
+        <!-- Detail Screen -->
+        <div class="screen detail-screen d-none" id="detailScreen">
+            <div class="detail-nav">
+                <div class="back-btn" onclick="showScreen('homeScreen')">BACK</div>
+                <div id="favoriteBtn" class="fs-24 cursor-pointer">☆</div>
+            </div>
+            
+            <div class="detail-body" id="detailContent">
+                <!-- Dynamic content -->
+            </div>
+            
+            <div class="action-bar" id="detailActions">
+                <button class="btn-action primary-btn" id="callBtn">📞 Call</button>
+                <button class="btn-action secondary-btn" id="directionsBtn">🗺 Directions</button>
+            </div>
+        </div>
+
+        <!-- Bottom Tab Bar -->
+        <nav class="tab-bar">
+            <div class="tab-item active" onclick="showScreen('homeScreen')">
+                <span class="tab-icon">🏠</span>
+                <span class="tab-label">Home</span>
+            </div>
+            <div class="tab-item" onclick="showFavorites()">
+                <span class="tab-icon">⭐</span>
+                <span class="tab-label">Saved</span>
+            </div>
+            <div class="tab-item" onclick="showScreen('emergencySelectScreen')">
+                <span class="tab-icon">🚨</span>
+                <span class="tab-label">SOS</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Map View Overlay (Hidden by default) -->
+    <div id="mapContainer" class="map-overlay-full d-none">
+        <div id="appMap"></div>
+        <div class="map-overlay-top">
+            <div class="search-container map-search-bar">
+                <input type="text" class="search-input" placeholder="Search hospitals...">
+                <button class="search-btn" onclick="switchView('list')">📋</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app-script.js"></script>
+</body>
+</html>

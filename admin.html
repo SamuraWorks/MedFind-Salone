@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedFind Admin - Hospital Portal</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>MedFind Admin</h1>
+                <h2 data-translate="admin_subtitle">Secure Hospital Portal</h2>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label>Hospital ID / Username</label>
+                    <input type="text" id="username" placeholder="MF-12345" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label>Select Facility</label>
+                    <select id="hospitalSelect" required>
+                        <option value="">Select your hospital...</option>
+                    </select>
+                </div>
+                <button type="submit" class="login-btn">Login to Dashboard</button>
+            </form>
+            <div class="text-center mt-24" style="font-size: 13px; opacity: 0.6;">
+                Demo Mode: Any credentials will work.
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard d-none">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">MedFind Salone</div>
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="showPanel('dashboard')">
+                    <span>🏠</span> <span class="nav-label">Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showPanel('resources')">
+                    <span>🛏️</span> <span class="nav-label">Resources</span>
+                </div>
+                <div class="nav-item" onclick="showPanel('history')">
+                    <span>📊</span> <span class="nav-label">History</span>
+                </div>
+            </nav>
+            <div class="nav-item mt-40" onclick="logout()" style="color: var(--danger);">
+                <span>🚪</span> <span class="nav-label">Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Offline Banner -->
+            <div id="offlineBanner" class="offline-banner d-none" style="background: var(--warning); color: white; padding: 12px; border-radius: 12px; margin-bottom: 24px; text-align: center; font-weight: 600;">
+                ⚠️ Offline Mode - Changes will sync later
+            </div>
+
+            <header class="dashboard-header">
+                <div class="header-title">
+                    <h1 id="hospitalName">Hospital Name</h1>
+                    <p class="hospital-type" id="hospitalType">Regional Hospital</p>
+                </div>
+                <div class="sync-status">
+                    <div class="sync-dot" id="syncDot"></div>
+                    <span id="syncStatus">Online</span>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Beds</div>
+                    <div class="stat-value" id="statBeds">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">ER Doctor</div>
+                    <div class="stat-value" id="statSurgeons" style="font-size: 20px;">On Site</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Oxygen</div>
+                    <div class="stat-value" id="statOxygen" style="font-size: 20px;">Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sync status</div>
+                    <div class="stat-value" style="font-size: 20px; color: var(--success);">Healthy</div>
+                </div>
+            </div>
+
+            <!-- Quick Status Panel -->
+            <section class="panel">
+                <h2 class="panel-title">Critical Status</h2>
+                <p class="panel-subtitle">Immediate impact on emergency recommendations</p>
+                <div class="quick-grid">
+                    <button class="quick-btn btn-red" onclick="quickUpdate('emergency_closed')">
+                        <span>🚨</span> ER Closed
+                    </button>
+                    <button class="quick-btn btn-green" onclick="quickUpdate('emergency_open')">
+                        <span>🚨</span> ER Open
+                    </button>
+                    <button class="quick-btn btn-orange" onclick="quickUpdate('beds_full')">
+                        <span>🛏️</span> Beds Full
+                    </button>
+                </div>
+            </section>
+
+            <!-- Detailed Update Panel -->
+            <section class="panel">
+                <h2 class="panel-title">Resource Management</h2>
+                <p class="panel-subtitle">Update granular resource availability</p>
+                
+                <form id="updateForm" class="update-form">
+                    <h3>Bed Availability</h3>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label>Male Ward (Avail/Total)</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="bedsMaleAvail" placeholder="Avail" class="flex-1">
+                                <input type="number" id="bedsMaleTotal" placeholder="Total" class="flex-1">
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label>Female Ward (Avail/Total)</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="bedsFemaleAvail" placeholder="Avail" class="flex-1">
+                                <input type="number" id="bedsFemaleTotal" placeholder="Total" class="flex-1">
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label>ICU (Avail/Total)</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="bedsICUAvail" placeholder="Avail" class="flex-1">
+                                <input type="number" id="bedsICUTotal" placeholder="Total" class="flex-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Specialists & Equipment</h3>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label>ER Doctors</label>
+                            <select id="surgeonsInput">
+                                <option value="on_site">On Site</option>
+                                <option value="on_call">On Call</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Oxygen Supply</label>
+                            <select id="oxygenInput">
+                                <option value="available">Available</option>
+                                <option value="limited">Limited</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Ambulance</label>
+                            <select id="ambulanceInput">
+                                <option value="Yes">Available</option>
+                                <option value="No">Unavailable</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-surface" onclick="resetForm()">Discard</button>
+                        <button type="submit" class="btn btn-primary">Sync All Changes</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- History Panel -->
+            <section class="panel">
+                <h2 class="panel-title">Update History</h2>
+                <div style="overflow-x: auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Field</th>
+                                <th>Old Value</th>
+                                <th>New Value</th>
+                                <th>Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" style="position: fixed; top: 40px; right: 40px; background: white; padding: 20px 32px; border-radius: 20px; box-shadow: var(--shadow); display: none; z-index: 2000; animation: slideIn 0.3s ease-out;">
+        <span id="toastMessage">Updates Synced Successfully</span>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>
